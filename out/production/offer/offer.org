@@ -1,0 +1,442 @@
+#+TAGS: TOBEORG(t) QUESTIONS(q) UNRESOLVED(u) EXTRA(e)
+* 3 数组中重复的数字
+** 题目一 找出数组中重复的数字
+*** 一边排序一边查重 <<ilink2>>
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean duplicate(int[] numbers, int length, int[] duplication) {
+              if (numbers == null || length < 0) return false;
+
+              for (int i = 0; i < length; i++) {
+                  if (numbers[i] < 0 || numbers[i] > length - 1) return false;
+              }
+
+              for (int i = 0; i < length; i++) {
+                  while (numbers[i] != i) {
+                      if (numbers[i] == numbers[numbers[i]]) {
+                          duplication[0] = numbers[i];
+                          return true;
+                      }
+
+                      int temp = numbers[i];
+                      numbers[i] = numbers[temp];
+                      numbers[temp] = temp;
+                  }
+              }
+              return false;
+          }
+      }
+    #+end_src 
+    - 极端情况
+      - ~if (numbers == null || length < 0)~ -> ~int[] a = null~ 不等于 ~int[] a = new int[0]~
+      - ~numbers[i] < 0 || numbers[i] > length - 1~ 筛除异常输入
+    - 由于数字在 0~n-1 范围内，假定没有重复数字 -> 简单的遍历与正确位置交换即可重排 -> 最多需要遍历 n 次 -> 交换的同时顺便看下重不重复即可
+    - 复杂度
+      - $O(n)$
+      - $O(1)$
+**** Question:                                                    :QUESTIONS:
+     - [ ] 从重复的数组是由不重复的数字改变数位数字而来的角度来考虑解法？
+*** 排完再遍历
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean duplicate(int[] numbers, int length, int[] duplication) {
+              if (numbers == null || length < 0) return false;
+
+              for (int i = 0; i < length; i++) {
+                  if (numbers[i] < 0 || numbers[i] > length - 1) return false;
+              }
+
+              Arrays.sort(numbers);
+              for (int i = 0; i < length - 1; i++) {
+                  if (numbers[i] == numbers[i+1]) {
+                      duplication[0] = numbers[i];
+                      return true;
+                  }
+              }
+              return false;
+          }
+      }
+    #+end_src 
+    - ~Arrays.sort()~ 
+    - 复杂度
+      - $O(nlogn)$
+      - $O(1)$
+*** 哈希表
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean duplicate(int[] numbers, int length, int[] duplication) {
+              if (numbers == null || length < 0) return false;
+
+              for (int i = 0; i < length; i++) {
+                  if (numbers[i] < 0 || numbers[i] > length - 1) return false;
+              }
+
+              HashSet<Integer> set = new HashSet<>();
+              for (int i = 0; i < length; i++) {
+                  if (set.contains(numbers[i])) {
+                      duplication[0] = numbers[i];
+                      return true;
+                  }
+                  set.add(numbers[i]);
+              }
+              return false;
+          }
+      }
+    #+end_src 
+    - ~HashSet<Integer> set = new HashSet<>()~, ~set.contains()~ and ~set.add()~ 
+    - 复杂度
+      - $O(n)$
+      - $O(n)$
+** 题目二 不修改数组找出重复的数字
+*** 辅助数组 
+    #+begin_src java :classname 
+      public class Solution {
+          public int duplicate(int[] numbers, int length) {
+              if (numbers == null || length < 2) return -1;
+
+              for (int i = 0; i < length; i++) {
+                  if (numbers[i] < 1 || numbers[i] > length - 1) return -1;
+              }
+
+              int[] copy = new int[length];
+              for (int i = 0; i < length; i++) {
+                  if (copy[numbers[i]] == numbers[i]) {
+                      return numbers[i];
+                  }
+                  copy[numbers[i]] = numbers[i];
+              }
+          }
+      }
+    #+end_src 
+    - 极端情况
+      - ~if (numbers == null || length < 2)~
+      - ~if (numbers[i] < 1 || numbers[i] > length - 1)~ 
+    - 重排顺便查重： ~copy[numbers[i]] = numbers[i]~ 
+    - 复杂度
+      - $O(n)$
+      - $O(n)$
+*** 二分查找 <<ilink1>>
+    - ~middle~ 放在前半段
+      #+begin_src java :classname 
+        public class Solution {
+            public static int duplicate(int[] numbers, int length) {
+                if (numbers == null || length < 2) return -1;
+
+                for (int i = 0; i < length; i++) {
+                    if (numbers[i] < 1 || numbers[i] > length - 1) return -1;
+                }
+
+                int start = 1, end = length - 1;
+                while (end > start) {
+                    int middle = (end + start) / 2;
+                    int count = 0;
+                    for (int i : numbers) {
+                        if (i >= start && i <= middle) count ++;
+                    }
+                    if (count > middle - start + 1) end = middle;
+                    else start = middle + 1;
+                }
+                return end;
+            }
+        }
+      #+end_src
+    - ~middle~ 放在后半段
+      #+begin_src java :classname 
+        while (end > start) {
+            int middle = (end + start) / 2 + 1;
+            int count = 0;
+            for (int i : numbers) {
+                if (i >= start && i < middle) count ++;
+            }
+            if (count > middle - start) end = middle - 1;
+            else start = middle;
+        }
+      #+end_src
+    - ~int middle = (end + start) / 2~ + ~if (i >= start && i <= middle)~ vs ~int middle = (end + start) / 2 + 1~ + ~if (count > middle - start) end = middle - 1~
+    - ~if (count > middle - start + 1) end = middle~ + ~else start = middle + 1~ vs ~if (count > middle - start) end = middle - 1~ + ~else start = middle~
+    - 二分查找 与 [[ilink2][一边排序一边查重]] 输出的重复数字不一定是数组中最先出现的，而另外3种输出的都是最先出现的。
+      - 二分查找输出哪个重复数字取决于该数的重复个数以及相邻数字个数
+      - [[ilink2][一边排序一边查重]]输出哪个重复数字取决于数组中所有数字的位置
+    - 复杂度
+      - $O(nlogn)$
+      - $O(1)$
+**** Question:                                                    :QUESTIONS:
+     - [ ] [[ilink2][一边排序一边查重]]输出哪个重复数字与数组中数字位置进一步的关系？
+     - [ ] 以上 [[ilink1][二分查找]] 转换成 recursive ？
+     - [ ] Iterative vs Recursive 的转换， 联系 61b [[file:~/csnds/Dropbox/orglife/61b_labs.org::<<elink7>>][MergeSort和QuickSort的Iterative和Recursive方法]], [[file:~/csnds/Dropbox/orglife/61b_labs.org::<<elink8>>][Application: IntLists]]; 61a [[file:~/csnds/Dropbox/orglife/61a_labs.org::<<elink1>>][iterative以及recursive的比较]] <<elink1>>
+       - [ ] 各自适合的情况
+       - [ ] 互相转换的条件
+       - [ ] 转换的思路
+* 4 二维数组的查找
+** 迭代
+*** 查右上角 
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean Find(int target, int[][] array) {
+              if (array == null || array.length == 0 || array[0].length == 0) return false;
+              int row = array.length, col = array[0].length;
+              int x = 0, y = col - 1;
+              while (x < row && y >= 0) {
+                  if (target < array[x][0] || target > array[row-1][y]) return false;
+                  if      (target > array[x][y]) x++;
+                  else if (target < array[x][y]) y--;
+                  else return true;
+              }
+              return false;
+          }
+      }
+    #+end_src 
+    - 极端情况
+      - ~if (array == null || array.length == 0 || array[0].length == 0)~
+      - ~if (target < array[x][0] || target > array[row-1][y])~
+    - 3种块：4个角，边块，内部块。其中只有 *右上角* 和 *左下角* 能有效解决问题 -> 关键在于选择 *便于程序实现在二维数组上的排除* 的块进行比较
+    - 复杂度 <<ilink4>>
+      - $O(mn)$ 
+      - $O(1)$
+*** 查左下角
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean Find(int target, int[][] array) {
+              if (array == null || array.length == 0 || array[0].length == 0) return false;
+              int row = array.length, col = array[0].length;
+              int x = row - 1, y = 0;
+              while (x >= 0 && y < col) {
+                  if (target < array[0][y] || target > array[x][col-1]) return false;
+                  if      (target > array[x][y]) y++;
+                  else if (target < array[x][y]) x--;
+                  else return true;
+              }
+              return false;
+          }
+      }
+    #+end_src 
+*** 查对角 <<ilink3>>                                      :UNRESOLVED:EXTRA:
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean Find(int target, int[][] array) {
+              if (array == null || array.length == 0 || array[0].length == 0) return false;
+              int row = array.length, col = array[0].length, max = row > col ? col : row;
+              int x = 0, y = 0;
+              while (x < row && y < col) {
+                  if (target < array[x][y]) return false;
+                  if (target == array[x][y] || target == array[x+max-1][y+max-1]) return true;
+                  if (max == 1) return contains(target, array, x, y, x == row - 1);
+                  if (target > array[x+max-1][y+max-1]) {
+                      if (y+max == col) {
+                          x += max;
+                          max = max < row - x ? max : row - x;
+                      } else {
+                          y += max;
+                          max = max < col - y ? max : col - y;
+                      }
+                      continue;
+                  }
+                  if (target < array[x+1][y+1]) {
+                      return contains(target, array, x+1, y, false) || contains(target, array, x, y+1, true);
+                  }
+                  else {
+                      x += 1;
+                      y += 1;
+                      max -= 1;
+                  }
+              }
+              return false;
+          }
+
+          private boolean contains(int target, int[][] array, int x, int y, boolean row) {
+              if (row) {
+                  for (int i = y; i < array[0].length; i++) {
+                      if (target == array[x][i]) return true;
+                  }
+              } else {
+                  for (int i = x; i < array.length; i++) {
+                      if (target == array[i][y]) return true;
+                  }
+              }
+              return false;
+          }
+      }
+    #+end_src 
+** 递归                                                    :UNRESOLVED:EXTRA:
+** Question:                                                      :QUESTIONS:
+   - [ ] [[ilink3][查对角]] 错在算法还是实现？更优的算法？
+   - [ ] 怎么转化成递归实现？
+   - [ ] 迭代里 [[ilink4][复杂度]] 分析？
+* 5 替换空格
+** 不新建 ~StringBuilder~ 
+*** 使用自带函数
+    - ~replaceAll~ in ~String~ 
+      #+begin_src java :classname 
+        public class Solution {
+            public String replaceSpace(StringBuffer str) {
+                if (str == null) return null;
+                return str.toString().replaceAll(" ", "%20");
+            }
+        }
+      #+end_src
+      - 极端情况： ~if (str == null)~ 
+      - ~Object~ 转化为 ~String~: [[file:~/csnds/Dropbox/orglife/61b_rnl.org::<<elink12>>][toString()]]
+      - ~str.toString().replaceAll(" ", "%20")~
+      - 复杂度 <<ilink5>>
+        - 
+        - $O(n)$
+    - ~replace~ in ~StringBuffer~ 
+      #+begin_src java :classname 
+        public class Solution {
+            public String replaceSpace(StringBuffer str) {
+                if (str == null) return null;
+                int n = str.length();
+                for (int i = 0; i < n; i++) {
+                    if (Character.isSpace(str.charAt(i))) {
+                        str.deleteCharAt(i);
+                        str.insert(i, "%20");
+                        // str.replace(i, i+1, "%20");
+                        n += 2;
+                        i += 2;
+                    }
+                }
+                return str.toString();
+            }
+        }
+      #+end_src
+      - 判断字符是否为空格： ~Character.isSpace(str.charAt(i))~ 或 ~str.charAt(i) == ' '~
+      - 先删再插或者直接替换： ~str.deleteCharAt(i)~ + ~str.insert(i, "%20")~ = ~str.replace(i, i+1, "%20")~
+      - ~n += 2~ + ~i += 2~
+      - 复杂度 <<ilink6>>
+        - $O(n)$
+        - $O(n)$
+*** 不使用自带函数
+    - 从后往前
+      #+begin_src java :classname 
+        public class Solution {
+            public String replaceSpace(StringBuffer str) {
+                if (str == null) return null;
+                int count = 0, length = str.length();
+                for (int i = 0; i < length; i++) {
+                    if (Character.isSpace(str.charAt(i))) count += 1;
+                }
+                if (count == 0) return str.toString();
+                int index = length - 1;
+                int newLength = index + 1 + 2 * count, newIndex = newLength - 1;
+                str.setLength(newLength);
+                for (int i = index, j = newIndex; i >= 0; i--) {
+                    if (Character.isSpace(str.charAt(i))) {
+                        str.setCharAt(j--, '0');
+                        str.setCharAt(j--, '2');
+                        str.setCharAt(j--, '%');
+                    } else {
+                        str.setCharAt(j--, str.charAt(i));
+                    }
+                }
+                return str.toString();
+            }
+        }
+      #+end_src 
+      - 极端情况
+        - ~if (str == null)~
+        - ~if (count == 0)~   
+      - 扩充： ~newLength = index + 1 + 2 * count~ + ~str.setLength(newLength)~
+      - ~str.setCharAt(j--, '0')~ + ~str.setCharAt(j--, str.charAt(i))~
+      - 复杂度 <<ilink7>>
+        - $O(n)$
+        - $O(n)$
+** 新建 ~StringBuilder~ 
+    #+begin_src java :classname 
+      public class Solution {
+          public String replaceSpace(StringBuffer str) {
+              if (str == null) return null;
+              StringBuilder newStr = new StringBuilder();
+              for (int i = 0; i < str.length(); i++) {
+                  if (Character.isSpace(str.charAt(i))) newStr.append("%20");
+                  else                                  newStr.append(str.charAt(i));
+              }
+              return newStr.toString();
+          }
+      }
+    #+end_src 
+    - ~StringBuilder newStr = new StringBuilder()~
+    - ~newStr.append("%20")~ + ~newStr.append(str.charAt(i))~
+    - 复杂度 <<ilink8>>
+      - $O(n)$
+      - $O(n)$
+** Question:                                                      :QUESTIONS:
+   - [ ] 复杂度的分析： [[ilink5][replaceAll in String]], [[ilink6][replace in StringBuffer]], [[ilink7][从前往后]] 和 [[ilink8][新建StringBuilder]]。其中后两者在空间复杂度上都是 $O(n)$ 的话怎么区分？
+* 6 从尾到头打印链表
+** 不能改变原链表
+*** 迭代
+    #+begin_src java :classname 
+      import java.util.ArrayList;
+      public class Solution {
+          public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+              ArrayList<Integer> alist = new ArrayList<>();
+              ListNode node = listNode;
+              while (node != null) {
+                  alist.add(0, (int) node.val);
+                  node = node.next;
+              }
+              return alist;
+          }
+      }
+    #+end_src 
+    - ~alist.add(0, (int) node.val)~
+    - 复杂度
+      - $O(n)$
+      - $O(n)$
+*** 递归
+    #+begin_src java :classname 
+      import java.util.ArrayList;
+      public class Solution {
+          ArrayList<Integer> alist = new ArrayList<>();
+          public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+              if (listNode != null) {
+                  alist = printListFromTailToHead(listNode.next);
+                  alist.add(listNode.val);
+              }
+              return alist;
+          }
+      }
+    #+end_src 
+    - ~alist = printListFromTailToHead(listNode.next)~ + ~alist.add(listNode.val)~ 
+    - 复杂度
+      - $O(n)$
+      - $O(n)$
+** 改变原链表
+** Question:                                                      :QUESTIONS:
+   - [ ] 怎么在原链表上将链表翻转？默认有 ~prev~ 和 ~next~ 吗？只有 ~next~ 呢?
+* 7 重建二叉树
+  #+begin_src java :classname 
+    public class Solution {
+
+        private TreeNode root;
+
+        // class TreeNode {
+        //     int val;
+        //     TreeNode left;
+        //     TreeNode right;
+        //     TreeNode(int x) {
+        //         val = x;
+        //     }
+        // }
+
+        public TreeNode reConstructBinaryTree(int[] pre,int[] in) {
+            if (pre == null || in == null || pre.length != in.length) return null;
+            if (pre.length == in.length && pre.length <= 1) return new TreeNode(pre[0]);
+            root = new TreeNode(pre[0]);
+            int index = 0;
+            while (in[index] != pre[0]) {
+                index += 1;
+            }
+            int lLen = index, rLen = pre.length - index - 1;
+            int[] lpre = new int[lLen], lin = new int[lLen];
+            int[] rpre = new int[rLen], rin = new int[rLen];
+            System.arraycopy(pre, 1, lpre, 0, lLen);
+            System.arraycopy(pre, index+1, rpre, 0, rLen);
+            System.arraycopy(in, 0, lin, 0, lLen);
+            System.arraycopy(in, index+1, rin, 0, rLen);
+            root.left = reConstructBinaryTree(lpre, lin);
+            root.right = reConstructBinaryTree(rpre, rin);
+            return root;
+        }
+    }
+  #+end_src 
+

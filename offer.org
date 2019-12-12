@@ -1,0 +1,1227 @@
+#+TAGS: TOBEORG(t) QUESTIONS(q) UNRESOLVED(u) EXTRA(e)
+* 3 数组中重复的数字
+** 题目一 找出数组中重复的数字
+*** 一边排序一边查重 <<ilink2>>
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean duplicate(int[] numbers, int length, int[] duplication) {
+              if (numbers == null || length < 0) return false;
+
+              for (int i = 0; i < length; i++) {
+                  if (numbers[i] < 0 || numbers[i] > length - 1) return false;
+              }
+
+              for (int i = 0; i < length; i++) {
+                  while (numbers[i] != i) {
+                      if (numbers[i] == numbers[numbers[i]]) {
+                          duplication[0] = numbers[i];
+                          return true;
+                      }
+
+                      int temp = numbers[i];
+                      numbers[i] = numbers[temp];
+                      numbers[temp] = temp;
+                  }
+              }
+              return false;
+          }
+      }
+    #+end_src 
+    - 极端情况
+      - ~if (numbers == null || length < 0)~ -> ~int[] a = null~ 不等于 ~int[] a = new int[0]~
+      - ~numbers[i] < 0 || numbers[i] > length - 1~ 筛除异常输入
+    - 由于数字在 0~n-1 范围内，假定没有重复数字 -> 简单的遍历与正确位置交换即可重排 -> 最多需要遍历 n 次 -> 交换的同时顺便看下重不重复即可
+    - 复杂度
+      - $O(n)$
+      - $O(1)$
+**** Question:                                                    :QUESTIONS:
+     - [ ] 从重复的数组是由不重复的数字改变数位数字而来的角度来考虑解法？
+*** 排完再遍历
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean duplicate(int[] numbers, int length, int[] duplication) {
+              if (numbers == null || length < 0) return false;
+
+              for (int i = 0; i < length; i++) {
+                  if (numbers[i] < 0 || numbers[i] > length - 1) return false;
+              }
+
+              Arrays.sort(numbers);
+              for (int i = 0; i < length - 1; i++) {
+                  if (numbers[i] == numbers[i+1]) {
+                      duplication[0] = numbers[i];
+                      return true;
+                  }
+              }
+              return false;
+          }
+      }
+    #+end_src 
+    - ~Arrays.sort()~ 
+    - 复杂度
+      - $O(nlogn)$
+      - $O(1)$
+*** 哈希表
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean duplicate(int[] numbers, int length, int[] duplication) {
+              if (numbers == null || length < 0) return false;
+
+              for (int i = 0; i < length; i++) {
+                  if (numbers[i] < 0 || numbers[i] > length - 1) return false;
+              }
+
+              HashSet<Integer> set = new HashSet<>();
+              for (int i = 0; i < length; i++) {
+                  if (set.contains(numbers[i])) {
+                      duplication[0] = numbers[i];
+                      return true;
+                  }
+                  set.add(numbers[i]);
+              }
+              return false;
+          }
+      }
+    #+end_src 
+    - ~HashSet<Integer> set = new HashSet<>()~, ~set.contains()~ and ~set.add()~ 
+    - 复杂度
+      - $O(n)$
+      - $O(n)$
+** 题目二 不修改数组找出重复的数字
+*** 辅助数组 
+    #+begin_src java :classname 
+      public class Solution {
+          public int duplicate(int[] numbers, int length) {
+              if (numbers == null || length < 2) return -1;
+
+              for (int i = 0; i < length; i++) {
+                  if (numbers[i] < 1 || numbers[i] > length - 1) return -1;
+              }
+
+              int[] copy = new int[length];
+              for (int i = 0; i < length; i++) {
+                  if (copy[numbers[i]] == numbers[i]) {
+                      return numbers[i];
+                  }
+                  copy[numbers[i]] = numbers[i];
+              }
+          }
+      }
+    #+end_src 
+    - 极端情况
+      - ~if (numbers == null || length < 2)~
+      - ~if (numbers[i] < 1 || numbers[i] > length - 1)~ 
+    - 重排顺便查重： ~copy[numbers[i]] = numbers[i]~ 
+    - 复杂度
+      - $O(n)$
+      - $O(n)$
+*** 二分查找 <<ilink1>>
+    - ~middle~ 放在前半段
+      #+begin_src java :classname 
+        public class Solution {
+            public static int duplicate(int[] numbers, int length) {
+                if (numbers == null || length < 2) return -1;
+
+                for (int i = 0; i < length; i++) {
+                    if (numbers[i] < 1 || numbers[i] > length - 1) return -1;
+                }
+
+                int start = 1, end = length - 1;
+                while (end > start) {
+                    int middle = (end + start) / 2;
+                    int count = 0;
+                    for (int i : numbers) {
+                        if (i >= start && i <= middle) count ++;
+                    }
+                    if (count > middle - start + 1) end = middle;
+                    else start = middle + 1;
+                }
+                return end;
+            }
+        }
+      #+end_src
+    - ~middle~ 放在后半段
+      #+begin_src java :classname 
+        while (end > start) {
+            int middle = (end + start) / 2 + 1;
+            int count = 0;
+            for (int i : numbers) {
+                if (i >= start && i < middle) count ++;
+            }
+            if (count > middle - start) end = middle - 1;
+            else start = middle;
+        }
+      #+end_src
+    - ~int middle = (end + start) / 2~ + ~if (i >= start && i <= middle)~ vs ~int middle = (end + start) / 2 + 1~ + ~if (count > middle - start) end = middle - 1~
+    - ~if (count > middle - start + 1) end = middle~ + ~else start = middle + 1~ vs ~if (count > middle - start) end = middle - 1~ + ~else start = middle~
+    - 二分查找 与 [[ilink2][一边排序一边查重]] 输出的重复数字不一定是数组中最先出现的，而另外3种输出的都是最先出现的。
+      - 二分查找输出哪个重复数字取决于该数的重复个数以及相邻数字个数
+      - [[ilink2][一边排序一边查重]]输出哪个重复数字取决于数组中所有数字的位置
+    - 复杂度
+      - $O(nlogn)$
+      - $O(1)$
+**** Question:                                                    :QUESTIONS:
+     - [ ] [[ilink2][一边排序一边查重]]输出哪个重复数字与数组中数字位置进一步的关系？
+     - [ ] 以上 [[ilink1][二分查找]] 转换成 recursive ？
+     - [ ] Iterative vs Recursive 的转换， 联系 61b [[file:~/csnds/Dropbox/orglife/61b_labs.org::<<elink7>>][MergeSort和QuickSort的Iterative和Recursive方法]], [[file:~/csnds/Dropbox/orglife/61b_labs.org::<<elink8>>][Application: IntLists]]; 61a [[file:~/csnds/Dropbox/orglife/61a_labs.org::<<elink1>>][iterative以及recursive的比较]] <<elink1>>
+       - [ ] 各自适合的情况
+       - [ ] 互相转换的条件
+       - [ ] 转换的思路
+* 4 二维数组的查找
+** 迭代
+*** 查右上角 
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean Find(int target, int[][] array) {
+              if (array == null || array.length == 0 || array[0].length == 0) return false;
+              int row = array.length, col = array[0].length;
+              int x = 0, y = col - 1;
+              while (x < row && y >= 0) {
+                  if (target < array[x][0] || target > array[row-1][y]) return false;
+                  if      (target > array[x][y]) x++;
+                  else if (target < array[x][y]) y--;
+                  else return true;
+              }
+              return false;
+          }
+      }
+    #+end_src 
+    - 极端情况
+      - ~if (array == null || array.length == 0 || array[0].length == 0)~
+      - ~if (target < array[x][0] || target > array[row-1][y])~
+    - 3种块：4个角，边块，内部块。其中只有 *右上角* 和 *左下角* 能有效解决问题 -> 关键在于选择 *便于程序实现在二维数组上的排除* 的块进行比较
+    - 复杂度 <<ilink4>>
+      - $O(mn)$ 
+      - $O(1)$
+*** 查左下角
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean Find(int target, int[][] array) {
+              if (array == null || array.length == 0 || array[0].length == 0) return false;
+              int row = array.length, col = array[0].length;
+              int x = row - 1, y = 0;
+              while (x >= 0 && y < col) {
+                  if (target < array[0][y] || target > array[x][col-1]) return false;
+                  if      (target > array[x][y]) y++;
+                  else if (target < array[x][y]) x--;
+                  else return true;
+              }
+              return false;
+          }
+      }
+    #+end_src 
+*** 查对角 <<ilink3>>                                      :UNRESOLVED:EXTRA:
+    #+begin_src java :classname 
+      public class Solution {
+          public boolean Find(int target, int[][] array) {
+              if (array == null || array.length == 0 || array[0].length == 0) return false;
+              int row = array.length, col = array[0].length, max = row > col ? col : row;
+              int x = 0, y = 0;
+              while (x < row && y < col) {
+                  if (target < array[x][y]) return false;
+                  if (target == array[x][y] || target == array[x+max-1][y+max-1]) return true;
+                  if (max == 1) return contains(target, array, x, y, x == row - 1);
+                  if (target > array[x+max-1][y+max-1]) {
+                      if (y+max == col) {
+                          x += max;
+                          max = max < row - x ? max : row - x;
+                      } else {
+                          y += max;
+                          max = max < col - y ? max : col - y;
+                      }
+                      continue;
+                  }
+                  if (target < array[x+1][y+1]) {
+                      return contains(target, array, x+1, y, false) || contains(target, array, x, y+1, true);
+                  }
+                  else {
+                      x += 1;
+                      y += 1;
+                      max -= 1;
+                  }
+              }
+              return false;
+          }
+
+          private boolean contains(int target, int[][] array, int x, int y, boolean row) {
+              if (row) {
+                  for (int i = y; i < array[0].length; i++) {
+                      if (target == array[x][i]) return true;
+                  }
+              } else {
+                  for (int i = x; i < array.length; i++) {
+                      if (target == array[i][y]) return true;
+                  }
+              }
+              return false;
+          }
+      }
+    #+end_src 
+** 递归                                                    :UNRESOLVED:EXTRA:
+** Question:                                                      :QUESTIONS:
+   - [ ] [[ilink3][查对角]] 错在算法还是实现？更优的算法？
+   - [ ] 怎么转化成递归实现？
+   - [ ] 迭代里 [[ilink4][复杂度]] 分析？
+* 5 替换空格
+** 不新建 ~StringBuilder~ 
+*** 使用自带函数
+    - ~replaceAll~ in ~String~ 
+      #+begin_src java :classname 
+        public class Solution {
+            public String replaceSpace(StringBuffer str) {
+                if (str == null) return null;
+                return str.toString().replaceAll(" ", "%20");
+            }
+        }
+      #+end_src
+      - 极端情况： ~if (str == null)~ 
+      - ~Object~ 转化为 ~String~: [[file:~/csnds/Dropbox/orglife/61b_rnl.org::<<elink12>>][toString()]]
+      - ~str.toString().replaceAll(" ", "%20")~
+      - 复杂度 <<ilink5>>
+        - 
+        - $O(n)$
+    - ~replace~ in ~StringBuffer~ 
+      #+begin_src java :classname 
+        public class Solution {
+            public String replaceSpace(StringBuffer str) {
+                if (str == null) return null;
+                int n = str.length();
+                for (int i = 0; i < n; i++) {
+                    if (Character.isSpace(str.charAt(i))) {
+                        str.deleteCharAt(i);
+                        str.insert(i, "%20");
+                        // str.replace(i, i+1, "%20");
+                        n += 2;
+                        i += 2;
+                    }
+                }
+                return str.toString();
+            }
+        }
+      #+end_src
+      - 判断字符是否为空格： ~Character.isSpace(str.charAt(i))~ 或 ~str.charAt(i) == ' '~
+      - 先删再插或者直接替换： ~str.deleteCharAt(i)~ + ~str.insert(i, "%20")~ = ~str.replace(i, i+1, "%20")~
+      - ~n += 2~ + ~i += 2~
+      - 复杂度 <<ilink6>>
+        - $O(n)$
+        - $O(n)$
+*** 不使用自带函数
+    - 从后往前
+      #+begin_src java :classname 
+        public class Solution {
+            public String replaceSpace(StringBuffer str) {
+                if (str == null) return null;
+                int count = 0, length = str.length();
+                for (int i = 0; i < length; i++) {
+                    if (Character.isSpace(str.charAt(i))) count += 1;
+                }
+                if (count == 0) return str.toString();
+                int index = length - 1;
+                int newLength = index + 1 + 2 * count, newIndex = newLength - 1;
+                str.setLength(newLength);
+                for (int i = index, j = newIndex; i >= 0; i--) {
+                    if (Character.isSpace(str.charAt(i))) {
+                        str.setCharAt(j--, '0');
+                        str.setCharAt(j--, '2');
+                        str.setCharAt(j--, '%');
+                    } else {
+                        str.setCharAt(j--, str.charAt(i));
+                    }
+                }
+                return str.toString();
+            }
+        }
+      #+end_src 
+      - 对数组或字符串进行某种处理时，如果从前往后考虑会导致多次移动，不妨考虑从后往前考虑。
+      - 极端情况
+        - ~if (str == null)~
+        - ~if (count == 0)~   
+      - 扩充： ~newLength = index + 1 + 2 * count~ + ~str.setLength(newLength)~
+      - ~str.setCharAt(j--, '0')~ + ~str.setCharAt(j--, str.charAt(i))~
+      - 复杂度 <<ilink7>>
+        - $O(n)$
+        - $O(n)$
+** 新建 ~StringBuilder~ 
+    #+begin_src java :classname 
+      public class Solution {
+          public String replaceSpace(StringBuffer str) {
+              if (str == null) return null;
+              StringBuilder newStr = new StringBuilder();
+              for (int i = 0; i < str.length(); i++) {
+                  if (Character.isSpace(str.charAt(i))) newStr.append("%20");
+                  else                                  newStr.append(str.charAt(i));
+              }
+              return newStr.toString();
+          }
+      }
+    #+end_src 
+    - ~StringBuilder newStr = new StringBuilder()~
+    - ~newStr.append("%20")~ + ~newStr.append(str.charAt(i))~
+    - 复杂度 <<ilink8>>
+      - $O(n)$
+      - $O(n)$
+** 相关题目                                                :UNRESOLVED:EXTRA:
+** Question:                                                      :QUESTIONS:
+   - [ ] 复杂度的分析： [[ilink5][replaceAll in String]], [[ilink6][replace in StringBuffer]], [[ilink7][从前往后]] 和 [[ilink8][新建StringBuilder]]。其中后两者在空间复杂度上都是 $O(n)$ 的话怎么区分？
+* 6 从尾到头打印链表
+** 不能改变原链表
+*** 迭代
+    #+begin_src java :classname 
+      import java.util.ArrayList;
+      public class Solution {
+          public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+              ArrayList<Integer> alist = new ArrayList<>();
+              ListNode node = listNode;
+              while (node != null) {
+                  alist.add(0, (int) node.val);
+                  node = node.next;
+              }
+              return alist;
+          }
+      }
+    #+end_src 
+    - ~alist.add(0, (int) node.val)~
+    - 复杂度
+      - $O(n)$
+      - $O(n)$
+*** 递归
+    #+begin_src java :classname 
+      import java.util.ArrayList;
+      public class Solution {
+          ArrayList<Integer> alist = new ArrayList<>();
+          public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+              if (listNode != null) {
+                  alist = printListFromTailToHead(listNode.next);
+                  alist.add(listNode.val);
+              }
+              return alist;
+          }
+      }
+    #+end_src 
+    - ~alist = printListFromTailToHead(listNode.next)~ + ~alist.add(listNode.val)~ 
+    - 复杂度
+      - $O(n)$
+      - $O(n)$
+** 改变原链表
+** Question:                                                      :QUESTIONS:
+   - [ ] 怎么在原链表上将链表翻转？默认有 ~prev~ 和 ~next~ 吗？只有 ~next~ 呢?
+* 7 重建二叉树
+  #+begin_src java :classname 
+    public class Solution {
+
+        public TreeNode reConstructBinaryTree(int[] pre,int[] in) {
+            if (pre == null || in == null || pre.length != in.length || pre.length <= 0) return null;
+            if (pre.length == in.length && pre.length == 1) return new TreeNode(pre[0]);
+            TreeNode root = new TreeNode(pre[0]);
+            int index = 0;
+            while (in[index] != pre[0]) {
+                index += 1;
+                if (index >= pre.length) return null;
+            }
+            int lLen = index, rLen = pre.length - index - 1;
+            int[] lpre = new int[lLen], lin = new int[lLen];
+            int[] rpre = new int[rLen], rin = new int[rLen];
+            System.arraycopy(pre, 1, lpre, 0, lLen);
+            System.arraycopy(pre, index+1, rpre, 0, rLen);
+            System.arraycopy(in, 0, lin, 0, lLen);
+            System.arraycopy(in, index+1, rin, 0, rLen);
+            root.left = reConstructBinaryTree(lpre, lin);
+            root.right = reConstructBinaryTree(rpre, rin);
+            return root;
+        }
+    }
+  #+end_src 
+  #+begin_src java :classname 
+    import java.util.Arrays;
+    public class Solution {
+        public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+            if (pre.length == 0 || in.length == 0) {
+                return null;
+            }
+            TreeNode root = new TreeNode(pre[0]);
+            // 在中序中找到前序的根
+            for (int i = 0; i < in.length; i++) {
+                if (in[i] == pre[0]) {
+                    // 左子树，注意 copyOfRange 函数，左闭右开
+                    root.left = reConstructBinaryTree(Arrays.copyOfRange(pre, 1, i + 1), Arrays.copyOfRange(in, 0, i));
+                    // 右子树，注意 copyOfRange 函数，左闭右开
+                    root.right = reConstructBinaryTree(Arrays.copyOfRange(pre, i + 1, pre.length), Arrays.copyOfRange(in, i + 1, in.length));
+                    break;
+                }
+            }
+            return root;
+        }
+    }
+  #+end_src 
+  - 重建二叉树 -> 重建根节点的左右子树 -> 大问题分解为相同性质的小问题 -> 递归：根据父树的两种遍历获得左右子树的两种遍历，重建父树即根据左子树的两种遍历重建左子树 + 根据右子树的两种遍历重建右子树。
+  - 极端情况
+    - ~if (pre == null || in == null || pre.length != in.length || pre.length <= 0)~
+    - ~if (pre.length == in.length && pre.length == 1)~
+    - ~if (index >= pre.length) return null~ 
+  - ~root~ 定义在方法内而不是方法外，这与递归的 *思想或者说目的* 相符
+  - Java 的数组拷贝： ~System.arraycopy~ and ~Arrays.copyOfRange~ 
+  - ~t.left = reConstructBinaryTree(lpre, lin)~ + ~t.right = reConstructBinaryTree(rpre, rin)~
+  - 复杂度
+    - $O(n)$
+    - $O(n)$
+** Question:                                                      :QUESTIONS:
+   - [ ] 递归怎么分析时间和空间复杂度？特别是空间，怎么考虑堆栈的复杂度？
+* 8 二叉树的下一个节点
+** 直接寻找
+   #+begin_src java :classname 
+     public class Solution {
+         public TreeLinkNode GetNext(TreeLinkNode pNode) {
+             if (pNode == null) return null;
+
+             if (pNode.right == null) {
+                 if (pNode.next == null) return null;
+                 else if (pNode.next.left == pNode) return pNode.next;
+                 else return findRight(pNode.next);
+             }
+             return mostLeft(pNode.right);
+         }
+
+         private TreeLinkNode mostLeft(TreeLinkNode pNode) {
+             TreeLinkNode p = pNode;
+             while (p.left != null) {
+                 p = p.left;
+             }
+             return p;
+         }
+
+         private TreeLinkNode findRight(TreeLinkNode pNode) {
+             TreeLinkNode p = pNode;
+             if (p.next == null) return null;
+             while (p.next != null) {
+                 if (p.next.left == p) return p.next;
+                 p = p.next;
+             }
+             return null;
+         }
+     }
+   #+end_src 
+   - ~findRight(pNode.next)~ 和 ~mostLeft(pNode.right)~
+   - ~TreeLinkNode p = pNode~ 为了不改变树的结构
+   - 复杂度
+     - $O(n)$
+     - $O(1)$
+** 先还原再寻找
+   #+begin_src java :classname 
+     import java.util.*;
+     public class Solution {
+         static ArrayList<TreeLinkNode> list = new ArrayList<>();
+         public TreeLinkNode GetNext(TreeLinkNode pNode){
+             TreeLinkNode par = pNode;
+             while(par.next != null){
+                 par = par.next;
+             }
+             InOrder(par);
+             for(int i=0;i<list.size();i++){
+                 if(pNode == list.get(i)){
+                     return i == list.size()-1?null:list.get(i+1);
+                 }
+             }
+             return null;
+         }
+         void InOrder(TreeLinkNode pNode){
+             if(pNode!=null){
+                 InOrder(pNode.left);
+                 list.add(pNode);
+                 InOrder(pNode.right);
+             }
+         }
+     }
+   #+end_src 
+   - 递归中序遍历： ~InOrder(pNode.left)~ + ~list.add(pNode)~ + ~InOrder(pNode.right)~
+   - ~return i == list.size() - 1 ? null : list.get(i+1)~
+   - 复杂度
+     - $O(n)$
+     - $O(n)$
+* 9 用两个栈实现队列
+  #+begin_src java :classname 
+    import java.util.Stack;
+
+    public class Solution {
+        Stack<Integer> stack1 = new Stack<Integer>();
+        Stack<Integer> stack2 = new Stack<Integer>();
+        public void push(int node) {
+            stack1.push(node);
+        }
+        public int pop() {
+            if (stack2.empty()) {
+                while (!stack1.empty()) {
+                    stack2.push(stack1.pop());
+                }
+            }
+            return stack2.pop();
+        }
+    }
+  #+end_src 
+  - 队尾添加由 ~stack1.push()~ 实现， 队头删除由 ~stack2.pop()~ 实现。 ~stack1~ 存 *相对队尾* ， ~stack2~ 为空时，队头即在 ~stack1~ 栈底； ~stack2~ 存 *相对队头* ， ~stack1~ 为空时，队尾即在 ~stack2~ 栈底。
+  - 栈： ~stack1.push(node)~, ~stack2.empty()~, ~stack1.pop()~
+  - 复杂度
+    - $O(1)$
+    - *渐进* $O(1)$
+** 相关题目                                                :UNRESOLVED:EXTRA:
+* 10 斐波那契数列
+** 题目一 求斐波那契数列的第n项
+*** 迭代（优化递归）
+    #+begin_src java :classname 
+      public class Solution {
+          public int Fibonacci(int n) {
+              int[] fib = {0, 1};
+              if (n < 0) throw new IllegalArgumentException();
+              if (n <= 1) {
+                  return fib[n];
+              }
+              while (n > 1) {
+                  int temp = fib[0] + fib[1];
+                  fib[0] = fib[1];
+                  fib[1] = temp;
+                  // fib[1] += fib[0];
+                  // fib[0] = fib[1] - fib[0];
+                  n -= 1;
+              }
+              return fib[1];
+          }
+      }
+    #+end_src
+    - ~int temp = fib[0] + fib[1]~ + ~fib[0] = fib[1]~ + ~fib[1] = temp~ = ~fib[1] += fib[0]~ + ~fib[0] = fib[1] - fib[0]~
+    - 复杂度
+      - 递归
+        - $O(2^n)$
+        - $O(1)$
+      - 优化递归
+        - $O(n)$
+        - $O(1)$
+*** 矩阵递归                                                     :UNRESOLVED:
+** 题目二 青蛙跳台阶
+    #+begin_src java :classname 
+      public class Solution {
+          public int JumpFloor(int target) {
+              int[] fib = {1, 2};
+              if (target <= 0) throw new IllegalArgumentException();
+              if (target <= 2) {
+                  return fib[target - 1];
+              }
+              while (target > 2) {
+                  int temp = fib[0] + fib[1];
+                  fib[0] = fib[1];
+                  fib[1] = temp;
+                  // fib[1] += fib[0];
+                  // fib[0] = fib[1] - fib[0];
+                  target -= 1;
+              }
+              return fib[1];
+          }
+      }
+    #+end_src
+    #+begin_src java :classname 
+      public class Solution {
+          public int JumpFloorII(int target) {
+              int fib = 1;
+              if (target <= 0) throw new IllegalArgumentException();
+              while (target > 1) {
+                  fib *= 2;
+                  target -= 1;
+              }
+              return fib;
+          }
+      }
+    #+end_src
+    - $f(n)=f(n-1)+f(n-2)+...+f(1)$ - $f(n-1)=f(n-2)+f(n-3)+...+f(1)$ -> $f(n)=2 \times f(n-1)$
+    - 复杂度
+      - $O(n)$
+      - $O(1)$
+** 相关题目                                                :UNRESOLVED:EXTRA:
+** Question:                                                      :QUESTIONS:
+   - [ ] 递归的时间复杂度怎么算的 $O(2^n)$ ？
+* 11 旋转数组的最小数字
+** 二分查找 <<ilink15>>
+   #+begin_src java :classname 
+     import java.util.ArrayList;
+     public class Solution {
+         public int minNumberInRotateArray(int[] array) {
+             if (array == null || array.length == 0) return 0;
+             if (array[0] < array[array.length - 1]) return array[0];
+             int max = 0, min = array.length - 1;
+             while (max != min - 1) {
+                 int middle = (max + min) / 2;
+                 // if (array[max] >= array[middle] && array[middle] <= array[min]) min = middle;
+                 // else max = middle;
+                 if (array[max] <= array[middle] && array[middle] >= array[min]) max = middle;
+                 else min = middle;
+             }
+             return array[min];
+         }
+     }
+   #+end_src 
+   - 原数组 *非递减* ，即 *已排序* -> 可以考虑用 *二分法* -> 二分法在一般已排序数组中查找时 *直接* 通过 *目标与中间* 的大小关系得出 *目标所在区间* -> 而此处需要先根据 *中间与两端* 的关系分析 *中间位于原数列的前段还是后段* ，再 *间接得出目标所在区间* -> 同时找到最大最小值
+   - 极端情况
+     - ~if (array == null || array.length == 0)~
+     - ~if (array[0] < array[array.length - 1])~ ，只能由 ~<~ 判断， ~<=~ 不够充分。
+   - 关于 *先根据中间与两端的关系* 分析 *中间位于原数列的前段还是后段* ，由于 *非递减* 而不是 *强递增* ，这导致单边的判断是不够的 -> 双边判断保证 ~if (array[max] >= array[middle] && array[middle] <= array[min])~ 或者 ~if (array[max] <= array[middle] && array[middle] >= array[min])~
+   - 复杂度
+     - $O(logn)$
+     - $O(1)$
+** 先排序        
+   #+begin_src java :classname 
+     import java.util.*;
+     public class Solution {
+         public int minNumberInRotateArray(int [] array) {
+             int n = array.length;
+             if(n == 0){
+                 return 0;
+             }
+             Arrays.sort(array);
+             return array[0];
+         }
+     }
+   #+end_src 
+   - ~Arrays.sort()~
+   - 复杂度 <<ilink9>>
+     - $O(nlogn)$ 还是 $O(n^2)$
+     - $O(1)$
+** 用优先队列   
+   #+begin_src java :classname 
+     import java.util.*;
+     public class Solution {
+         public int minNumberInRotateArray(int [] array) {
+             int n = array.length;
+             if(n == 0){
+                 return 0;
+             }
+             PriorityQueue<Integer> queue = new PriorityQueue<>();
+             for(int i = 0;i<n;i++){
+                 queue.add(array[i]);
+             }
+             return queue.poll();
+         }
+     }
+   #+end_src 
+   - ~PriorityQueue<Integer> queue = new PriorityQueue<>()~
+   - 复杂度
+     - $O(n)$ 还是 $O(nlogn)$
+     - $O(n)$
+** Question:                                                      :QUESTIONS:
+   - [ ] [[ilink9][部分排序数组上快排的复杂度]] ？
+   - [ ] 上面优先队列的时间复杂度？ ~add~ 的时间复杂度怎么考虑？
+* 12 矩阵中的路径
+** 回溯（递归 DFS）
+   #+begin_src java :classname 
+     public class Solution {
+         public boolean hasPath(char[] matrix, int rows, int cols, char[] str) {
+             if (matrix == null || rows < 1 || cols < 1 || str == null) return false;
+             for (int row = 0; row < rows; row++) {
+                 for (int col = 0; col < cols; col++) {
+                     if (matrix[row*cols+col] == str[0]) {
+                         boolean[][] visited = new boolean[rows][cols];
+                         if (hasChar(matrix, rows, cols, row, col, str, 0, visited)) return true;
+                     }
+                 }
+             }
+
+             return false;
+         }
+
+         private boolean hasChar(char[] matrix, int rows, int cols, int row, int col,
+                                 char[] str, int index, boolean[][] visited) {
+             if (row < 0 || row >= rows || col < 0 || col >= cols) return false;
+             if (matrix[row*cols+col] != str[index] || visited[row][col]) return false;
+             if (index == str.length - 1) return true;
+             index += 1;
+             visited[row][col] = true;
+             if(hasChar(matrix, rows, cols, row+1, col, str, index, visited) ||
+                hasChar(matrix, rows, cols, row-1, col, str, index, visited) ||
+                hasChar(matrix, rows, cols, row, col+1, str, index, visited) ||
+                hasChar(matrix, rows, cols, row, col-1, str, index, visited)) return true;
+             visited[row][col] = false;
+             return false;
+         }
+     }
+   #+end_src 
+   - 极端情况
+     - ~if (matrix == null || rows < 1 || cols < 1 || str == null)~
+     - ~if (row < 0 || row >= rows || col < 0 || col >= cols)~
+     - ~if (matrix[row*cols+col] != str[index] || visited[row][col])~
+     - ~if (index == str.length - 1)~ 
+   - ~matrix[row*cols+col]~ 而不是 ~matrix[row*rows+col]~
+   - ~boolean[][] visited = new boolean[rows][cols]~ 默认初始化为全 ~false~
+   - 回溯（递归）函数签名定义： ~boolean hasChar(char[] matrix, int rows, int cols, int row, int col, char[] str, int index, boolean[][] visited)~ 
+   - 回溯时 ~visited[row][col] = false~ 而不需要更新 ~index~ ，因为回溯到上层递归中 ~index~ *自动少1* ，不需要特意 *引用传递* ~int[] index~ 来更新。
+   - 复杂度
+     - 
+     - 
+** 非递归                                                  :UNRESOLVED:EXTRA:
+   #+begin_src java :classname 
+     import java.util.Stack;
+     import java.util.Arrays;
+     import java.util.LinkedList;
+     public class Solution{
+ 
+         public static boolean hasPath(char[] matrix, int rows, int cols, char[] str)
+         {
+              int[] marks = new int[rows*cols];
+ 
+             for (int row = 0; row < rows; ++row) {
+                 for (int col = 0; col < cols; ++col) {
+                      Arrays.setAll(marks, i->0);
+                     if(isHasPath( matrix,  marks, rows, cols,  row, col,  str)) {
+                         return true;
+                     }
+                 }
+             }
+             return false;
+         }
+ 
+         public static boolean isHasPath(char[] matrix,int[] marks,  int rows, int cols, int row, int col, char[] str)
+         {
+            int currentIndex = 0;
+            int count = 0;
+           // LinkedList<Integer> visitedStack = new LinkedList<>();
+            LinkedList<Integer> rowStack = new LinkedList<>();
+            LinkedList<Integer> colStack = new LinkedList<>();
+            rowStack.push(row);
+            colStack.push(col);
+            int[][] newIndexes = new int[][]{
+                {1, 0},  {-1, 0},  {0, 1}, {0, -1}
+            };
+            while (!rowStack.isEmpty()){
+                count ++;
+                int topX = colStack.peek();
+                int topY = rowStack.peek();
+                int topIndex = topY*cols + topX;
+                if(currentIndex == str.length) {
+                    return true;
+                }
+                if(marks[topIndex] ==0) {
+                    if(matrix[topIndex]==str[currentIndex]) {
+                        for(int j =0; j <newIndexes.length; ++ j){
+                            int newX = topX + newIndexes[j][0];
+                            int newY = topY + newIndexes[j][1];
+                            if(newX>=0&&newX<cols && newY>=0 && newY<rows){
+                                int newIndex = newY*cols+newX;
+                                if(marks[newIndex] !=1){//not visited.
+                                    colStack.push(newX);
+                                    rowStack.push(newY);
+                                }
+                            }
+                        }
+                        marks[topIndex] = 1;
+                        //visitedStack.push(topIndex);
+                        currentIndex ++;
+                    }else {
+                        colStack.pop();
+                        rowStack.pop();   
+                    }
+                } else {
+                    //back to the visited
+                    marks[topIndex] = 0;
+                    colStack.pop();
+                    rowStack.pop();   
+     //               if(visitedStack.size()>0)
+     //               visitedStack.pop();
+                    currentIndex --;
+                }
+            }
+            String strlog = String.format("%d x %d: %d", cols, rows, count);
+            System.out.println(strlog);
+            return false;
+         }
+ 
+     }
+   #+end_src 
+** Question:                                                      :QUESTIONS:
+   - [ ] 回溯和递归？哪类问题适合用回溯？复杂度分析？
+   - [ ] 非递归方法？复杂度？
+   - [ ] 联系DFS和BFS实现？
+* 13 机器人的运动范围
+** 回溯 
+   #+begin_src java :classname 
+     public class Solution {
+         public int movingCount(int threshold, int rows, int cols) {
+             if (threshold < 0 || rows <= 0 || cols <= 0) return 0;
+             boolean[][] visited = new boolean[rows][cols];
+             return movingCountCore(threshold, rows, cols, visited, 0, 0);
+         }
+
+         private int movingCountCore(int threshold, int rows, int cols,
+                                     boolean[][] visited, int row, int col) {
+             int count = 0;
+             if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row][col]) return count;
+             if (checkIn(threshold, row, col)) {
+                 visited[row][col] = true;
+                 count = 1;
+                 count += movingCountCore(threshold, rows, cols, visited, row-1, col);
+                 count += movingCountCore(threshold, rows, cols, visited, row+1, col);
+                 count += movingCountCore(threshold, rows, cols, visited, row, col-1);
+                 count += movingCountCore(threshold, rows, cols, visited, row, col+1);
+             }
+             return count;
+         }
+
+         private boolean checkIn(int threshold, int row, int col) {
+             int sum = 0;
+             while (row > 0 || col > 0) {
+                 sum += row % 10;
+                 sum += col % 10;
+                 row = row / 10;
+                 col = col / 10;
+             }
+             return threshold >= sum;
+         }
+     }
+   #+end_src 
+   - 极端情况
+     - ~if (threshold < 0 || rows <= 0 || cols <= 0)~
+     - ~if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row][col])~ 
+   - 回溯（递归）函数签名定义： ~int movingCountCore(int threshold, int rows, int cols, boolean[][] visited, int row, int col)~
+   - ~count += movingCountCore(threshold, rows, cols, visited, row-1, col)~
+   - ~while (row > 0 || col > 0)~ 
+   - 联系12
+     - 在矩阵（二维数组）中找路径，运动等问题可以考虑回溯法。
+     - 回溯法往往需要为 ~public~ 接口设计一个 ~private~ 的回溯（递归）函数，其返回类型一般由 ~public~ 接口返回类型决定。
+   - 复杂度
+     - 
+     - 
+** Question:                                                      :QUESTIONS:
+   - [ ] 复杂度分析？
+* 14 剪绳子
+** 动态规划 
+   - 书中迭代（用数组暂存） <<ilink10>>
+     #+begin_src java :classname 
+       public class Solution {
+           public int cutRope(int target) {
+               if (target < 2) return 0;
+               if (target == 2) return 1;
+               if (target == 3) return 2;
+               int[] ropes = new int[target+1];
+               ropes[0] = 0;
+               ropes[1] = 1;
+               ropes[2] = 2;
+               ropes[3] = 3;
+               int max = 0;
+               for (int i = 4, n = target; i <= n; i++) {
+                   max = 0;
+                   for (int j = 1; j <= i / 2; j++) {
+                       ropes[i] = ropes[j] * ropes[i-j];
+                       if (ropes[i] > max) max = ropes[i];
+                       ropes[i] = max;
+                   }
+               }
+               return ropes[target];
+           }
+       }
+     #+end_src 
+     - 动态规划： $f(n)=max(f(i) \times f(n-i))$ ，其中 $0<i<n$ 为切第1刀的长度。 -> *自上而下的递归* 会重复子问题与计算 -> *自下而上* 的计算方式，往往用数组暂存结果
+     - 极端情况
+       - ~target < 2, target == 2, target == 3~ 
+       - 暂存数组： ~ropes[0], ropes[1], ropes[2], ropes[3]~ 
+     - ~new int[target+1]~ 调整索引，便于程序理解， ~ropes[i]~ 准确的说并不完全对应着子问题 $f(i)$ ，而是对应着 $max(f(i), i)$
+       - ~ropes~ 的 ~0-3~ 并不对应着 $f(0)$ 到 $f(3)$ ， ~ropes[0]~ 只是为了调整索引，而 ~1-3~ 则是为了计算后面的 $f(i)$ 而暂存的参数，它们实际上对应着 ~Math.max(i, f(i))~ 
+       - ~4-target~ 才对应着 $f(i)$ ，即把长度为 /i/ 的绳子剪成若干段之后各段长度乘积的最大值：通过 $i/2$ 次比较， ~ropes[i] = max~ 不断更新，最后得到 $i>3$ 之后的 $f(i)$ 并存进 ~ropes[i]~ 
+         - ~for (int j = 1; j <= i / 2; j++)~ 只需要考虑一端即可， $f(i) \times f(n-i) = f(n-i) \times f(i)$
+     - 复杂度
+       - 
+       - 
+   - 递归
+     #+begin_src java :classname 
+       import java.util.Arrays;
+       public class Solution {
+           public int cutRope(int target) {
+               if (target < 2) return 0;
+               if (target == 2) return 1;
+               if (target == 3) return 2;
+               int length = target / 2 + 1;
+               int[] ropes = new int[length];
+               ropes[0] = 0;
+               int max = 0;
+               for (int i = 1, n = length; i < n; i++) {
+                   ropes[i] = Math.max(cutRope(i), i) * Math.max(cutRope(target-i), target-i);
+                   if (max < ropes[i]) max = ropes[i];
+               }
+               return max;
+           }
+       }
+     #+end_src
+     - 书中迭代 [[ilink10][关于动态规划和递归]] 的分析应该是错的，父问题与子问题 *大体同类型* ，但不是 *完全同类型* 问题：不是 $f(n)=max(f(i) \times f(n-i))$ ，应是 $f(n)=max(max(f(i),i) \times max(f(n-i),n-i))$ <<ilink11>> <<elink3>>
+       - *大体同类型* ：父子问题的目的大体相同，但条件等方面可能不同，如本题都要选择一个最大值，但条件不同：
+         - 父问题需要 *强制分段* 
+         - 子问题不要求分段，即子问题可以存在 *不分段的解决方案*
+       - *完全同类型* ：父子问题目的、条件、背景等完全相同。
+       - 动态规划或递归要求父问题与子问题之间存在 *连贯的依赖定式* ： *大体同类型即可满足，不要求完全同类型*
+     - ~int length= target / 2 + 1~
+     - ~ropes[i] = Math.max(cutRope(i), i) * Math.max(cutRope(target-i), target-i)~ 
+     - 复杂度
+       - 
+       - 
+** 贪婪算法
+   #+begin_src java :classname 
+     public class Solution {
+         public int cutRope(int target) {
+             if (target < 2) return 0;
+             if (target == 2) return 1;
+             if (target == 3) return 2;
+             int num3 = target / 3;
+             if (target-num3*3 == 1) num3 -= 1;
+             int num2 = (target - num3 * 3) / 2;
+             return (int) (Math.pow(3, num3) * Math.pow(2, num2));
+         }
+     }
+   #+end_src 
+   - 关于2和3
+     - 联系动态规划里 [[ilink11][递归]] 的分析，$i \ge 4$ 时 $max(f(i),i) = f(i)$ -> 需要继续割
+     - 关于割3or2：尽可能割3，当剩余为4时不割或割2
+   - ~if (target-num3*3 == 1)~ 判断剩余为4
+   - 复杂度
+     - 
+     - 
+** Question:                                                      :QUESTIONS: <<elink2>>
+   - [ ] [[ilink11][关于动态规划和递归父子问题关系]] 的思考对吗？如果对的，那 *大体同类型* 和 *完全同类型* 父子问题间的 *依赖定式* 又各有什么特点？
+   - [ ] 动态规划中递归与迭代，什么时候递归可以 *通过数组或别的数据结构暂存* 而转化为迭代？ *递归自上而下* 而转化后的 *迭代自下而上* ？
+   - [ ] 动态规划迭代与递归复杂度分析？
+   - [ ] 贪婪中怎么证明割3比割2优先级高？即 $3 \times f(i-3) \ge 2 \times f(i-2)$ ？
+   - [ ] 贪婪复杂度分析？
+* 15 二进制中1的个数
+  - 不考虑负数
+    #+begin_src java :classname 
+      public class Solution {
+          public int NumberOf1(int n) {
+              int count = 0;
+              while (n != 0) {
+                  if ((n & 1) == 1) count += 1;
+                  n = n >> 1;
+              }
+              return count;
+          }
+      }
+    #+end_src
+    - 负数会陷入 0xFFFFFFFF(~-1~) 的死循环： ~(-1) >> 1 == -1~ 
+    - 按位与运算： ~(n & 1)~
+    - 右移运算： ~n = n >> 1~ 
+  - 1左移
+    #+begin_src java :classname 
+      public class Solution {
+          public int NumberOf1(int n) {
+              int count = 0;
+              int flag = 1;
+              while (flag != 0) {
+                  if ((n & flag) != 0) count += 1;
+                  flag = flag << 1;
+              }
+  
+              return count;
+          }
+      }
+    #+end_src
+    - ~int flag~ 是32位的，需要循环32次
+  - 减1再与
+    #+begin_src java :classname 
+      public class Solution {
+          public int NumberOf1(int n) {
+              int count = 0;
+              while (n != 0) {
+                  count += 1;
+                  n = n & (n-1);
+              }
+              return count;
+          }
+      }
+    #+end_src
+    - 每次循环将 ~n~ 最右边的 1 -> 0 ，直到 ~n~ 变为0
+      - ~n - 1~ 后最右边的 1 -> 0，右边的 0 -> 1
+      - ~n = n & (n-1)~ 会把 ~n~ 最右边的 1 -> 0
+** 相关题目                                                :UNRESOLVED:EXTRA:
+** Question:                                                      :QUESTIONS:
+   - [ ] 以上怎么分析复杂度？
+* 16 数值的整数次方
+** 迭代常规
+   #+begin_src java :classname 
+     public class Solution {
+         public double Power(double base, int exponent) {
+             if (Double.compare(base, 0.0) == 0) return 0.0;
+             if (exponent == 0) return 1;
+             if (exponent < 0) {
+                 exponent = 0 - exponent;
+                 base = 1 / base;
+             }
+             double result = base;
+             while (exponent > 1) {
+                 result *= base;
+                 exponent -= 1;
+             }
+             return result;
+         }
+     }
+   #+end_src
+   - 极端情况
+     - ~if (Double.compare(base, 0.0) == 0)~
+     - ~if (exponent == 0)~ 
+   - ~while (exponent > 1)~ 
+** 递归
+   #+begin_src java :classname 
+     public class Solution {
+         public double Power(double base, int exponent) {
+             if (exponent < 0) {
+                 exponent = - exponent;
+                 base = 1 / base;
+             }
+             return getPower(base, exponent);
+         }
+
+         private double getPower(double base, int exponent) {
+             if (Double.compare(base, 0.0) == 0) return 0.0;
+             if (exponent == 0) return 1;
+             double result = getPower(base, exponent >> 1);
+             result *= result;
+             if ((exponent & 1) == 1) result *= base;
+             return result;
+         }
+     }
+   #+end_src
+   - 对于正数 ~exponent >> 1~ = ~exponent / 2~
+   - ~(exponent & 1) == 1~ -> 奇数，否则偶数
+   - 复杂度
+      - 
+      - 
+** Question:                                                      :QUESTIONS:
+   - [ ] 递归的复杂度分析？
+* 17 打印从1到最大的n位数                                        :UNRESOLVED:
+* 18 删除链表的节点
+** 非递归
+   - 暴力法（不新建头结点）
+     - 原始（单循环移动头结点）
+       #+begin_src java :classname 
+         public class Solution {
+             public ListNode deleteDuplication(ListNode pHead) {
+                 if (pHead != null && pHead.next != null) {
+                     if (pHead.val == pHead.next.val) {
+                         while (pHead != null && pHead.next != null && pHead.val == pHead.next.val) {
+                             pHead = pHead.next;
+                             if (pHead.next != null && pHead.val != pHead.next.val) {
+                                 if (pHead.next.next != null && pHead.next.val == pHead.next.next.val) {
+                                     pHead = pHead.next;
+                                 }
+                             }
+                         }
+                         pHead = pHead.next;
+                         if (pHead == null) return pHead;
+                     }
+                     ListNode p = pHead;
+                     while (p.next != null && p.next.next != null) {
+                         if (p.next.val == p.next.next.val) {
+                             ListNode np = p.next;
+                             while (np.next != null && np.val == np.next.val) {
+                                 np = np.next;
+                             }
+                             p.next = np.next;
+                         } else p = p.next;
+                     }
+                 }
+                 return pHead;
+             }
+         }
+       #+end_src
+     - 改进（双循环移动头结点）
+       #+begin_src java :classname 
+         public class Solution {
+             public ListNode deleteDuplication(ListNode pHead) {
+                 if (pHead != null && pHead.next != null) {
+                     while (pHead.val == pHead.next.val) {
+                         ListNode p = pHead.next;
+                         while (p != null && p.val == pHead.val) {
+                             p = p.next;
+                         }
+                         pHead = p;
+                         if (pHead == null || pHead.next == null) return pHead;
+                     }
+                     ListNode p = pHead;
+                     while (p.next != null && p.next.next != null) {
+                         if (p.next.val != p.next.next.val) p = p.next;
+                         else {
+                             ListNode np = p.next;
+                             while (np.next != null && np.val == np.next.val) {
+                                 np = np.next;
+                             }
+                             p.next = np.next;
+                         }
+                     }
+                 }
+                 return pHead;
+             }
+         }
+       #+end_src
+     - 关键要处理两种情况：头结点删除和非头节点删除
+       - 头节点删除：由于是头结点，无法通过修改 ~.next~ 删除节点，只能移动头结点。在 *重复时移动，不重复时停下* 进入 *非头结点删除* 。 <<ilink13>>
+         - 单循环实现：直接移动 ~pHead~ ，一次移动 *1* 位，移动到 *某轮重复的最后一位* 时判断 *随后是否接着另一轮重复* ，是则继续头结点删除循环，否则跳出循环进入非头结点删除阶段。
+           - 不能一次移动2位，即 ~pHead = pHead.next.next~ ，遇到 ~{1,1,1,2,2}~ 会输出 ~{1}~ 。<<ilink12>>
+           - 移动到 *某轮重复最后一位* ~pHead.val != pHead.next.val~ 时需要进一步判断 ~pHead.next.val == pHead.next.next.val~ ，比如 ~{1,1,1,2,2}~ 。即头结点删除可能历经 *若干不同的重复节点* ，此时需要 ~pHead = pHead.next~ 进入下一个 *不同的重复节点* 并继续 *头结点删除的循环* ，而不应该直接跳出循环结束头结点的删除。
+         - 双循环嵌套实现： *内循环* 一次移动1位直到 ~p~ 指向 *某次重复完的下一位* ， 外循环将 ~pHead~ *越过某次重复并指向下一位* 来 *间接一次移动多位同一次重复* ，并判断是继续头结点删除，还是跳出循环进入非头结点删除
+           - 内循环 ~p = p.next~ 一次移动 *1位* + 外循环 ~pHead = p~ 一次移动 *1轮重复*
+       - 非头结点删除： *重复时* 改变 ~p.next~ 跳过并 *改变列表结构* ， *不重复时移动* ~p~ 直到 ~null~
+         - *不重复时* 在外循环移动 ~p~ 直到 ~null~ ， *不重复到重复* 进入内循环移动 ~np~ ， *重复到不重复* 跳出内循环由 ~p.next = np.next~ 跳过重复并回到外循环
+     - 关于循环条件：主要看 *判断条件的依赖* 和循环中对 *判断条件相关变量的更新*  <<ilink14>>
+       - 比较 *当前* 和 *下一位* 并且一次 *移动1位* 时只需要保证 *下一位* 不为 ~null~
+         - ~while (pHead.next != null && pHead.val == pHead.next.val)~ + ~pHead = pHead.next~ 
+         - ~while (np.next != null && np.val == np.next.val)~ + ~np = np.next~ 
+       - *当前* 与 *下一位* 明确 *不重复* ，需要比较 *下一位* 和 *下下位* 并且一次 *移动n位或跳过n位* 时需保证 *当前* 和下一位均不为 ~null~
+         - ~while (pHead != null && pHead.next != null && pHead.val == pHead.next.val)~
+         - ~while (p.next != null && p.next.next != null)~ 
+   - 新建头结点
+     #+begin_src java :classname 
+       public class Solution {
+           public ListNode deleteDuplication(ListNode pHead) {
+               if (pHead != null && pHead.next != null) {
+                   ListNode p = new ListNode(0);
+                   p.next = pHead;
+                   ListNode np = p;
+                   while (np.next != null && np.next.next != null) {
+                       if (np.next.val != np.next.next.val) np = np.next;
+                       else {
+                           ListNode nnp = np.next;
+                           while (nnp.next != null && nnp.val == nnp.next.val) {
+                               nnp = nnp.next;
+                           }
+                           np.next = nnp.next;
+                       }
+                   }
+                   pHead = p.next;
+               }
+               return pHead;
+           }
+       }
+     #+end_src
+     - 新建头结点 ~p.next = pHead~ -> 从 ~p.next~ 即 ~pHead~ 往后删除重复节点 -> 相当于 *略过头结点删除* ，从 *新头结点* ~p~ 开始直接进入 *非头结点删除*
+     - ~pHead = p.next~ 
+** 递归
+     #+begin_src java :classname 
+       public class Solution {
+           public ListNode deleteDuplication(ListNode pHead) {
+               if (pHead == null || pHead.next == null) {
+                   return pHead;
+               }
+
+               if (pHead.val == pHead.next.val) {
+                   ListNode node = pHead.next;
+                   while (node != null && node.val == pHead.val) {
+                       node = node.next;
+                   }
+                   return deleteDuplication(node);
+               } else {
+                   pHead.next = deleteDuplication(pHead.next); 
+                   return pHead;
+               }
+
+           }
+       }
+     #+end_src 
+     - 关于 [[ilink11][父子问题类型]] 的思考可能是错的，递归中 *父子问题* 的定义应该全是 *完全同类型* 的，即目的条件等完全一致，不存在所谓的 *大体同类型* 。 <<elink4>> <<ilink16>>
+     - 各个递归问题的 *不同之处* 在于 *父问题答案* 与 *子问题答案* 之间的 *连贯的依赖定式* 不同，而 *父问题和子问题本身* 是 *完全同类型* 的。
+     - 父问题为从 ~pHead~ 开始 ~deleteDuplication~ ， 子问题为从 ~pHead~ 之后的 *某个节点* 开始 ~deleteDuplication~ ，可以看到父子问题本身是 *完全同类型* 的。关键在于子问题 *某个节点的选择* 以及父子问题 *答案的稳定依赖定式*
+       - 若头结点重复，则子问题的节点选择为 ~null~ 或 ~node.val != pHead.val~ ，此时父问题答案 *=* 子问题答案，即 ~return deleteDuplication(node)~ 
+       - 若头结点不重复，则子问题的节点选择 ~pHead.next~ ，此时父问题答案 *!=* 子问题答案，而是 ~pHead.next = deleteDuplication(pHead.next)~ + ~return pHead~ 
+** Question:                                                      :QUESTIONS:
+   - [ ] 单循环头结点删除里 [[ilink12][移动2位甚至比n位移动n位]] 有办法用代码实现吗？如果不能该怎么想明白不能呢？
+   - [ ] 能否借用二分查找 [[ilink1][1]] [[ilink15][2]] 的办法加速 [[ilink13][头结点的删除]] ？
+   - [ ] 关于 [[ilink14][循环条件]] 的思考？如何优化非递归的代码？主要是对 ~while()~ 条件的分析：该写怎样的判断？判断该写在循环条件还是循环内的 ~if~ 语句？
+* 19 正则表达式匹配
