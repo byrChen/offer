@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="94cc7cef-9c5c-4769-975c-82ab1d446af8" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="94cc7cef-9c5c-4769-975c-82ab1d446af8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/offer.org" beforeDir="false" afterPath="$PROJECT_DIR$/offer.org" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/offer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/offer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/offer/Solution$TreeNode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/offer/Solution.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/offer/Solution.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/offer/offer.org" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/offer/offer.org" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1TecjC1J1BIvkWk5B4S80qbRnzB" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -25,18 +50,6 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="RunManager">
     <configuration name="Solution" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Solution" />
@@ -50,6 +63,18 @@
         <item itemvalue="Application.Solution" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -69,18 +94,46 @@
       <workItem from="1574130175849" duration="35000" />
       <workItem from="1574777737291" duration="1169000" />
       <workItem from="1574833681734" duration="2000" />
+      <workItem from="1578232254866" duration="747000" />
+      <workItem from="1578239734758" duration="265000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="WindowStateProjectService">
+    <state width="1324" height="185" key="GridCell.Tab.0.bottom" timestamp="1578239999376">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1324" height="185" key="GridCell.Tab.0.bottom/0.0.1366.768/1366.0.1920.1080@0.0.1366.768" timestamp="1578239999376" />
+    <state width="1324" height="185" key="GridCell.Tab.0.center" timestamp="1578239999376">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1324" height="185" key="GridCell.Tab.0.center/0.0.1366.768/1366.0.1920.1080@0.0.1366.768" timestamp="1578239999376" />
+    <state width="1324" height="185" key="GridCell.Tab.0.left" timestamp="1578239999376">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1324" height="185" key="GridCell.Tab.0.left/0.0.1366.768/1366.0.1920.1080@0.0.1366.768" timestamp="1578239999376" />
+    <state width="1324" height="185" key="GridCell.Tab.0.right" timestamp="1578239999376">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1324" height="185" key="GridCell.Tab.0.right/0.0.1366.768/1366.0.1920.1080@0.0.1366.768" timestamp="1578239999376" />
+    <state x="349" y="212" key="com.intellij.ide.util.TipDialog" timestamp="1578239734808">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="349" y="212" key="com.intellij.ide.util.TipDialog/0.0.1366.768/1366.0.1920.1080@0.0.1366.768" timestamp="1578239734808" />
+    <state x="346" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1578232319710">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="346" y="89" width="672" height="678" key="search.everywhere.popup/0.0.1366.768/1366.0.1920.1080@0.0.1366.768" timestamp="1578232319710" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Solution.java</url>
-          <line>2</line>
+          <line>53</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
