@@ -2686,7 +2686,7 @@
    - 复杂度
      - $O(n)$
      - $O(1)$
-* 31 栈的压入，弹出序列                                             :TOBEORG:
+* 31 栈的压入，弹出序列
 ** 递归
 *** 以第一个 *出栈* 元素为准将 *入栈* 数组分组
     #+begin_src java :classname 
@@ -2865,26 +2865,275 @@
            if (s.pop() != popA[j]) return false;
            j += 1;
        }
-     #+end_src 
+     #+end_src
+   - 复杂度
+     - $O(n)$
+     - $O(n)$
 * 32 从上往下打印二叉树
+** 不分层
+   #+begin_src java :classname 
+     import java.util.*;
+     /**
+        public class TreeNode {
+        int val = 0;
+        TreeNode left = null;
+        TreeNode right = null;
+
+        public TreeNode(int val) {
+        this.val = val;
+
+        }
+
+        }
+     ,*/
+     public class Solution {
+         public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+             ArrayList<Integer> list = new ArrayList<>();
+             if (root == null) return list;
+             Queue<TreeNode> treeQue = new LinkedList<>();
+             treeQue.offer(root);
+             while (!treeQue.isEmpty()) {
+                 TreeNode n = treeQue.poll();
+                 list.add(n.val);
+                 if (n.left != null) treeQue.offer(n.left);
+                 if (n.right != null) treeQue.offer(n.right);
+             }
+             return list;
+         }
+     }
+   #+end_src 
+   - 图or树的 *BFS* 遍历往往借助 [[ilink19][Queue]]: 从上到下打印 -> 需要 *容器循环按序* 的存储未打印的节点
+     - *本层先打印* 节点的子节点在 *下层也先打印* -> ~Queue~
+     - 1个 ~Queue~ 打印节点的同时存储其子节点 *不会影响打印顺序* -> 只需要 *1个* ~Queue~
+** 按层之字形
+*** 两个 ~Stack~ 
+    #+begin_src java :classname 
+      import java.util.*;
+
+      public class Solution {
+          public ArrayList<ArrayList<Integer>> Print(TreeNode pRoot) {
+              ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+              if (pRoot == null) return list;
+              Stack<TreeNode> treeStack1 = new Stack<>();
+              boolean lTor = true;
+              treeStack1.push(pRoot);
+              while (!treeStack1.isEmpty()) {
+                  int nodes = treeStack1.size();
+                  ArrayList<Integer> valList = new ArrayList<>();
+                  Stack<TreeNode> treeStack2 = new Stack<>();
+                  for (int i = 0; i < nodes; i++) {
+                      TreeNode n = treeStack1.pop();
+                      valList.add(n.val);
+                      if (lTor) {
+                          if (n.left != null) treeStack2.push(n.left);
+                          if (n.right != null) treeStack2.push(n.right);
+                      } else {
+                          if (n.right != null) treeStack2.push(n.right);
+                          if (n.left != null) treeStack2.push(n.left);
+                      }
+                  }
+                  treeStack1 = treeStack2;
+                  lTor = !lTor;
+                  list.add(valList);
+              }
+              return list;
+          }
+      }
+    #+end_src 
+    - 从上到下 *之字形按层* 打印 -> 需要 *容器循环按序* 的存储未打印的节点
+      - *之字形*: *本层后打印* 节点的子节点在 *下层先打印* -> ~Stack~
+      - 1个 ~Stack~ 打印同时存储子节点会 *破坏顺序* -> 下层子节点存在 *辅助栈* + *打印栈* = *辅助栈*
+*** ~LinkedList~ 
+    #+begin_src java :classname 
+      import java.util.*;
+
+      public class Solution {
+          public ArrayList<ArrayList<Integer>> Print(TreeNode pRoot) {
+              ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+              if (pRoot == null) return list;
+              LinkedList<TreeNode> treeList = new LinkedList<>();
+              boolean lTor = true;
+              treeList.add(pRoot);
+              while (!treeList.isEmpty()) {
+                  int nodes = treeList.size();
+                  ArrayList<Integer> valList = new ArrayList<>();
+                  for (int i = 0; i < nodes; i++) {
+                      // TreeNode n = lTor ? treeList.removeFirst() : treeList.removeLast();
+                      TreeNode n = lTor ? treeList.removeLast() : treeList.removeFirst();
+                      valList.add(n.val);
+                      if (lTor) {
+                          // if (n.left != null) treeList.add(n.left);
+                          // if (n.right != null) treeList.add(n.right);
+                          if (n.left != null) treeList.add(0, n.left);
+                          if (n.right != null) treeList.add(0, n.right);
+                      } else {
+                          // if (n.right != null) treeList.add(0, n.right);
+                          // if (n.left != null) treeList.add(0, n.left);
+                          if (n.right != null) treeList.add(n.right);
+                          if (n.left != null) treeList.add(n.left);
+                      }
+                  }
+                  lTor = !lTor;
+                  list.add(valList);
+              }
+              return list;
+          }
+      }
+    #+end_src 
+*** ~Stack~ + ~LinkedList~
+    #+begin_src java :classname 
+      import java.util.*;
+
+      public class Solution {
+          public ArrayList<ArrayList<Integer>> Print(TreeNode pRoot) {
+              ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+              if (pRoot == null) return list;
+              Stack<TreeNode> treeStack = new Stack<>();
+              boolean lTor = true;
+              treeStack.push(pRoot);
+              while (!treeStack.isEmpty()) {
+                  int nodes = treeStack.size();
+                  ArrayList<Integer> valList = new ArrayList<>();
+                  LinkedList<TreeNode> nodeList = new LinkedList<>();
+                  for (int i = 0; i < nodes; i++) {
+                      TreeNode n = treeStack.pop();
+                      valList.add(n.val);
+                      nodeList.add(n);
+                  }
+                  while (nodeList.size() > 0) {
+                      TreeNode n = nodeList.removeFirst();
+                      if (lTor) {
+                          if (n.left != null) treeStack.push(n.left);
+                          if (n.right != null) treeStack.push(n.right);
+                      } else {
+                          if (n.right != null) treeStack.push(n.right);
+                          if (n.left != null) treeStack.push(n.left);
+                      }
+                  }
+                  lTor = !lTor;
+                  list.add(valList);
+              }
+              return list;
+          }
+      }
+    #+end_src 
+*** ~Queue~ + ~LinkedList~
+    #+begin_src java :classname 
+      import java.util.*;
+
+      public class Solution {
+          public ArrayList<ArrayList<Integer>> Print(TreeNode pRoot) {
+              ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+              if (pRoot == null) return list;
+              Queue<TreeNode> treeQueue = new LinkedList<>();
+              boolean lTor = true;
+              treeQueue.offer(pRoot);
+              while (!treeQueue.isEmpty()) {
+                  int nodes = treeQueue.size();
+                  ArrayList<Integer> valList = new ArrayList<>();
+                  LinkedList<TreeNode> nodeList = new LinkedList<>();
+                  for (int i = 0; i < nodes; i++) {
+                      TreeNode n = treeQueue.poll();
+                      valList.add(n.val);
+                      if (lTor) {
+                          if (n.left != null) nodeList.push(n.left);
+                          if (n.right != null) nodeList.push(n.right);
+                      } else {
+                          if (n.right != null) nodeList.push(n.right);
+                          if (n.left != null) nodeList.push(n.left);
+                      }
+                  }
+                  treeQueue = nodeList;
+                  lTor = !lTor;
+                  list.add(valList);
+              }
+              return list;
+          }
+      }
+    #+end_src 
+*** 总结: 关于 *打印顺序* 与 *容器* 选择的思考
+    - *打印顺序* 反映的 *连续性* 和 *一致性* 
+      - *连续性*: 4567 or 7654, 否则破坏 *连续性*, 如5476 or 6745 -> 对容器 *无要求*
+        - *先打先存*: 3先打印，则先存3的 *子节点*
+        - *下层* 存序 = *本层* 打序: *从左到右* 打则先存 *左子节点* 再存 *右子节点*, 从右到左反之
+      - *一致性*: 即 *下层打序* 与 *下层存序* 的关系 -> 要求 *一致性* 容器
+        - 一致：下层打序 = 下层存序 -> ~Queue~
+        - *反* 一致：下层打序 = *反* 下层存序 -> ~Stack~ 或 ~LinkedList~
+    - *容器数量* 与 *分层*
+      - *连续* -> *效果上* 可实现分层和不分层
+      - *连续且一致* -> 只需 *1个* 具有 *一致性* 的容器 (~Queue~) *打存一体*, *原理上* 能实现分层和不分层
+      - *连续反一致* -> 需要 *1个* 具有 *反一致性* 的 *存储* 容器 (~Stack~) + *1个打印* 容器或 *1个* 集 *一致性* 和 *反一致性* 为一体的容器 (~LinkedList~), *原理上* 仅能实现分层
+    - *连续反一致* 关键代码 [[elink5][Queue Stack LinkedList]] 
+      - ~Stack~ + ~Stack~
+        #+begin_src java :classname 
+          for (int i = 0; i < nodes; i++) {
+              TreeNode n = treeStack1.pop();
+              valList.add(n.val);
+              if (lTor) {
+                  if (n.left != null) treeStack2.push(n.left);
+                  if (n.right != null) treeStack2.push(n.right);
+              } else {
+                  if (n.right != null) treeStack2.push(n.right);
+                  if (n.left != null) treeStack2.push(n.left);
+              }
+          }
+        #+end_src
+      - ~LinkedList~
+        #+begin_src java :classname 
+          for (int i = 0; i < nodes; i++) {
+              // TreeNode n = lTor ? treeList.removeFirst() : treeList.removeLast();
+              TreeNode n = lTor ? treeList.removeLast() : treeList.removeFirst();
+              valList.add(n.val);
+              if (lTor) {
+                  // if (n.left != null) treeList.add(n.left);
+                  // if (n.right != null) treeList.add(n.right);
+                  if (n.left != null) treeList.add(0, n.left);
+                  if (n.right != null) treeList.add(0, n.right);
+              } else {
+                  // if (n.right != null) treeList.add(0, n.right);
+                  // if (n.left != null) treeList.add(0, n.left);
+                  if (n.right != null) treeList.add(n.right);
+                  if (n.left != null) treeList.add(n.left);
+              }
+          }
+        #+end_src 
+      - ~Stack~ + ~LinkedList~
+        #+begin_src java :classname 
+          for (int i = 0; i < nodes; i++) {
+              TreeNode n = treeStack.pop();
+              valList.add(n.val);
+              nodeList.add(n);
+          }
+          while (nodeList.size() > 0) {
+              TreeNode n = nodeList.removeFirst();
+              if (lTor) {
+                  if (n.left != null) treeStack.push(n.left);
+                  if (n.right != null) treeStack.push(n.right);
+              } else {
+                  if (n.right != null) treeStack.push(n.right);
+                  if (n.left != null) treeStack.push(n.left);
+              }
+          }
+        #+end_src 
+      - ~Queue~ + ~LinkedList~
+        #+begin_src java :classname 
+          for (int i = 0; i < nodes; i++) {
+              TreeNode n = treeQueue.poll();
+              valList.add(n.val);
+              if (lTor) {
+                  if (n.left != null) nodeList.push(n.left);
+                  if (n.right != null) nodeList.push(n.right);
+              } else {
+                  if (n.right != null) nodeList.push(n.right);
+                  if (n.left != null) nodeList.push(n.left);
+              }
+          }
+        #+end_src 
+* 33 二叉搜索树的后序遍历序列
   #+begin_src java :classname 
-    import java.util.ArrayList;
-    /**
-       public class TreeNode {
-       int val = 0;
-       TreeNode left = null;
-       TreeNode right = null;
-
-       public TreeNode(int val) {
-       this.val = val;
-
-       }
-
-       }
-    ,*/
     public class Solution {
-        public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
-        
+        public boolean VerifySquenceOfBST(int[] sequence) {
+
         }
     }
   #+end_src 
