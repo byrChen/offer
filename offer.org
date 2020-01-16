@@ -402,7 +402,7 @@
     - 复杂度
       - $O(n)$
       - $O(n)$
-** 改变原链表
+** 改变原链表                                              :UNRESOLVED:EXTRA:
 ** Question:                                                      :QUESTIONS:
    - [ ] 怎么在原链表上将链表翻转？默认有 ~prev~ 和 ~next~ 吗？只有 ~next~ 呢?
 * 7 重建二叉树
@@ -1776,8 +1776,8 @@
        - 父问题： ~head --> n(1) -x> n(k-1) --> n(k)~ -> ~n(k) --> n(k-1) -x> n(1) *-->* head~ ，即 ~ReverseList(head)~ 
        - 子问题： ~head --> n(1) -x> n(k-1) --> n(k)~ -> ~n(k) --> n(k-1) -x> n(1) *<--* head~ ，即 ~ReverseList(head.next)~ 
      - *base*: ~if (head == null || head.next == null) return head~ 
-     - 父子问题答案的 *连贯依赖定式* ：父问题 *答案* = 子问题 *答案* + (~head~ --> ~n(1)~ -> ~n(1)~ --> ~head~)
-       - *直观可表达* ： ~head.next.next = head~ + ~head.next = null~ 
+     - 父子问题答案的 *连贯依赖定式* ：父答案 = 子答案 + (~head~ --> ~n(1)~ -> ~n(1)~ --> ~head~)
+       - ~head.next.next = head~ + ~head.next = null~ 
      - *复杂度可接受*
        - $O(n)$
        - $O(n)$ 
@@ -1865,12 +1865,11 @@
           if (list1 == null) return list2;
           if (list2 == null) return list1;
         #+end_src 
-      - 父子问题 *答案* 的 *连贯依赖定式* ：父问题 *答案* = 子问题 *答案* + (~new head~ + ~n(1) --> n(2)~ -> ~head --> n(1) --> n(2)~)
-        - *直观可表达* ：
-          #+begin_src java :classname 
-            head = new ListNode(list1.val);
-            head.next = Merge(list1.next, list2);
-          #+end_src 
+      - 父子答案 的 *连贯依赖定式* ：父答案 = 子答案 + (~new head~ + ~n(1) --> n(2)~ -> ~head --> n(1) --> n(2)~)
+        #+begin_src java :classname 
+          head = new ListNode(list1.val);
+          head.next = Merge(list1.next, list2);
+        #+end_src 
       - *复杂度可接受*
         - $O(n)$
         - $O(n)$ 
@@ -2020,8 +2019,8 @@
        - B树是不是A树的子结构
        - B树是不是A *左（右)子树* 的子结构
      - *Base*: ~if (root1 == null || root2 == null) return false~
-     - 父问题 *答案* = *A树的根节点* 是不是 *子结构的根节点* || 子问题 *答案*
-       - *直观可表达*: ~return isSubtree(root1, root2) || HasSubtree(root1.left, root2) || HasSubtree(root1.right, root2)~
+     - 父答案 = *A树的根节点* 是不是 *子结构的根节点* || 子答案
+       - ~return isSubtree(root1, root2) || HasSubtree(root1.left, root2) || HasSubtree(root1.right, root2)~
        - ~isSubtree~
          - 父子问题
            - *A树的根节点* 是不是 *子结构的根节点*
@@ -2031,8 +2030,8 @@
              if (root2 == null) return true;
              if (root1 == null) return false; // if (root1 == null && root2 != null)
            #+end_src
-         - 父问题 *答案* = (A树根节点值 == B树根节点值) && 子问题 *答案*
-           - *直观可表达*: ~if (root1.val != root2.val || !isSubtree(root1.left, root2.left) || !isSubtree(root1.right, root2.right)) return false~ 
+         - 父答案 = (A树根节点值 == B树根节点值) && 子答案
+           - ~if (root1.val != root2.val || !isSubtree(root1.left, root2.left) || !isSubtree(root1.right, root2.right)) return false~ 
          - *复杂度可接受*
            - 
            - 
@@ -2062,18 +2061,17 @@
        - 树的镜像
        - 子树的镜像
      - *Base*: ~if (root == null) return~
-     - 父问题 *答案* = 子问题 *答案* + 交换根节点的左右子节点
-       - *直观可表达*:
-         #+begin_src java :classname 
-           Mirror(root.left);
-           Mirror(root.right);
-           TreeNode tempLeft = root.left;
-           root.left = root.right;
-           root.right = tempLeft;
-         #+end_src
-         - 交换左右子节点再左右子树镜像 *顺序可换* ，实际对应的操作就是 *树遍历*
-           - ~mirror --> swap~ 更符合 *递归的父子问题思想*, 实际上就是 *从下往上遍历* 交换子节点
-           - ~swap --> mirror~ 直觉上不符合 *父子问题思想*, 但实际效果一样，即 *从上往下遍历* 交换子节点
+     - 父答案 = 子答案 + 交换根节点的左右子节点
+       #+begin_src java :classname 
+         Mirror(root.left);
+         Mirror(root.right);
+         TreeNode tempLeft = root.left;
+         root.left = root.right;
+         root.right = tempLeft;
+       #+end_src
+       - 交换左右子节点再左右子树镜像 *顺序可换* ，实际对应的操作就是 *树遍历*
+         - ~mirror --> swap~ 更符合 *递归的父子问题思想*, 实际上就是 *从下往上遍历* 交换子节点
+         - ~swap --> mirror~ 直觉上不符合 *父子问题思想*, 但实际效果一样，即 *从上往下遍历* 交换子节点
      - *复杂度可接受*
        - $O(n)$
        - $O(n)$
@@ -2195,14 +2193,13 @@
         - 复制A树
         - 复制A树的子树
       - *Base*: ~root == null~
-      - 父问题 *答案* = 子问题 *答案* + 连接 *复制的根节点* 和 *复制的子树*
-        - *直观可表达*: 
-          #+begin_src java :classname 
-            TreeNode p = new TreeNode(root.val);
-            p.left = dupTree(root.left);
-            p.right = dupTree(root.right);
-            root = p;
-          #+end_src 
+      - 父答案 = 子答案 + 连接 *复制的根节点* 和 *复制的子树*
+        #+begin_src java :classname 
+          TreeNode p = new TreeNode(root.val);
+          p.left = dupTree(root.left);
+          p.right = dupTree(root.right);
+          root = p;
+        #+end_src 
       - *复杂度可接受*
         - $O(n)$
         - $O(n)$
@@ -2234,8 +2231,8 @@
             if (left == null && right == null) return true;
             if (left == null || right == null) return false;
           #+end_src
-        - 父问题 *答案* = 子问题 *答案* + A树与B树根节点值相等
-          - *直观可表达*: ~return left.val == right.val && Sym(left.left, right.right) && Sym(left.right, right.left)~ 
+        - 父答案 = 子答案 + A树与B树根节点值相等
+          - ~return left.val == right.val && Sym(left.left, right.right) && Sym(left.right, right.left)~ 
         - 复杂度可接受
           - $O(n)$
           - 
@@ -2737,8 +2734,8 @@
           if (pushA.length == 0) return true;
           if (pushA.length == 1) return pushA[0] == popA[0];
         #+end_src
-      - 父问题 *答案* = 子问题 *答案* + 验证 *已入栈* 及其 *出栈部分*
-        - *直观可表达*: ~return IsPopOrder(right, rightInpopA) && reverse(left, popA, leftEnd)~ 
+      - 父答案 = 子答案 + 验证 *已入栈* 及其 *出栈部分*
+        - ~return IsPopOrder(right, rightInpopA) && reverse(left, popA, leftEnd)~ 
       - *复杂度可接受*
         - $O(n)$
         - 
@@ -2807,8 +2804,8 @@
           if (pushA.length == 0) return true;
           if (pushA.length == 1) return pushA[0] == popA[0];
         #+end_src
-      - 父问题 *答案* = 子问题 *答案*
-        - *直观可表达*: ~return IsPopOrder(lpushA, lpopA) && IsPopOrder(rpushA, rpopA)~ 
+      - 父答案 = 子答案
+        - ~return IsPopOrder(lpushA, lpopA) && IsPopOrder(rpushA, rpopA)~ 
       - *复杂度可接受*
         - $O(n)$
         - 
@@ -2834,41 +2831,34 @@
              int j = 0;
              for (int i = 0; i < pushA.length; i++) {
                  s.push(pushA[i]);
-                 if (s.peek() == popA[j]) {
+                 while (!s.empty() && s.peek() == popA[j]) {
                      s.pop();
                      j += 1;
                  }
              }
-             while (j < popA.length) {
-                 if (s.pop() != popA[j]) return false;
-                 j += 1;
-             }
-             return true;
+             return s.empty();
          }
      }
    #+end_src
-   - *出栈顺序的多样性* 来源于是否 *入栈即出栈* -> 用辅助栈模拟过程先遍历 *入栈即出栈* 元素，再遍历 *入栈等待出栈* 元素，直到 *出栈数组为空* 且 *遍历成功* -> 与栈相关可以考虑 *辅助栈*
-   - 遍历 *入栈即出栈* 元素
+   - *出栈顺序的多样性* 来源于 *入栈即出栈* 元素之后选择 *出栈* 还是 *入栈* -> 用辅助栈模拟过程先 *入栈* 直到 *入栈即出栈* 元素 --> 遍历 *入栈等待出栈* 元素 --> 继续 *入栈* 并寻找下一个 *入栈即出栈* 元素 -> 与栈相关可以考虑 *辅助栈*
+   - 寻找 *入栈即出栈* 元素并遍历 *入栈等待出栈* 元素
      #+begin_src java :classname 
        int j = 0;
        for (int i = 0; i < pushA.length; i++) {
            s.push(pushA[i]);
-           if (s.peek() == popA[j]) {
+           while (!s.isEmpty() && s.peek() == popA[j]) {
                s.pop();
                j += 1;
            }
        }
-     #+end_src 
-   - 遍历 *入栈等待出栈* 元素
-     #+begin_src java :classname 
-       while (j < popA.length) {
-           if (s.pop() != popA[j]) return false;
-           j += 1;
-       }
      #+end_src
+   - 判断条件: ~return s.empty()~
+     - 为空 -> 过程模拟成功
+     - 不为空 -> 无法模拟此过程
    - 复杂度
      - $O(n)$
      - $O(n)$
+   - ~Stack.empty()~ 或 ~Stack.isEmpty()~ (~Stack implements List~ + ~List.isEmpty()~)
 * 32 从上往下打印二叉树
 ** 不分层
    #+begin_src java :classname 
@@ -2905,6 +2895,10 @@
    - 图or树的 *BFS* 遍历往往借助 [[ilink19][Queue]]: 从上到下打印 -> 需要 *容器循环按序* 的存储未打印的节点
      - *本层先打印* 节点的子节点在 *下层也先打印* -> ~Queue~
      - 1个 ~Queue~ 打印节点的同时存储其子节点 *不会影响打印顺序* -> 只需要 *1个* ~Queue~
+   - 极端情况: ~if (root == null) return list~
+   - 复杂度
+     - $O(n)$
+     - $O(n)$
 ** 按层之字形
 *** 两个 ~Stack~ 
     #+begin_src java :classname 
@@ -2943,6 +2937,9 @@
     - 从上到下 *之字形按层* 打印 -> 需要 *容器循环按序* 的存储未打印的节点
       - *之字形*: *本层后打印* 节点的子节点在 *下层先打印* -> ~Stack~
       - 1个 ~Stack~ 打印同时存储子节点会 *破坏顺序* -> 下层子节点存在 *辅助栈* + *打印栈* = *辅助栈*
+    - 复杂度
+      - $O(n)$
+      - $O(n)$
 *** ~LinkedList~ 
     #+begin_src java :classname 
       import java.util.*;
@@ -3130,10 +3127,321 @@
           }
         #+end_src 
 * 33 二叉搜索树的后序遍历序列
-  #+begin_src java :classname 
-    public class Solution {
-        public boolean VerifySquenceOfBST(int[] sequence) {
+** 递归
+*** 直接  
+    - 优化
+      #+begin_src java :classname 
+        import java.util.*;
 
+        public class Solution {
+            public boolean VerifySquenceOfBST(int[] sequence) {
+                if (sequence == null || sequence.length == 0) return false;
+                int len = sequence.length;
+                if (len <= 2) return true;
+                int i = 0;
+                for (; i < len-1; i++) {
+                    if (sequence[i] > sequence[len-1]) break;
+                }
+                int j = i;
+                for (; j < len-1; j++) {
+                    if (sequence[j] <= sequence[len-1]) return false;
+                }
+                boolean left = true, right = true;
+                if (i > 0) left = VerifySquenceOfBST(Arrays.copyOfRange(sequence, 0, i));
+                if (j < len-1) right = VerifySquenceOfBST(Arrays.copyOfRange(sequence, j, len-1));
+                return left && right;
+            }
         }
-    }
-  #+end_src 
+      #+end_src
+      - 递归分析
+        - 父子问题
+          - 判断数组是不是某二叉搜索树的后序遍历结果
+          - 判断该数组的 *子树部分数组* 是不是对应子树的后序遍历结果
+        - *Base*: <<ilink20>>
+          #+begin_src java :classname 
+            if (len <= 2) return true;
+            int i = 0;
+            for (; i < len-1; i++) {
+                if (sequence[i] > sequence[len-1]) break;
+            }
+            int j = i;
+            for (; j < len-1; j++) {
+                if (sequence[j] <= sequence[len-1]) return false;
+            }
+            boolean left = true, right = true;
+          #+end_src
+        - 父答案 = 子答案 + 子树满足 *初步合法前提*: 即左子树均 <= 根节点，右子树均 > 根节点
+          - *初步合法前提*: 左子树保证 *初步合法* -> 检查右子树
+            #+begin_src java :classname 
+              for (; i < len-1; i++) {
+                  if (sequence[i] > sequence[len-1]) break;
+              }
+              int j = i;
+              for (; j < len-1; j++) {
+                  if (sequence[j] <= sequence[len-1]) return false;
+              }
+            #+end_src
+          - 子答案
+            #+begin_src java :classname 
+              boolean left = true, right = true;
+              if (i > 0) left = VerifySquenceOfBST(Arrays.copyOfRange(sequence, 0, i));
+              if (j < len-1) right = VerifySquenceOfBST(Arrays.copyOfRange(sequence, j, len-1));
+              return left && right;
+            #+end_src 
+        - 复杂度可接受
+          - 
+          - 
+    - 未优化
+      #+begin_src java :classname 
+        import java.util.*;
+  
+        public class Solution {
+            public boolean VerifySquenceOfBST(int[] sequence) {
+                if (sequence == null || sequence.length == 0) return false;
+                int length = sequence.length;
+                if (length <= 2) return true;
+                int leftIndex = -1;
+                for (int i = length - 2; i >= 0; i--) {
+                    if (sequence[i] <= sequence[length-1]) {
+                        leftIndex = i;
+                        break;
+                    }
+                }
+                int[] left = Arrays.copyOfRange(sequence, 0, leftIndex+1);
+                if (left.length >= 1 && max(left) > sequence[length-1]) return false;
+                int[] right = Arrays.copyOfRange(sequence, leftIndex+1, length-1);
+                if (right.length >= 1 && min(right) <= sequence[length-1]) return false;
+                if (left.length == 0) return VerifySquenceOfBST(right);
+                if (right.length == 0) return VerifySquenceOfBST(left);
+                return VerifySquenceOfBST(left) && VerifySquenceOfBST(right);
+            }
+  
+            private int max(int[] left) {
+                int max = left[0];
+                for (int i = 0; i < left.length; i++) {
+                    max = left[i] > max ? left[i] : max;
+                }
+                return max;
+            }
+  
+            private int min(int[] right) {
+                int min = right[0];
+                for (int i = 0; i < right.length; i++) {
+                    min = right[i] < min ? right[i] : min;
+                }
+                return min;
+            }
+        }
+      #+end_src
+*** 辅助递归
+    #+begin_src java :classname 
+      import java.util.*;
+
+      public class Solution {
+          public boolean VerifySquenceOfBST(int[] sequence) {
+              if (sequence == null || sequence.length == 0) return false;
+              int length = sequence.length;
+              if (length <= 2) return true;
+              return verifyHelper(sequence, 0, length-1);
+          }
+
+          private boolean verifyHelper(int[] sequence, int first, int last) {
+              if (last <= first) return true;
+              int index = -1;
+              for (int i = last-1; i >= first; i--) {
+                  if (sequence[i] <= sequence[last]) {
+                      index = i;
+                      break;
+                  }
+              }
+              for (int i = first; i < index; i++) {
+                  if (sequence[i] > sequence[last]) return false;
+              }
+              return verifyHelper(sequence, first, index) && verifyHelper(sequence, index+1, last-1);
+          }
+      }
+    #+end_src 
+    - 原方法受限于 *签名* 的原因递归写起来逻辑繁杂 -> 定义递归 *辅助* 方法
+    - 此处右子树 *初步合法*, 需要检查左子树 -> *Base* 为
+      #+begin_src java :classname 
+        if (last <= first) return true;
+        int index = -1;
+        for (int i = last-1; i >= first; i--) {
+            if (sequence[i] <= sequence[last]) {
+                index = i;
+                break;
+            }
+        }
+        for (int i = first; i < index; i++) {
+            if (sequence[i] > sequence[last]) return false;
+        }
+      #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 直接与辅助的复杂度分析？
+    - [ ] *[[ilink20][Base]]* 思考: *Base* 一定是最小子问题吗？在该题中是什么？有点像某种前提？
+** 迭代                                                               :EXTRA:
+*** 利用中序与后序关系
+    #+begin_src java :classname 
+      import java.util.*;
+
+      public class Solution {
+          public boolean VerifySquenceOfBST(int[] sequence) {
+              if (sequence == null || sequence.length == 0) return false;
+              int length = sequence.length;
+              if (length <= 2) return true;
+              int[] inOrder = sequence.clone();
+              Arrays.sort(inOrder);
+              return IsPopOrder(inOrder, sequence);
+          }
+
+          public boolean IsPopOrder(int[] pushA,int[] popA) {
+              if (pushA == null || popA == null || pushA.length != popA.length) return false;
+              Stack<Integer> s = new Stack<>();
+              int j = 0;
+              for (int i = 0; i < pushA.length; i++) {
+                  s.push(pushA[i]);
+                  while (!s.empty() && s.peek() == popA[j]) {
+                      s.pop();
+                      j += 1;
+                  }
+              }
+              return s.empty();
+          }
+      }
+    #+end_src 
+    - 有问题， *必要不充分*: 以二叉搜索树的 *层序遍历* 顺序 *入栈* -> 其 *后序遍历* 为 *出栈* 的一种，但 *出栈* 的不一定就是 *后序遍历*
+    - ~Object.clone()~
+    - ~Arrays.sort()~ 
+*** 最大最小边界约束法                                           :UNRESOLVED:
+    #+begin_src C 
+      class Solution {
+      public:
+          bool VerifySquenceOfBST(vector<int> &sequence) {
+              if (sequence.size() < 1) return false;
+              else if (sequence.size() < 3) return true;
+              else {
+                  int idx = sequence.size() - 1;
+                  stack<int> bound_min, bound_max;
+                  stack<int> roots;
+                  roots.push(sequence[idx--]);
+                  bound_min.push(INT_MIN);
+                  bound_max.push(INT_MAX);
+ 
+                  for (; idx > -1; idx--) {
+                      if (sequence[idx] > sequence[idx+1]) {
+                          // 倒序遍历趋势为递增，说明是进入了某个右子树
+                          if (sequence[idx] > bound_max.top())
+                              // 当前元素超越了最大上限约束，这是不合法的
+                              return false;
+                          else {
+                              // 合法，进入右子树，更新三个栈
+                              bound_min.push(roots.top());
+                              bound_max.push(bound_max.top());
+                              roots.push(sequence[idx]);
+                          }
+                      }
+                      else {
+                          // 倒序遍历趋势为递减，说明是进入了某个左子树
+                          if (sequence[idx] < bound_min.top()) {
+                              // 当前元素打破了最小下限约束，说明是右子树遍历完了，跳转到兄弟左子树
+                              // 当前元素为兄弟左子树的根，之前右子树节点全部出栈
+                              while (sequence[idx] < bound_min.top()) {
+                                  bound_min.pop();
+                                  bound_max.pop();
+                                  roots.pop();
+                              }
+                          }
+                          else {} // 没有突破下限，说明是右子树不存在，直接进入左子树，不做特殊处理
+                          // 进入左子树，更新三个栈
+                          bound_min.push(bound_min.top());
+                          bound_max.push(roots.top());
+                          roots.push(sequence[idx]);
+                      }
+                  }
+                  return true;
+              }
+          }
+      };
+    #+end_src
+*** 利用排序                                                     :UNRESOLVED:
+    #+begin_src C 
+      class Solution {
+       public:
+        bool VerifySquenceOfBST(vector<int> sequence) {
+          if(sequence.empty()) return false;
+          int root = sequence[sequence.size()-1];
+          vector<int> v = sequence;
+          stable_partition(v.begin(), v.end(), [root](int x){return x<root;});
+          return v == sequence;
+        }
+      };
+    #+end_src
+*** 基于递归思想                                                 :UNRESOLVED:
+    #+begin_src C 
+
+      class Solution {
+       public:
+        bool VerifySquenceOfBST(vector<int> sequence) {
+          int size = sequence.size();
+          if(0==size)return false;
+ 
+          int i = 0;
+          while(--size)
+            {
+              while(sequence[i++]<sequence[size]);
+              while(sequence[i++]>sequence[size]);
+ 
+              if(i<size)return false;
+              i=0;
+            }
+          return true;
+        }
+      };
+    #+end_src
+* 34 二叉树中和为某一值的路径
+** 递归
+   #+begin_src java :classname 
+     import java.util.*;
+
+     public class Solution {
+         public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+             ArrayList<ArrayList<Integer>> paths = new ArrayList<>();
+             if (root == null) return paths;
+             if (root.left == null && root.right == null) {
+                 ArrayList<Integer> path = new ArrayList<>();
+                 if (root.val == target) {
+                     path.add(root.val);
+                     paths.add(path);
+                 }
+             }
+             if (root.left != null) {
+                 for (ArrayList<Integer> path : FindPath(root.left, target-root.val)) {
+                     if (!path.isEmpty()) {
+                         path.add(0, root.val);
+                         int len = path.size();
+                         paths.add(path);
+                     }
+                 }
+             }
+             if (root.right != null) {
+                 for (ArrayList<Integer> path : FindPath(root.right, target-root.val)) {
+                     if (!path.isEmpty()) {
+                         path.add(0, root.val);
+                         int len = path.size();
+                         paths.add(path);
+                     }
+                 }
+             }
+             return paths;
+         }
+     }
+   #+end_src 
+   #+begin_src java :classname 
+     import java.util.*;
+
+     public class Solution {
+         public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+         }
+     }
+   #+end_src 
+* 35 复杂链表的复制
