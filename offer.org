@@ -210,7 +210,7 @@
           }
       }
     #+end_src 
-*** 查对角 <<ilink3>>                                      :UNRESOLVED:EXTRA:
+*** 查对角 <<ilink3>>                                            :UNRESOLVED:
     #+begin_src java :classname 
       public class Solution {
           public boolean Find(int target, int[][] array) {
@@ -257,7 +257,7 @@
           }
       }
     #+end_src 
-** 递归                                                    :UNRESOLVED:EXTRA:
+** 递归                                                          :UNRESOLVED:
 ** Question:                                                      :QUESTIONS:
    - [ ] [[ilink3][查对角]] 错在算法还是实现？更优的算法？
    - [ ] 怎么转化成递归实现？
@@ -402,7 +402,7 @@
     - 复杂度
       - $O(n)$
       - $O(n)$
-** 改变原链表                                              :UNRESOLVED:EXTRA:
+** 改变原链表                                                    :UNRESOLVED:
 ** Question:                                                      :QUESTIONS:
    - [ ] 怎么在原链表上将链表翻转？默认有 ~prev~ 和 ~next~ 吗？只有 ~next~ 呢?
 * 7 重建二叉树
@@ -594,7 +594,7 @@
       - 优化递归
         - $O(n)$
         - $O(1)$
-*** 矩阵递归                                                     :UNRESOLVED:
+*** 矩阵递归                                               :UNRESOLVED:EXTRA:
 ** 题目二 青蛙跳台阶
     #+begin_src java :classname 
       public class Solution {
@@ -707,7 +707,7 @@
    - [ ] [[ilink9][部分排序数组上快排的复杂度]] ？
    - [ ] 上面优先队列的时间复杂度？ ~add~ 的时间复杂度怎么考虑？
 * 12 矩阵中的路径
-** 回溯（递归 DFS）
+** 回溯（递归 DFS）<<ilink22>>
    #+begin_src java :classname 
      public class Solution {
          public boolean hasPath(char[] matrix, int rows, int cols, char[] str) {
@@ -752,7 +752,7 @@
    - 复杂度
      - 
      - 
-** 非递归                                                  :UNRESOLVED:EXTRA:
+** 非递归                                                        :UNRESOLVED:
    #+begin_src java :classname 
      import java.util.Stack;
      import java.util.Arrays;
@@ -836,7 +836,7 @@
    - [ ] 非递归方法？复杂度？
    - [ ] 联系DFS和BFS实现？
 * 13 机器人的运动范围
-** 回溯 
+** 回溯 <<ilink23>>
    #+begin_src java :classname 
      public class Solution {
          public int movingCount(int threshold, int rows, int cols) {
@@ -2038,7 +2038,7 @@
      - *复杂度可接受*
        - 
        - 
-** 迭代                                          :UNRESOLVED:EXTRA:ITERATIVE:
+** 迭代                                                :UNRESOLVED:ITERATIVE:
 ** Question:                                                      :QUESTIONS:
    - [ ] 递归的复杂度分析？
    - [ ] 迭代如何实现？
@@ -2516,8 +2516,8 @@
     - 复杂度
       - $O(n)$
       - $O(n)$
-** 递归                                                    :UNRESOLVED:EXTRA:
-** Python                                                  :UNRESOLVED:EXTRA:
+** 递归                                                          :UNRESOLVED:
+** Python                                                        :UNRESOLVED:
 *** 用 ~pop~, 应该类似与收缩边界
     #+begin_src python :results output
       class Solution:
@@ -3378,7 +3378,6 @@
     #+end_src
 *** 基于递归思想                                                 :UNRESOLVED:
     #+begin_src C 
-
       class Solution {
        public:
         bool VerifySquenceOfBST(vector<int> sequence) {
@@ -3398,50 +3397,1153 @@
         }
       };
     #+end_src
-* 34 二叉树中和为某一值的路径
-** 递归
-   #+begin_src java :classname 
-     import java.util.*;
+* 34 二叉树中和为某一值的路径                                       :TOBEORG:
+** 递归(回溯 前序遍历)
+*** 不考虑数组长度(无辅助有返回递归函数)
+    #+begin_src java :classname 
+      import java.util.*;
 
-     public class Solution {
-         public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
-             ArrayList<ArrayList<Integer>> paths = new ArrayList<>();
-             if (root == null) return paths;
-             if (root.left == null && root.right == null) {
-                 ArrayList<Integer> path = new ArrayList<>();
-                 if (root.val == target) {
-                     path.add(root.val);
-                     paths.add(path);
-                 }
-             }
-             if (root.left != null) {
-                 for (ArrayList<Integer> path : FindPath(root.left, target-root.val)) {
-                     if (!path.isEmpty()) {
-                         path.add(0, root.val);
-                         int len = path.size();
-                         paths.add(path);
-                     }
-                 }
-             }
-             if (root.right != null) {
-                 for (ArrayList<Integer> path : FindPath(root.right, target-root.val)) {
-                     if (!path.isEmpty()) {
-                         path.add(0, root.val);
-                         int len = path.size();
-                         paths.add(path);
-                     }
-                 }
-             }
-             return paths;
-         }
-     }
-   #+end_src 
-   #+begin_src java :classname 
-     import java.util.*;
+      public class Solution {
+          public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+              ArrayList<ArrayList<Integer>> paths = new ArrayList<>();
+              if (root == null) return paths;
+              if (root.val == target && root.left == null && root.right == null) {
+                  ArrayList<Integer> path = new ArrayList<>();
+                  path.add(root.val);
+                  paths.add(path);
+              }
+              if (root.left != null) {
+                  for (ArrayList<Integer> path : FindPath(root.left, target-root.val)) {
+                      if (!path.isEmpty()) {
+                          path.add(0, root.val);
+                          paths.add(path);
+                      }
+                  }
+              }
+              if (root.right != null) {
+                  for (ArrayList<Integer> path : FindPath(root.right, target-root.val)) {
+                      if (!path.isEmpty()) {
+                          path.add(0, root.val);
+                          paths.add(path);
+                      }
+                  }
+              }
+              return paths;
+          }
+      }
+    #+end_src 
+    #+begin_src java :classname 
+      import java.util.*;
 
-     public class Solution {
-         public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+      public class Solution {
+          private ArrayList<ArrayList<Integer>> paths = new ArrayList<>();
+          private ArrayList<Integer> path = new ArrayList<>();
+          public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+              if (root == null) return paths;
+              path.add(root.val);
+              target -= root.val;
+              if (target == 0 && root.left == null && root.right == null) paths.add(new ArrayList<Integer>(path));
+              if (root.left != null) FindPath(root.left, target);
+              if (root.right != null) FindPath(root.right, target);
+              path.remove(path.size() - 1);
+              return paths;
+          }
+      }
+    #+end_src 
+*** 考虑数组长度(借助辅助无返回递归函数)
+    #+begin_src java :classname 
+      import java.util.*;
+
+      public class Solution {
+          public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+              ArrayList<ArrayList<Integer>> paths = new ArrayList<>();
+              ArrayList<Integer> path = new ArrayList<>();
+              // Comparator<ArrayList<Integer>> pathComparator = (ArrayList<Integer> path1, ArrayList<Integer> path2) -> {
+              //     // return Integer.compare(path2.size(), path1.size());
+              //     return path1.size() < path2.size() ? 1 : -1;
+              // };
+              if (root != null) FindPath(root, target, paths, path);
+              // Collections.sort(paths, pathComparator);
+              Collections.sort(paths, new Comparator<ArrayList<Integer>>() {
+                      @Override
+                      public int compare(ArrayList<Integer> path1, ArrayList<Integer> path2) {
+                          return path1.size() < path2.size() ? 1 : -1;
+                      }
+                  });
+              return paths;
+          }
+
+          private void FindPath(TreeNode root, int target, ArrayList<ArrayList<Integer>> paths, ArrayList<Integer> path) {
+              path.add(root.val);
+              target -= root.val;
+              if (target == 0 && root.left == null && root.right == null) {
+                  paths.add(new ArrayList<Integer>(path));
+              }
+              if (root.left != null) FindPath(root.left, target, paths, path);
+              if (root.right != null) FindPath(root.right, target, paths, path);
+              path.remove(path.size() - 1);
+          }
+      }
+    #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 关于递归，结合 [[ilink21][offer36]] [[ilink22][offer12]] [[ilink23][offer13]] [[file:~/csnds/Dropbox/orglife/61b_projs.org::<<elink3>>][61b作业]] 思考 <<elink6>>
+      - [ ] 有无返回
+      - [ ] 有无辅助
+      - [ ] 有无成员变量
+      - [ ] 递归与回溯关系
+** 迭代(后序遍历)                                                :UNRESOLVED:
+   #+begin_src C 
+     /*
+       非递归法：后序遍历
+       1.进栈时候，把值同时压入路径的向量数组，修正路径的和
+       2.出栈时候，先判断和是否相等，且该节点是否是叶节点，
+       判断完成后保持和栈一致，抛出路径，修改路径的和
+       3.向量数组和栈的操作要保持一致
+     ,*/
+     class Solution {
+      public:
+       vector<vector<int> > FindPath(TreeNode* root, int expectNumber) {
+         stack<TreeNode*> s;
+         vector<int> v;
+         vector<vector<int> > res;
+         while (root || !s.empty()){
+           while (root){
+             s.push(root); v.push_back(root->val); expectNumber -= root->val;
+             //能左就左，否则向右
+             root = root->left ? root->left : root->right;
+           }
+           root = s.top();
+           if (expectNumber == 0 && root->left == NULL && root->right == NULL)
+             res.push_back(v);
+           s.pop(); v.pop_back(); expectNumber += root->val;
+           //右子数没遍历就遍历，如果遍历就强迫出栈
+           if (!s.empty() && s.top()->left == root)
+             root = s.top()->right;
+           else
+             root = NULL;//强迫出栈
          }
-     }
-   #+end_src 
+         return res;
+       }
+     };
+   #+end_src
 * 35 复杂链表的复制
+** 辅助空间(~HashMap~)
+   #+begin_src java :classname 
+     import java.util.*;
+
+     public class Solution {
+         public RandomListNode Clone(RandomListNode pHead) {
+             if (pHead == null) return null;
+             HashMap<RandomListNode, RandomListNode> map = new HashMap<>();
+             RandomListNode cHead = new RandomListNode(pHead.label);
+             RandomListNode p = pHead, c = cHead;
+             map.put(p, c);
+             while (p.next != null) {
+                 c.next = new RandomListNode(p.next.label);
+                 c = c.next;
+                 p = p.next;
+                 map.put(p, c);
+             }
+
+             // RandomListNode cHead = new RandomListNode(0);
+             // RandomListNode p = pHead, c = cHead;
+             // while (p != null) {
+             //     c.next = new RandomListNode(p.label);
+             //     c = c.next;
+             //     map.put(p, c);
+             //     p = p.next;
+             // }
+             // cHead = cHead.next;
+
+             p = pHead;
+             while (p != null) {
+                 map.get(p).random = map.get(p.random);
+                 p = p.next;
+             }
+             return cHead;
+         }
+     }
+   #+end_src 
+   - 分2步 *遍历*: 第1次遍历拷贝 *顺序* 并记录 *原与拷贝节点对*--> 第2次遍历根据 *原链表随机* 以及 *节点对* 拷贝 *随机*
+   - 第1次
+     #+begin_src java :classname 
+       HashMap<RandomListNode, RandomListNode> map = new HashMap<>();
+       RandomListNode cHead = new RandomListNode(pHead.label);
+       RandomListNode p = pHead, c = cHead;
+       map.put(p, c);
+       while (p.next != null) {
+           c.next = new RandomListNode(p.next.label);
+           c = c.next;
+           p = p.next;
+           map.put(p, c);
+       }
+
+       // RandomListNode cHead = new RandomListNode(0);
+       // RandomListNode p = pHead, c = cHead;
+       // while (p != null) {
+       //     c.next = new RandomListNode(p.label);
+       //     map.put(p, c.next);
+       //     c = c.next;
+       //     p = p.next;
+       // }
+       // cHead = cHead.next;
+     #+end_src
+     - ~HashMap<RandomListNode, RandomListNode> map = new HashMap<>()~
+     - 无哨兵: 先 ~map.put(p, c)~ 一次 + 判断 ~while (p.next != null)~
+     - 有哨兵: 判断 ~while (p != null)~ + ~map.put(p, c.next)~ 
+   - 第2次
+     #+begin_src java :classname 
+       p = pHead;
+       while (p != null) {
+           map.get(p).random = map.get(p.random);
+           p = p.next;
+       }
+     #+end_src
+     - 拷贝随机 ~map.get(p).random = map.get(p.random)~ 
+   - 极端情况: ~if (pHead == null) return null~
+   - 复杂度
+     - $O(n)$
+     - $O(n)$
+** 无辅助空间
+   #+begin_src java :classname 
+     import java.util.*;
+
+     public class Solution {
+         public RandomListNode Clone(RandomListNode pHead) {
+             if (pHead == null) return null;
+
+             RandomListNode p = pHead;
+             RandomListNode cp;
+             while (p != null) {
+                 RandomListNode pnext = p.next;
+                 cp = new RandomListNode(p.label);
+                 cp.next = pnext;
+                 p.next = cp;
+                 p = pnext;
+             }
+
+             p = pHead;
+             while (p != null) {
+                 cp = p.next;
+                 if (p.random != null) cp.random = p.random.next;
+                 p = cp.next;
+             }
+
+             cp = pHead.next;
+             while (cp.next != null) {
+                 cp.next = cp.next.next;
+                 cp = cp.next;
+             }
+             RandomListNode cHead = pHead.next;
+             pHead.next = null;
+             return cHead;
+
+             // RandomListNode cHead = pHead.next;
+             // p = pHead;
+             // while (p != null) {
+             //     cp = p.next;
+             //     p.next = cp.next;
+             //     if (cp.next != null) cp.next = cp.next.next;
+             //     p = p.next;
+             // }
+             // return cHead;
+         }
+     }
+   #+end_src 
+   - 分3步: 向后拷贝插入顺序 --> 拷贝原随机 --> 取出拷贝节点重建拷贝链表
+   - 复杂度
+     - $O(n)$
+     - $O(1)$
+** 有向图法                                                      :UNRESOLVED:
+   #+begin_src C 
+     class Solution {
+       map<RandomListNode*, RandomListNode*> mp;
+       set<RandomListNode*> vis;
+       void dfs1(RandomListNode* u){
+         if(u && mp.find(u) == mp.end()) {
+           mp[u] = new RandomListNode(u -> label);
+           dfs1(u -> next);
+           dfs1(u -> random);
+         }
+       }
+       void dfs2(RandomListNode* u){
+         if(u && vis.find(u) == vis.end()){
+           if(u -> next) mp[u] -> next = mp[u -> next];
+           if(u -> random) mp[u] -> random = mp[u -> random];
+           vis.insert(u);
+           dfs2(u -> next);
+           dfs2(u -> random);
+         }
+       }
+      public:
+       RandomListNode* Clone(RandomListNode* pHead){
+         if(!pHead) return NULL;
+         mp.clear();
+         vis.clear();
+         dfs1(pHead);
+         dfs2(pHead);
+         return mp[pHead];
+       }
+     };
+   #+end_src
+* 36 二叉搜索树与双向链表                                           :TOBEORG:
+** 递归 <<ilink21>>
+*** 循环双向链表
+    #+begin_src java :classname 
+      import java.util.*;
+
+      public class Solution {
+          public TreeNode Convert(TreeNode pRootOfTree) {
+              if (pRootOfTree == null) return null;
+              TreeNode head = Helper(pRootOfTree);
+              head.left.right = null;
+              head.left = null;
+              return head;
+          }
+          private TreeNode Helper(TreeNode pRootOfTree) {
+              if (pRootOfTree == null) return null;
+              if (pRootOfTree.left == null && pRootOfTree.right == null) {
+                  pRootOfTree.left = pRootOfTree;
+                  pRootOfTree.right = pRootOfTree;
+                  return pRootOfTree;
+              }
+              TreeNode lNode = Helper(pRootOfTree.left);
+              TreeNode rNode = Helper(pRootOfTree.right);
+              if (lNode == null) {
+                  pRootOfTree.right = rNode;
+                  pRootOfTree.left = rNode.left;
+                  rNode.left.right = pRootOfTree;
+                  rNode.left = pRootOfTree;
+                  return pRootOfTree;
+              } else if (rNode == null) {
+                  lNode.left.right = pRootOfTree;
+                  pRootOfTree.left = lNode.left;
+                  pRootOfTree.right = lNode;
+                  lNode.left = pRootOfTree;
+                  return lNode;
+              } else {
+                  lNode.left.right = pRootOfTree;
+                  pRootOfTree.left = lNode.left;
+                  rNode.left.right = lNode;
+                  lNode.left = rNode.left;
+                  pRootOfTree.right = rNode;
+                  rNode.left = pRootOfTree;
+                  return lNode;
+              }
+          }
+      }
+    #+end_src 
+*** 非循环双向链表(*成员变量* 记录)
+    - 无辅助带返回值
+      #+begin_src java :classname 
+        import java.util.*;
+
+        public class Solution {
+            // private static TreeNode pre = null;
+            private TreeNode pre = null;
+            public TreeNode Convert(TreeNode pRootOfTree) {
+                if (pRootOfTree == null) return null;
+                if (pRootOfTree.left == null && pRootOfTree.right == null) {
+                    pre = pRootOfTree;
+                    return pRootOfTree;
+                }
+                TreeNode lNode = Convert(pRootOfTree.left);
+                if (lNode != null) {
+                    pre.right = pRootOfTree;
+                    pRootOfTree.left = pre;
+                }
+                pre = pRootOfTree;
+                TreeNode rNode = Convert(pRootOfTree.right);
+                if (rNode != null) {
+                    pRootOfTree.right = rNode;
+                    rNode.left = pRootOfTree;
+                }
+                lNode = lNode != null ? lNode : pRootOfTree;
+                return lNode;
+            }
+        }
+      #+end_src
+    - 辅助无返回值
+      #+begin_src java :classname 
+        import java.util.*;
+
+        public class Solution {
+            // private static TreeNode pre = null;
+            // private static TreeNode Head = null;
+            private TreeNode pre = null;
+            private TreeNode Head = null;
+            public TreeNode Convert(TreeNode pRootOfTree) {
+                Helper(pRootOfTree);
+                return Head;
+            }
+
+            private void Helper(TreeNode pRootOfTree) {
+                if (pRootOfTree == null) return;
+                Helper(pRootOfTree.left);
+                if (pre == null) {
+                    pre = pRootOfTree;
+                    Head = pRootOfTree;
+                } else {
+                    pre.right = pRootOfTree;
+                    pRootOfTree.left = pre;
+                    pre = pRootOfTree;
+                }
+                Helper(pRootOfTree.right);
+            }
+        }
+      #+end_src
+*** Question:                                                     :QUESTIONS:
+    - [ ] 为何上面使用 *成员变量* 记录时有的可以声明为 ~static~ 有的不行？
+** 非递归                                                        :UNRESOLVED:
+   #+begin_src java :classname 
+     import java.util.*;
+
+     public class Solution {
+         public TreeNode Convert(TreeNode root) {
+             if(root==null)
+                 return null;
+             Stack<TreeNode> stack = new Stack<TreeNode>();
+             TreeNode p = root;
+             TreeNode pre = null;// 用于保存中序遍历序列的上一节点
+             boolean isFirst = true;
+             while(p!=null||!stack.isEmpty()){
+                 while(p!=null){
+                     stack.push(p);
+                     p = p.left;
+                 }
+                 p = stack.pop();
+                 if(isFirst){
+                     root = p;// 将中序遍历序列中的第一个节点记为root
+                     pre = root;
+                     isFirst = false;
+                 }else{
+                     pre.right = p;
+                     p.left = pre;
+                     pre = p;
+                 }      
+                 p = p.right;
+             }
+             return root;
+         }
+
+     }
+   #+end_src
+*** Question:                                                     :QUESTIONS:
+    - [ ] 非递归中序遍历?
+* 37 序列化二叉树                                                   :TOBEORG:
+** 递归(前序遍历)
+   - 使用成员变量(无辅助有返回值)
+     #+begin_src java :classname 
+       import java.util.*;
+  
+       public class Solution {
+           private int index = -1;
+           String Serialize(TreeNode root) {
+               StringBuilder Ser = new StringBuilder();
+               if (root == null) {
+                   Ser.append("#,");
+                   return Ser.toString();
+               }
+               // Ser.append(String.valueOf(root.val));
+               // Integer.toString(root.val); Integer(root.val).toString();
+               Ser.append(root.val + ",");
+               Ser.append(Serialize(root.left));
+               Ser.append(Serialize(root.right));
+               return Ser.toString();
+           }
+           TreeNode Deserialize(String str) {
+               index += 1;
+               String[] sstr = str.split(",");
+               TreeNode node = null;
+               if (!sstr[index].equals("#")) {
+                   node = new TreeNode(Integer.valueOf(sstr[index]));
+                   node.left = Deserialize(str);
+                   node.right = Deserialize(str);
+               }
+               return node;
+           }
+       }
+     #+end_src
+   - 不使用成员变量(有辅助有返回值 未调通)
+     #+begin_src java :classname 
+       import java.util.*;
+  
+       public class Solution {
+           String Serialize(TreeNode root) {
+               StringBuilder Ser = new StringBuilder();
+               if (root == null) {
+                   Ser.append("#,");
+                   return Ser.toString();
+               }
+               // Ser.append(String.valueOf(root.val));
+               // Integer.toString(root.val); Integer(root.val).toString();
+               Ser.append(root.val + ",");
+               Ser.append(Serialize(root.left));
+               Ser.append(Serialize(root.right));
+               return Ser.toString();
+           }
+           TreeNode Deserialize(String str) {
+               return Helper(str, 0);
+           }
+           TreeNode Helper(String str, int index) {
+               String[] sstr = str.split(",");
+               TreeNode node = null;
+               if (!sstr[index].equals("#")) {
+                   node = new TreeNode(Integer.valueOf(sstr[index]));
+                   node.left = Helper(str, index+1);
+                   node.right = Helper(str, index+2);
+               }
+               return node;
+           }
+       }
+     #+end_src
+*** Question:                                                     :QUESTIONS:
+    - [ ] 对 ~Deserialize~ 的理解
+    - [ ] 不使用成员变量调通？联系 [[elink6][34]] 思考
+** 非递归(层序遍历)
+     #+begin_src java :classname 
+       import java.util.*;
+
+       public class Solution {
+           String Serialize(TreeNode root) {
+               StringBuilder Ser = new StringBuilder();
+               Queue<TreeNode> queue = new LinkedList<>();
+               if (root != null) queue.offer(root);
+               while (!queue.isEmpty()) {
+                   TreeNode node = queue.poll();
+                   if (node == null) Ser.append("#,");
+                   else {
+                       Ser.append(node.val+",");
+                       queue.offer(node.left);
+                       queue.offer(node.right);
+                   }
+               }
+               if (Ser.length() != 0) Ser.deleteCharAt(Ser.length()-1);
+               return Ser.toString();
+           }
+           TreeNode Deserialize(String str) {
+               if (str == null || str.length() == 0) return null;
+               String[] sstr = str.split(",");
+               TreeNode[] nodes = new TreeNode[sstr.length];
+               for (int i = 0; i < sstr.length; i++) {
+                   if (!sstr[i].equals("#")) nodes[i] = new TreeNode(Integer.valueOf(sstr[i]));
+               }
+               for (int i = 0, j = 1; j < sstr.length; i++) {
+                   if (nodes[i] != null) {
+                       nodes[i].left = nodes[j++];
+                       nodes[i].right = nodes[j++];
+                   }
+               }
+               return nodes[0];
+           }
+       }
+     #+end_src
+** Question:                                                      :QUESTIONS:
+   - [ ] 前后中层遍历的迭代和递归写法？用后序和中序实现？
+* 38 字符串的排列                                                   :TOBEORG:
+** 递归(回溯)
+   #+begin_src java :classname 
+     import java.util.*;
+
+     public class Solution {
+         private ArrayList<String> list = new ArrayList<>();
+         // private HashSet<String> set = new HashSet<>();
+         public ArrayList<String> Permutation(String str) {
+             Helper(str.toCharArray(), 0);
+             // ArrayList<String> list = new ArrayList<>(set);
+             Collections.sort(list);
+             return list;
+         }
+
+         private void Helper(char[] cstr, int index) {
+             if (cstr == null || cstr.length == 0) return;
+             if (index == cstr.length - 1) {
+                 String str = new String(cstr); //or String str = String.valueOf(cstr);
+                 if (!list.contains(str)) list.add(str);
+                 // set.add(str);
+                 return;
+             } else {
+                 for (int i = index; i < cstr.length; i++) {
+                     swap(cstr, i, index);
+                     Helper(cstr, index+1);
+                     swap(cstr, i, index);
+                 }
+             }
+         }
+
+         private void swap(char[] cstr, int i, int j) {
+             char temp = cstr[i];
+             cstr[i] = cstr[j];
+             cstr[j] = temp;
+         }
+     }
+   #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 递归和回溯?
+** 迭代(字典生成算法)                                            :UNRESOLVED:
+   #+begin_src java :classname 
+     import java.util.*;
+
+     public class Solution {
+
+         public ArrayList<String> Permutation(String str) {
+            ArrayList<String> res = new ArrayList<>();
+ 
+             if (str != null && str.length() > 0) {
+                 char[] seq = str.toCharArray();
+                 Arrays.sort(seq); //排列
+                 res.add(String.valueOf(seq)); //先输出一个解
+ 
+                 int len = seq.length;
+                 while (true) {
+                     int p = len - 1, q;
+                     //从后向前找一个seq[p - 1] < seq[p]
+                     while (p >= 1 && seq[p - 1] >= seq[p]) --p;
+                     if (p == 0) break; //已经是“最小”的排列，退出
+                     //从p向后找最后一个比seq[p]大的数
+                     q = p; --p;
+                     while (q < len && seq[q] > seq[p]) q++;
+                     --q;
+                     //交换这两个位置上的值
+                     swap(seq, q, p);
+                     //将p之后的序列倒序排列
+                     reverse(seq, p + 1);
+                     res.add(String.valueOf(seq));
+                 }
+             }
+ 
+             return res;
+         }
+     
+         public static void reverse(char[] seq, int start) {
+             int len;
+             if(seq == null || (len = seq.length) <= start)
+                 return;
+             for (int i = 0; i < ((len - start) >> 1); i++) {
+                 int p = start + i, q = len - 1 - i;
+                 if (p != q)
+                     swap(seq, p, q);
+             }
+         }
+     
+         public static void swap(char[] cs, int i, int j) {
+             char temp = cs[i];
+             cs[i] = cs[j];
+             cs[j] = temp;
+         }
+     }
+   #+end_src 
+
+** 本体扩展                                                :UNRESOLVED:EXTRA:
+   可以回忆联系下61a里类似的内容
+** 相关题目                                                :UNRESOLVED:EXTRA:
+* 39 数组中出现次数超过一半的数字                                   :TOBEORG:
+** 利用快排的 ~Partition~ (改变数组元素)
+   #+begin_src java :classname 
+     public class Solution {
+         public int MoreThanHalfNum_Solution(int[] array) {
+             if (array == null || array.length <= 0) return 0;
+             int mid = array.length >> 1;
+             // Helper(array, mid, 0, array.length-1);
+             // int result = array[mid];
+             int start = 0, end = array.length - 1;
+             int result = Partition(array, start, end);
+             while (result != mid) {
+                 if (result > mid) end = result - 1;
+                 if (result < mid) start = result + 1;
+                 result = Partition(array, start, end);
+             }
+             result = array[result];
+             return Valid(result, array) ? result : 0;
+         }
+
+         private void Helper(int[] array, int mid, int start, int end) {
+             int index = Partition(array, start, end);
+             if (index == mid) return;
+             if (index < mid) start = index + 1;
+             if (index > mid) end = index - 1;
+             Helper(array, mid, start, end);
+         }
+
+         private int Partition(int[] array, int start, int end) {
+             // if (array ==  null || array.length <= 0 || start < 0 || end >= array.length || start > end) throw new E;
+             // int pivot = random(start, end);
+             // Swap(array, pivot, end);
+             Swap(array, start, end);
+             int small = start - 1;
+             for (int index = start; index < end; index++) {
+                 if (array[index] < array[end]) {
+                     small += 1;
+                     if (small != index) Swap(array, small, index);
+                 }
+             }
+             small += 1;
+             Swap(array, small, end);
+             return small;
+         }
+
+         private void Swap(int[] array, int i, int j) {
+             int temp = array[i];
+             array[i] = array[j];
+             array[j] = temp;
+         }
+
+         private boolean Valid(int result, int[] array) {
+             int num = 0;
+             for (int i = 0; i < array.length; i++) {
+                 if (result == array[i]) num += 1;
+             }
+             return num > (array.length >> 1);
+         }
+     }
+   #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 对比学习以下以 *数组* 为载体和以[[file:~/csnds/Dropbox/orglife/61b_labs.org::<<elink7>>][ *队列* ]]为载体的快排实现
+      #+begin_src java :classname 
+        public static void QuickSort(int[] array, int start, int end) {
+            if (start == end) return;
+            int index = Partition(array, start, end);
+            if (index > start) QuickSort(array, start, index-1);
+            if (index < end) QuickSort(array, index+1, end);
+        }
+      #+end_src
+      - 递归终止 ~start == end~ 的理解
+      - 以 *数组* 为载体的非递归实现?
+      - ~Generic[] array~ 的快排实现?
+** 利用数组特点(不改变数组元素)
+   #+begin_src java :classname 
+     public class Solution {
+         public int MoreThanHalfNum_Solution(int[] array) {
+             if (array == null || array.length <= 0) return 0;
+             int result = array[0], times = 1;
+             for (int i = 1; i < array.length; i++) {
+                 if (times == 0) {
+                     result = array[i];
+                     times = 1;
+                 } else if (result == array[i]) {
+                     times += 1;
+                 } else {
+                     times -= 1;
+                 }
+             }
+             return Valid(result, array) ? result : 0;
+         }
+         private boolean Valid(int result, int[] array) {
+             int num = 0;
+             for (int i = 0; i < array.length; i++) {
+                 if (result == array[i]) num += 1;
+             }
+             return num > (array.length >> 1);
+         }
+     }
+   #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 进一步理解以上逻辑
+    - [ ] 与利用 ~Partition~ 对比， *无有效值* 情况下两者返回值的特点?
+* 40 最小的k个数                                                    :TOBEORG:
+** 利用快排的 ~Partition~ (改变数组元素)
+   #+begin_src java :classname 
+     import java.util.ArrayList;
+
+     public class Solution {
+         public ArrayList<Integer> GetLeastNumbers_Solution(int[] input, int k) {
+             ArrayList<Integer> list = new ArrayList<>();
+             if (input == null || input.length < k || k <= 0) return list;
+             int start = 0, end = input.length - 1;
+             int result = Partition(input, start, end);
+             while (result != k-1) {
+                 if (result > k-1) end = result - 1;
+                 if (result < k-1) start = result + 1;
+                 result = Partition(input, start, end);
+             }
+             for (int i = 0; i <= k-1; i++) {
+                 list.add(input[i]);
+             }
+             return list;
+         }
+
+         private int Partition(int[] array, int start, int end) {
+             // if (array ==  null || array.length <= 0 || start < 0 || end >= array.length || start > end) throw new E;
+             // int pivot = random(start, end);
+             // Swap(array, pivot, end);
+             Swap(array, start, end);
+             int small = start - 1;
+             for (int index = start; index < end; index++) {
+                 if (array[index] < array[end]) {
+                     small += 1;
+                     if (small != index) Swap(array, small, index);
+                 }
+             }
+             small += 1;
+             Swap(array, small, end);
+             return small;
+         }
+
+         private void Swap(int[] array, int i, int j) {
+             int temp = array[i];
+             array[i] = array[j];
+             array[j] = temp;
+         }
+     }
+   #+end_src 
+** 利用数据容器存储
+   #+begin_src java :classname 
+     import java.util.*;
+
+     public class Solution {
+         public ArrayList<Integer> GetLeastNumbers_Solution(int[] input, int k) {
+             ArrayList<Integer> list = new ArrayList<>();
+             if (input == null || input.length < k || k <= 0) return list;
+             PriorityQueue<Integer> pq = new PriorityQueue<>(k, Collections.reverseOrder());
+        
+             for (int i = 0; i < input.length; i++) {
+                 if (pq.size() < k) pq.add(input[i]);
+                 else {
+                     int max = pq.peek();
+                     if (max > input[i]) {
+                         pq.poll();
+                         pq.add(input[i]);
+                     }
+                 }
+             }
+
+             return new ArrayList(pq);
+         }
+     }
+   #+end_src 
+* 41 数据流中的中位数                                               :TOBEORG:
+  #+begin_src java :classname 
+    import java.util.*;
+
+    public class Solution {
+        PriorityQueue<Integer> min = new PriorityQueue<>();
+        PriorityQueue<Integer> max = new PriorityQueue<>(1, Collections.reverseOrder());
+        public void Insert(Integer num) {
+            if (((min.size()+max.size()) & 1) == 0) {
+                if (max.size() > 0 && num < max.peek()) {
+                    max.add(num);
+                    num = max.poll();
+                }
+                min.add(num);
+            } else {
+                if (min.size() > 0 && num > min.peek()) {
+                    min.add(num);
+                    num = min.poll();
+                }
+                max.add(num);
+           
+            }
+        }
+
+        public Double GetMedian() {
+            int size = min.size() + max.size();
+            Double midian = 0.0;
+            if (size != 0) {
+                // if ((size & 1) == 1) midian = Double.valueOf(min.peek());
+                if ((size & 1) == 1) midian = new Double(min.peek());
+                else midian = (min.peek() + max.peek()) / 2.0;
+            }
+            return midian;
+        }
+    }
+  #+end_src 
+* 42 连续子数组的最大和                                             :TOBEORG:
+** 数组规律
+   #+begin_src java :classname 
+     public class Solution {
+         public int FindGreatestSumOfSubArray(int[] array) {
+             int maxSum = Integer.MIN_VALUE, sum = 0;
+             if (array == null || array.length <= 0) return maxSum;
+             for (int i = 0; i < array.length; i++) {
+                 sum += array[i];
+                 if (maxSum < sum) maxSum = sum;
+                 if (sum < 0) {
+                     sum = 0;
+                 }
+             }
+             return maxSum;
+         }
+     }
+   #+end_src 
+** 动态规划
+   #+begin_src java :classname 
+     public class Solution {
+         public int FindGreatestSumOfSubArray(int[] array) {
+             int maxSum = Integer.MIN_VALUE, sum = 0;
+             if (array == null || array.length <= 0) return maxSum;
+             for (int i = 0; i < array.length; i++) {
+                 sum = sum + array[i] > array[i] ? sum + array[i] : array[i];
+                 maxSum = sum > maxSum ? sum : maxSum;
+             }
+             return maxSum;
+         }
+     }
+   #+end_src 
+* 43 1~n整数中1出现的次数                                        :UNRESOLVED:
+  #+begin_src java :classname 
+    public class Solution {
+        public int NumberOf1Between1AndN_Solution(int n) {
+    
+        }
+    }
+  #+end_src 
+* 44 数字序列中某一位的数字                                         :TOBEORG:
+  #+begin_src java :classname 
+    import java.util.*;
+
+    class Solution {
+        public int findNthDigit(int n) {
+            if (n <= 0) return 0;
+            if (n <= 9) return n;
+            n -= 10;
+            int i = 1;
+
+            while (true) {
+                // int j = 9 * (int) Math.pow(10,i) * (i+1);
+                int j = (int) (9 * Math.pow(10,i) * (i+1));
+                if (n < j) break;
+                i += 1;
+                n -= j;
+            }
+            // int num = n / (i+1) + (int) Math.pow(10,i);
+            int num = (int) (n/(i+1) + Math.pow(10,i));
+            return String.valueOf(num).charAt(n%(i+1)) - '0';
+        }
+    }
+  #+end_src 
+** Question:                                                      :QUESTIONS:
+   - [ ] 关于 ~(int)~ 强制类型转换的问题
+* 45 把数组排成最小的数                                             :TOBEORG:
+  - 用 ~String[]~ 和 ~StringBuffer~ 
+    #+begin_src java :classname 
+      import java.util.*;
+  
+      class Solution {
+          public String minNumber(int[] nums) {
+              if (nums == null || nums.length <= 0) return null;
+              String[] str = new String[nums.length];
+              for (int i = 0; i < nums.length; i++) {
+                  str[i] = Integer.toString(nums[i]);
+                  // str[i] = String.valueOf(nums[i]);
+              }
+  
+              // Comparator<String> strComparator = (String s1, String s2) -> {
+              //     return (s1+s2).compareTo(s2+s1);
+              // };
+              // Arrays.sort(str, strComparator);
+  
+              Arrays.sort(str, new Comparator<String>() {
+                      @Override
+                      public int compare(String s1, String s2) {
+                          return (s1+s2).compareTo(s2+s1);
+                      }
+                  });
+  
+              StringBuffer sstr = new StringBuffer();
+              for (int i = 0; i< str.length; i++) {
+                  sstr.append(str[i]);
+              }
+              return sstr.toString();
+          }
+      }
+    #+end_src
+  - 用 ~List~ (耗时更长)
+    #+begin_src java :classname 
+      class Solution {
+          public String minNumber(int[] nums) {
+              List<String> list = new ArrayList<>();
+              for (int num : nums) {
+                  list.add(String.valueOf(num));
+              }
+              list.sort((o1, o2) -> (o1 + o2).compareTo(o2 + o1));
+              return String.join("", list);
+          }
+      }
+    #+end_src
+  - 会错题意(以为以 ~char~ 为最小单位)
+    #+begin_src java :classname 
+      import java.util.*;
+  
+      class Solution {
+          public String minNumber(int[] nums) {
+              if (nums == null || nums.length <= 0) return null;
+              StringBuffer str = new StringBuffer();
+              for (int i = 0; i < nums.length; i++) {
+                  str.append(nums[i]);
+              }
+              char[] ch = (new String(str)).toCharArray();
+              Arrays.sort(ch);
+              int count = 0;
+              for (int i = 0; i < ch.length; i++) {
+                  if (ch[i] != '0') break;
+                  count += 1;
+              }
+              int len = str.length();
+              if (count < ch.length) str.append(ch, count, 1);
+              str.append(ch, 0, count);
+              if (count < ch.length - 1) str.append(ch, count+1, ch.length-count-1);
+              str.delete(0, len);
+              return str.toString();
+          }
+      }
+    #+end_src
+** Question:                                                      :QUESTIONS:
+   - [ ] 为什么用 ~list~ 会慢？
+   - [ ] 数学证明有效性？
+* 46 把数字翻译成字符串                                             :TOBEORG:
+** 递归(回溯)
+   #+begin_src java :classname 
+     class Solution {
+         public int translateNum(int num) {
+             String str = String.valueOf(num);
+             return Helper(str, 0);
+         }
+
+         private int Helper(String str, int pos) {
+             int len = str.length();
+
+             if (pos >= len-1) return 1;
+             String substr = str.substring(pos, pos+2);
+             int subint = Integer.parseInt(substr);
+             if (str.charAt(pos) == '0' || subint > 25) return Helper(str, pos+1);
+             return Helper(str, pos+1) + Helper(str, pos+2);
+         }
+     }
+   #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 重复子问题不会影响结果吗(联系非波拉起递归)?如何避免重复子问题？
+** 划分型DP
+   #+begin_src java :classname 
+     class Solution {
+         public int translateNum(int num) {
+             String str = String.valueOf(num);
+             int len = str.length();
+             int[] dp = new int[11];
+             dp[0] = 1;
+             dp[1] = 1;
+             for (int i = 1; i < len; i++) {
+                 String substr = str.substring(i-1, i+1);
+                 int subint = Integer.parseInt(substr);
+                 if (str.charAt(i-1) == '0' || subint > 25) dp[i+1] = dp[i];
+                 else dp[i+1] = dp[i] + dp[i-1];
+             }
+             return dp[len];
+         }
+     }
+   #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] dp问题仿照递归问题的分析模式: 问题建模(划分型) 依赖定式 初始边界 开始与结束等
+    - [ ] 书上的"从最小子问题自下而上解决问题"思路?与本题dp关系?
+    - [ ] 递归 回溯 dp 迭代 关系?
+** 书上思路(迭代)                                                :UNRESOLVED:
+* 47 礼物的最大价值                                                 :TOBEORG:
+** DP
+   #+begin_src java :classname 
+     class Solution {
+         public int maxValue(int[][] grid) {
+             if (grid == null || grid.length <= 0 || grid[0].length <= 0) return 0;
+             int rows = grid.length;
+             int cols = grid[0].length;
+             for (int row = 1; row < rows; row++) {
+                 grid[row][0] += grid[row-1][0];
+             }
+             for (int col = 1; col < cols; col++) {
+                 grid[0][col] += grid[0][col-1];
+             }
+
+             for (int row = 1; row < rows; row++) {
+                 for (int col = 1; col < cols; col++) {
+                     grid[row][col] += Math.max(grid[row-1][col], grid[row][col-1]);
+                 }
+             }
+             return grid[rows-1][cols-1];
+         }
+     }
+   #+end_src 
+* 48 最长不含重复字符的子字符串                                     :TOBEORG:
+** 借助HashMap
+*** 原思路
+    #+begin_src java :classname 
+       class Solution {
+          public int lengthOfLongestSubstring(String s) {
+              if (s == null || s.length() <= 0) return 0;
+              HashMap<Character, Integer> map = new HashMap<>();
+              int result = 0, len = s.length();
+              for (int i = 0; i < len; i++) {
+                  if (len - i <= result) break;
+                  for (int j = i; j < len; j++) {
+                      char c = s.charAt(j);
+                      if (!map.containsKey(c)) map.put(c, j);
+                      else {
+                          i = map.get(c);
+                          result = result < map.size() ? map.size() : result;
+                          map.clear();
+                          break;
+                      }
+                  }
+              }
+              result = result < map.size() ? map.size() : result;
+              return result;
+          }
+      }
+    #+end_src 
+*** 滑动窗口(双指针)
+    #+begin_src java :classname 
+      class Solution {
+          public int lengthOfLongestSubstring(String s) {
+              if (s == null || s.length() <= 0) return 0;
+              HashMap<Character, Integer> map = new HashMap<>();
+              int result = 0, head = 0, len = s.length();
+              for (int tail = 0; tail < len; tail++) {
+                  char c = s.charAt(tail);
+                  if (map.containsKey(c) && map.get(c) >= head) {
+                      if (tail - head > result) result = tail - head;
+                      head = map.get(c) + 1;
+                  }
+                  map.put(c, tail);
+              }
+              if (result < len - head) result = len - head;
+              return result;
+          }
+      }
+    #+end_src 
+** DP(迭代)
+   #+begin_src java :classname 
+     class Solution {
+         public int lengthOfLongestSubstring(String s) {
+             if (s == null || s.length() <= 0) return 0;
+             int curLen = 0, maxLen = 0;
+             int[] pos = new int[95];
+             for (int i = 0; i < 95; i++) {
+                 pos[i] = -1;
+             }
+
+             for (int i = 0; i < s.length(); i++) {
+                 int offSet = s.charAt(i) - ' ';
+                 int prevIndex = pos[offSet];
+                 if (prevIndex < 0 || i - prevIndex > curLen) curLen += 1;
+                 else {
+                     if (maxLen < curLen) maxLen = curLen;
+                     curLen = i - prevIndex;
+                 }
+                 pos[offSet] = i;
+             }
+             return maxLen > curLen ? maxLen : curLen;
+         }
+     }
+   #+end_src 
+** 递归                                                          :UNRESOLVED:
+* 49 丑数
+  #+begin_src java :classname 
+    class Solution {
+        public int nthUglyNumber(int n) {
+
+        }
+    }
+  #+end_src 
+* 50 第一个只出现一次的字符
+* 51 数组中的逆序对
+* 52 两个链表的第一个公共节点
+* 53 在排序数组中查找数字
+* 54 二叉搜索树的第k大节点
+* 55 二叉树的深度
