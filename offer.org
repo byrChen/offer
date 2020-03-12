@@ -1,6 +1,6 @@
 #+TAGS: TOBEORG(t) QUESTIONS(q) UNRESOLVED(u) EXTRA(e)
 * 3 数组中重复的数字
-** 题目一 找出数组中重复的数字
+** 1 找出数组中重复的数字
 *** 一边排序一边查重 <<ilink2>>
     #+begin_src java :classname 
       public class Solution {
@@ -87,7 +87,7 @@
     - 复杂度
       - $O(n)$
       - $O(n)$
-** 题目二 不修改数组找出重复的数字
+** 2 不修改数组找出重复的数字
 *** 辅助数组 
     #+begin_src java :classname 
       public class Solution {
@@ -537,7 +537,7 @@
    - 复杂度
      - $O(n)$
      - $O(n)$
-* 9 用两个栈实现队列
+* 9 用两个栈实现队列 <<ilink25>>
   #+begin_src java :classname 
     import java.util.Stack;
 
@@ -564,7 +564,7 @@
     - *渐进* $O(1)$
 ** 相关题目                                                :UNRESOLVED:EXTRA:
 * 10 斐波那契数列
-** 题目一 求斐波那契数列的第n项
+** 1 求斐波那契数列的第n项
 *** 迭代（优化递归）
     #+begin_src java :classname 
       public class Solution {
@@ -595,7 +595,7 @@
         - $O(n)$
         - $O(1)$
 *** 矩阵递归                                               :UNRESOLVED:EXTRA:
-** 题目二 青蛙跳台阶
+** 2 青蛙跳台阶
     #+begin_src java :classname 
       public class Solution {
           public int JumpFloor(int target) {
@@ -1316,7 +1316,7 @@
      - 
 ** Question:                                                      :QUESTIONS:
    - [ ] 递归复杂度分析？
-* 20 表示数值的字符串
+* 20 表示数值的字符串 <<ilink28>>                                    :STRING:
 ** 正则匹配
 *** ~String.matches~ 
     #+begin_src java :classname 
@@ -2075,7 +2075,7 @@
      - *复杂度可接受*
        - $O(n)$
        - $O(n)$
-** 迭代（本题扩展）                                         :EXTRA:ITERATIVE:
+** 迭代（本题扩展） <<ilink30>>                             :EXTRA:ITERATIVE:
    #+begin_src java :classname 
      import java.util.*;
 
@@ -2550,7 +2550,7 @@
     #+end_src 
 ** Question:                                                      :QUESTIONS:
    - [ ] Java能否类似python递归？
-* 30 包含min函数的栈
+* 30 包含min函数的栈 <<ilink26>>
 ** 辅助栈记录历史最小值
    - 未优化辅助栈空间
      #+begin_src java :classname 
@@ -3126,7 +3126,7 @@
               }
           }
         #+end_src 
-* 33 二叉搜索树的后序遍历序列
+* 33 二叉搜索树的后序遍历序列 <<ilink31>>
 ** 递归
 *** 直接  
     - 优化
@@ -3398,7 +3398,7 @@
       };
     #+end_src
 * 34 二叉树中和为某一值的路径                                       :TOBEORG:
-** 递归(回溯 前序遍历)
+** 递归(回溯 前序遍历) <<ilink32>>
 *** 不考虑数组长度(无辅助有返回递归函数)
     #+begin_src java :classname 
       import java.util.*;
@@ -3488,8 +3488,8 @@
 *** Question:                                                     :QUESTIONS:
     - [ ] 关于递归，结合 [[ilink21][offer36]] [[ilink22][offer12]] [[ilink23][offer13]] [[file:~/csnds/Dropbox/orglife/61b_projs.org::<<elink3>>][61b作业]] 思考 <<elink6>>
       - [ ] 有无返回
-      - [ ] 有无辅助
-      - [ ] 有无成员变量
+      - [ ] 有无辅助方法
+      - [ ] 有无成员变量辅助记录状态
       - [ ] 递归与回溯关系
 ** 迭代(后序遍历)                                                :UNRESOLVED:
    #+begin_src C 
@@ -3941,7 +3941,7 @@
 ** Question:                                                      :QUESTIONS:
    - [ ] 前后中层遍历的迭代和递归写法？用后序和中序实现？
 * 38 字符串的排列                                                   :TOBEORG:
-** 递归(回溯)
+** 递归(回溯) <<ilink33>>
    #+begin_src java :classname 
      import java.util.*;
 
@@ -4098,7 +4098,7 @@
      }
    #+end_src 
 *** Question:                                                     :QUESTIONS:
-    - [ ] 对比学习以下以 *数组* 为载体和以[[file:~/csnds/Dropbox/orglife/61b_labs.org::<<elink7>>][ *队列* ]]为载体的快排实现
+    - [ ] 对比学习以下以 *数组* 为载体和以[[file:~/csnds/Dropbox/orglife/61b_labs.org::<<elink7>>][ *队列* ]]为载体的快排实现 <<ilink24>>
       #+begin_src java :classname 
         public static void QuickSort(int[] array, int start, int end) {
             if (start == end) return;
@@ -4390,8 +4390,8 @@
 ** Question:                                                      :QUESTIONS:
    - [ ] 为什么用 ~list~ 会慢？
    - [ ] 数学证明有效性？
-* 46 把数字翻译成字符串                                             :TOBEORG:
-** 递归(回溯)
+* 46 把数字翻译成字符串 <<ilink29>>                                 :TOBEORG:
+** 递归(回溯) <<ilink34>>
    #+begin_src java :classname 
      class Solution {
          public int translateNum(int num) {
@@ -4431,10 +4431,10 @@
          }
      }
    #+end_src 
-*** Question:                                                     :QUESTIONS:
+*** Question:                                                     :QUESTIONS: <<ilink27>>
     - [ ] dp问题仿照递归问题的分析模式: 问题建模(划分型) 依赖定式 初始边界 开始与结束等
     - [ ] 书上的"从最小子问题自下而上解决问题"思路?与本题dp关系?
-    - [ ] 递归 回溯 dp 迭代 关系?
+    - [ ] 递归 回溯 dp 迭代 关系?自上而下 自下而上 自大而小 自小而大?
 ** 书上思路(迭代)                                                :UNRESOLVED:
 * 47 礼物的最大价值                                                 :TOBEORG:
 ** DP
@@ -4487,7 +4487,7 @@
           }
       }
     #+end_src 
-*** 滑动窗口(双指针)
+*** 滑动窗口(双指针) 
     #+begin_src java :classname 
       class Solution {
           public int lengthOfLongestSubstring(String s) {
@@ -4533,17 +4533,1429 @@
      }
    #+end_src 
 ** 递归                                                          :UNRESOLVED:
-* 49 丑数
+* 49 丑数                                                           :TOBEORG:
+** 递归                                                          :UNRESOLVED:
+   #+begin_src java :classname 
+     class Solution {
+         public int nthUglyNumber(int n) {
+             if (n <= 3) return n;
+             int pre = nthUglyNumber(n-1);
+             if (isUgly(pre+1)) return pre + 1;
+             else {
+
+             }
+         }
+
+         private boolean isUgly(int n) {
+             while (n % 2 == 0) {
+                 n /= 2;
+             }
+             while (n % 3 == 0) {
+                 n /= 3;
+             }
+             while (n % 5 == 0) {
+                 n /= 5;
+             }
+             return n == 1;
+         }
+     }
+   #+end_src 
+** DP(利用数组保存)
   #+begin_src java :classname 
     class Solution {
         public int nthUglyNumber(int n) {
+            if (n <= 0) return 0;
+            int[] uglyNums = new int[n];
+            int p2 = 0, p3 = 0, p5 = 0;
+            uglyNums[0] = 1;
+            for (int i = 1; i < n; i++) {
+                uglyNums[i] = min(uglyNums[p2]*2, uglyNums[p3]*3, uglyNums[p5]*5);
+                // while (uglyNums[p2]*2 <= uglyNums[i]) p2 += 1;
+                // while (uglyNums[p3]*3 <= uglyNums[i]) p3 += 1;
+                // while (uglyNums[p5]*5 <= uglyNums[i]) p5 += 1;
+                if (uglyNums[p2]*2 == uglyNums[i]) p2 += 1;
+                if (uglyNums[p3]*3 == uglyNums[i]) p3 += 1;
+                if (uglyNums[p5]*5 == uglyNums[i]) p5 += 1;
+            }
+            return uglyNums[n-1];
+        }
 
+        private int min(int n1, int n2, int n3) {
+            int n = n1 > n2 ? n2 : n1;
+            return n > n3 ? n3 : n;
         }
     }
   #+end_src 
-* 50 第一个只出现一次的字符
-* 51 数组中的逆序对
-* 52 两个链表的第一个公共节点
-* 53 在排序数组中查找数字
-* 54 二叉搜索树的第k大节点
-* 55 二叉树的深度
+* 50 第一个只出现一次的字符                                         :TOBEORG:
+** 用 ~HashMap~ 
+   #+begin_src java :classname 
+     class Solution {
+         public char firstUniqChar(String s) {
+             if (s == null || s.length() <= 0) return ' ';
+             HashMap<Character, Integer> map = new HashMap<>();
+             int len = s.length();
+             for (int i = 0; i < len; i++) {
+                 char c = s.charAt(i);
+                 if (!map.containsKey(c)) map.put(c, 1);
+                 else map.put(c, map.get(c)+1);
+             }
+             for (int i = 0; i < len; i++) {
+                 char c = s.charAt(i);
+                 if (map.get(c) == 1) return c;
+             }
+             return ' ';
+         }
+     }
+   #+end_src 
+** 用数组模拟 ~HashMap~ (更快)
+   #+begin_src java :classname 
+     class Solution {
+         public char firstUniqChar(String s) {
+             if (s == null || s.length() <= 0) return ' ';
+             int[] map = new int[95];
+             int len = s.length();
+             for (int i = 0; i < len; i++) {
+                 int offset = s.charAt(i) - ' ';
+                 map[offset] += 1;
+             }
+             for (int i = 0; i < len; i++) {
+                 int offset = s.charAt(i) - ' ';
+                 if (map[offset] == 1) return s.charAt(i);
+             }
+             return ' ';
+         }
+     }
+   #+end_src 
+** 2 字符流中第一个只出现一次的字符                         :UNRESOLVED:
+* 51 数组中的逆序对                                                 :TOBEORG:
+** 归并排序
+*** 基于 ~Queue~ (递归，迭代不可行)
+    #+begin_src java :classname 
+      class Solution {
+          private int N = 0;
+          public int reversePairs(int[] nums) {
+              if (nums == null || nums.length <= 1) return N;
+              Queue<Integer> queue = new LinkedList<>(); //不能写成 new Queue<>(), 因为 Queue 是个接口，无构造函数．
+              for (int i = 0; i < nums.length; i++) {
+                  queue.add(nums[i]);
+              }
+              mergeSort(queue);
+              return N;
+          }
+
+          private Queue<Integer> mergeSort(Queue<Integer> nums) {
+              if (nums.size() <= 1) return nums;
+              int len = nums.size();
+              Queue<Integer> q1 = new LinkedList<>();
+              Queue<Integer> q2 = new LinkedList<>();
+              for (int i = 0; i < len/2; i++) {
+                  q1.offer(nums.poll());
+              }
+              for (int i = len/2; i < len; i++) {
+                  q2.offer(nums.poll());
+              }
+              return mergeSorted(mergeSort(q1), mergeSort(q2));
+
+              // Queue<Queue<Integer>> queues = singleIntQueues(nums);
+              // while (queues.size() > 1) {
+              //     Queue<Integer> q1 = queues.poll();
+              //     Queue<Integer> q2 = queues.poll();
+              //     queues.offer(mergeSorted(q1,q2));
+              // }
+              // return queues.poll();
+          }
+
+          private Queue<Integer> mergeSorted(Queue<Integer> q1, Queue<Integer> q2) {
+              Queue<Integer> sortedq = new LinkedList<>();
+              while (!q1.isEmpty() || !q2.isEmpty()) {
+                  sortedq.offer(getMin(q1, q2));
+              }
+              return sortedq;
+          }
+
+          private int getMin(Queue<Integer> q1, Queue<Integer> q2) {
+              if (!q1.isEmpty() && !q2.isEmpty()) {
+                  int n1 = q1.peek(), n2 = q2.peek();
+                  if (n1 > n2) {
+                      N += q1.size();
+                      return q2.poll();
+                  } else {
+                      return q1.poll();
+                  }
+              } else if (q1.isEmpty()) {
+                  return q2.poll();
+              } else return q1.poll();
+          }
+
+          private Queue<Queue<Integer>> singleIntQueues(Queue<Integer> nums) {
+              Queue<Queue<Integer>> queues = new LinkedList<>();
+              for (Integer num : nums) {
+                  Queue<Integer> que = new LinkedList<>();
+                  que.offer(num);
+                  queues.offer(que);
+              }
+              return queues;
+          }
+      }
+    #+end_src 
+*** 基于数组(递归)
+    #+begin_src java :classname 
+      class Solution {
+          public int reversePairs(int[] nums) {
+              if (nums == null || nums.length <= 1) return 0;
+              int len = nums.length;
+              int[] copy = new int[len];
+              for (int i = 0; i < len; i++) {
+                  copy[i] = nums[i];
+              }
+              return revHelper(nums, copy, 0, len-1);
+          }
+
+          private int revHelper(int[] nums, int[] copy, int start, int end) {
+              if (start == end) {
+                  copy[start] = nums[start];
+                  return 0;
+              }
+              int mid = (start + end) / 2;
+              int left = revHelper(copy, nums, start, mid);
+              int right = revHelper(copy, nums, mid+1, end);
+
+              int lStart = start, rStart = mid+1, copyStart = start, count = 0;
+              while(lStart <= mid && rStart <= end) {
+                  if (nums[lStart] > nums[rStart]) {
+                      copy[copyStart++] = nums[rStart++];
+                      count += mid - lStart + 1;
+                  } else {
+                      copy[copyStart++] = nums[lStart++];
+                  }
+              }
+              while (lStart <= mid) {
+                  copy[copyStart++] = nums[lStart++];
+              }
+              while (rStart <= end) {
+                  copy[copyStart++] = nums[rStart++];
+              }
+
+              // int lEnd = mid, rEnd = end, copyEnd = end, count = 0;
+              // while (lEnd >= start && rEnd >= mid+1) {
+              //     if (nums[lEnd] > nums[rEnd]) {
+              //         copy[copyEnd--] = nums[lEnd--];
+              //         count += rEnd - mid;
+              //     } else {
+              //         copy[copyEnd--] = nums[rEnd--];
+              //     }
+              // }
+              // while (lEnd >= start) {
+              //     copy[copyEnd--] = nums[lEnd--];
+              // }
+              // while (rEnd >= mid+1) {
+              //     copy[copyEnd--] = nums[rEnd--];
+              // }
+
+              return left + right + count;
+          }
+      }
+    #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 基于 *数组* 的 *递归归并排序* 进一步理解
+      - [ ] 函数签名 ~revHelper(int[] nums, int[] copy, int start, int end)~ 的设计
+      - [ ] ~nums~ 和 ~copy~ 两个数组的关系，为什么 ~copy~ 要这样初始化?
+      - [ ] 在数组上如何利用 ~nums~, ~copy~, ~start~ 和 ~end~ 完成排序？即 *数组* 往往和 *指针* (索引)配合，联系 [[ilink24][基于数组的快排]]
+      - [ ] 对比基于 ~Queue~ 的归并，能否设计更 *模块化* ，更易读的辅助函数?
+** 树状数组                                                      :UNRESOLVED:
+   #+begin_src python :results output
+     class Solution:
+         def reversePairs(self, nums: List[int]) -> int:
+
+             class FenwickTree:
+                 def __init__(self, n):
+                     self.size = n
+                     self.tree = [0 for _ in range(n + 1)]
+
+                 def __lowbit(self, index):
+                     return index & (-index)
+
+                 # 单点更新：从下到上，最多到 len，可以取等
+                 def update(self, index, delta):
+                     while index <= self.size:
+                         self.tree[index] += delta
+                         index += self.__lowbit(index)
+
+                 # 区间查询：从上到下，最少到 1，可以取等
+                 def query(self, index):
+                     res = 0
+                     while index > 0:
+                         res += self.tree[index]
+                         index -= self.__lowbit(index)
+                     return res
+
+             # 特判
+             size = len(nums)
+             if size < 2:
+                 return 0
+
+             # 原始数组去除重复以后从小到大排序，这一步叫做离散化
+             s = list(set(nums))
+
+             # 构建最小堆，因为从小到大一个一个拿出来，用堆比较合适
+             import heapq
+             heapq.heapify(s)
+
+             # 由数字查排名
+             rank_map = dict()
+             rank = 1
+             # 不重复数字的个数
+             rank_map_size = len(s)
+             for _ in range(rank_map_size):
+                 num = heapq.heappop(s)
+                 rank_map[num] = rank
+                 rank += 1
+
+             res = 0
+             # 树状数组只要不重复数字个数这么多空间就够了
+             ft = FenwickTree(rank_map_size)
+
+             # 从后向前看，拿出一个数字来，就更新一下，然后向前查询比它小的个数
+             for i in range(size - 1, -1, -1):
+                 rank = rank_map[nums[i]]
+                 ft.update(rank, 1)
+                 res += ft.query(rank - 1)
+             return res
+   #+end_src 
+* 52 两个链表的第一个公共节点                                       :TOBEORG:
+** 辅助栈
+   #+begin_src java :classname 
+     public class Solution {
+         public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+             ListNode common = null;
+             Stack<ListNode> a = new Stack<>();
+             Stack<ListNode> b = new Stack<>();
+             ListNode p = headA, q = headB;
+             while (p != null) {
+                 a.push(p);
+                 p = p.next;
+             }
+             while (q != null) {
+                 b.push(q);
+                 q = q.next;
+             }
+             while (!a.empty() && !b.empty() && a.peek() == b.peek()) {
+                 common = a.pop();
+                 b.pop();
+             }
+             return common;
+         }
+     }
+   #+end_src 
+** 预遍历同步
+   #+begin_src java :classname 
+     public class Solution {
+         public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+             if (headA == null || headB == null) return null;
+             int lenA = 0, lenB = 0;
+             ListNode pA = headA, pB = headB;
+             while (pA != null) {
+                 lenA += 1;
+                 pA = pA.next;
+             }
+             while (pB != null) {
+                 lenB += 1;
+                 pB = pB.next;
+             }
+             pA = headA;
+             pB = headB;
+             if (lenA > lenB) {
+                 for (int i = 0; i < lenA - lenB; i++) {
+                     pA = pA.next;
+                 }
+             } else {
+                 for (int i = 0; i < lenB - lenA; i++) {
+                     pB = pB.next;
+                 }
+             }
+             while (pA != null && pB != null) {
+                 if (pA == pB) return pA;
+                 pA = pA.next;
+                 pB = pB.next;
+             }
+             return null;
+         }
+     }
+   #+end_src 
+** 双指针相遇
+   #+begin_src java :classname 
+     public class Solution {
+         public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+             if (headA == null || headB == null) return null;
+             ListNode p1 = headA, p2 = headB;
+             while (p1 != p2) {
+                 p1 = p1 != null ? p1.next : headB;
+                 p2 = p2 != null ? p2.next : headA;
+             }
+             return p1;
+         }
+     }
+   #+end_src 
+* 53 在排序数组中查找数字                                           :TOBEORG:
+** 1 数字在排序数组中出现的次数
+*** 递归
+    #+begin_src java :classname 
+      class Solution {
+          public int search(int[] nums, int target) {
+              if (nums == null || nums.length <= 0) return 0;
+              int start = getFirst(nums, target, 0, nums.length - 1);
+              int end = getLast(nums, target, 0, nums.length - 1);
+              if (start != -1 && end != -1) return end - start + 1;
+              return 0;
+          }
+
+          private int getFirst(int[] nums, int target, int start, int end) {
+              if (start > end) return -1;
+              int mid = (start + end) / 2;
+              if (nums[mid] < target) start = mid + 1;
+              else if (nums[mid] > target) end = mid - 1;
+              else {
+                  if (mid == 0 || nums[mid-1] != target) return mid;  
+                  end = mid - 1;
+              } 
+              return getFirst(nums, target, start, end);
+          }
+
+          private int getLast(int[] nums, int target, int start, int end) {
+              if (start > end) return -1;
+              int mid = (start + end) / 2;
+              if (nums[mid] < target) start = mid + 1;
+              else if (nums[mid] > target) end = mid - 1;
+              else {
+                  if (mid == nums.length-1 || nums[mid+1] != target) return mid;   
+                  start = mid + 1;
+              }
+              return getLast(nums, target, start, end);
+          }
+      }
+    #+end_src 
+*** 迭代
+    #+begin_src java :classname 
+      class Solution {
+          public int search(int[] nums, int target) {
+              if (nums == null || nums.length <= 0) return 0;
+              int len = nums.length, start = 0, end = len - 1, mid = (start + end) / 2;
+              while (nums[mid] != target) {
+                  if (nums[mid] < target) start = mid + 1;
+                  else end = mid - 1;
+                  if (start > end) return 0;
+                  mid = (start + end) / 2;
+              }
+              int startL = 0, endL = mid, midL = (startL + endL) / 2;
+              while (!isStart(nums, midL, target)) {
+                  if (nums[midL] == target) endL = midL - 1;
+                  else startL = midL + 1;
+                  midL = (startL + endL) / 2;
+              }
+              int startR = mid, endR = len - 1, midR = (startR + endR) / 2;
+              while (!isEnd(nums, midR, target)) {
+                  if (nums[midR] == target) startR = midR + 1;
+                  else endR = midR - 1;
+                  midR = (startR + endR) / 2;
+              }
+              return midR - midL + 1;
+          }
+          private boolean isStart(int[] nums, int mid, int target) {
+              return nums[mid] == target && (mid == 0 || nums[mid-1] != target);
+          }
+
+          private boolean isEnd(int[] nums, int mid, int target) {
+              return nums[mid] == target && (mid == nums.length-1 || nums[mid+1] != target);
+          }
+      }
+    #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 联系 [[ilink1][二分查找1]] [[ilink15][二分查找2]] 关于 *二分查找索引更新* 和 ~mid~ 位置的思考
+      - [ ] 索引更新
+        - [ ] 已知存在: ~start = mid or mid + 1~ ~end = mid or mid - 1~
+        - [ ] 不一定存在: ~start = mid + 1~ ~end = mid - 1~ 
+      - [ ] ~mid~ 在 *奇数* 长度时处于中间， *偶数* 长度处于 *前or后半段*, 取决于 ~end~ 的选择 ~len or len - 1~ 
+      - [ ] 不同的索引更新策略与的相应 ~mid~ 特点有什么关系?
+    - [ ] 基于以上结论实现迭代版本
+** 2 0~n-1中缺失的数字
+*** 迭代
+    #+begin_src java :classname 
+      class Solution {
+          public int missingNumber(int[] nums) {
+              int len = nums.length;
+              if (nums[0] == 1) return 0;
+              if (nums[len-1] == len - 1) return len;
+              int start = 0, end = len - 1, mid = (start + end) / 2;
+              while (!(nums[mid] == mid && nums[mid+1] > mid+1)) {
+                  if (nums[mid] == mid) start = mid + 1;
+                  else end = mid - 1;
+                  mid = (start + end) / 2;
+              }
+              return mid + 1;
+          }
+      }
+    #+end_src 
+*** 递归
+    #+begin_src java :classname 
+      class Solution {
+          public int missingNumber(int[] nums) {
+              int len = nums.length;
+              if (nums[0] == 1) return 0;
+              if (nums[len-1] == len - 1) return len;
+              return helper(nums, 0, len - 1);
+          }
+
+          private int helper(int[] nums, int start, int end) {
+              int mid = (start + end) / 2;
+              if (nums[mid] == mid && nums[mid+1] > mid+1) return mid + 1;
+              if (nums[mid] == mid) start = mid + 1;
+              else end = mid - 1;
+              return helper(nums, start, end);
+          }
+      }
+    #+end_src 
+* 54 二叉搜索树的第k大节点                                     :TREE:TOBEORG:
+** 递归
+   #+begin_src java :classname 
+     class Solution {
+         private int count = 0;
+         private int val = 0;
+         public int kthLargest(TreeNode root, int k) {
+             if (root != null) helper(root, k);
+             return val;
+
+             // return helper(root, k);
+         }
+
+         private void helper(TreeNode root, int k) {
+             if (root.right != null) helper(root.right, k);
+             if (count != k) {
+                 count += 1;
+                 if (count == k) val = root.val;
+             }
+             if (count != k && root.left != null) helper(root.left, k);
+         }
+
+         // private int helper(TreeNode root, int k) {
+         //     if (root.right != null) val = helper(root.right, k);
+         //     if (count != k) {
+         //         count += 1;
+         //         if (count == k) val = root.val;
+         //     }
+         //     if (count != k && root.left != null) val = helper(root.left, k);
+         //     return val;
+         // }
+     }
+   #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 联系 [[elink6][offer34]] 有关递归有无返回，有无成员变量辅助记录的思考
+    - [ ] 体会判断 ~count != k~ 在 *递归过程* 中的 *控制* 作用
+** 迭代
+   #+begin_src java :classname 
+     class Solution {
+         public int kthLargest(TreeNode root, int k) {
+             int count = 1;
+             Stack<TreeNode> stack = new Stack<>();
+             // while (Objects.nonNull(root) || !stack.empty()) {
+             while (root != null || !stack.empty()) {
+                 // while (Objects.nonNull(root)) {
+                 while (root != null) {
+                     stack.push(root);
+                     root = root.right;
+                 }
+                 TreeNode pop = stack.pop();
+                 if (count == k) {
+                     return pop.val;
+                 }
+                 count++;
+                 root = pop.left;
+             }
+             return 0;
+         }
+     }
+   #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 关于树的前 中 后 层序遍历的递归和迭代对比整理？
+    - [ ] 以上用 ~Queue~ 实现?
+* 55 二叉树的深度                                              :TREE:TOBEORG:
+** 1 二叉树的深度
+   #+begin_src java :classname 
+     class Solution {
+         public int maxDepth(TreeNode root) {
+             if (root == null) return 0;
+             // if (root.left == null && root.right == null) return 1;
+             int lmaxDepth = maxDepth(root.left);
+             int rmaxDepth = maxDepth(root.right);
+             return lmaxDepth > rmaxDepth ? lmaxDepth + 1 : rmaxDepth + 1;
+         }
+     }
+   #+end_src 
+** 2 平衡二叉树
+*** 递归
+    - 直接递归(前序遍历，易读但重复遍历，效率低)
+      #+begin_src java :classname 
+        class Solution {
+            public boolean isBalanced(TreeNode root) {
+                if (root == null) return true;
+                int diff = maxDepth(root.left) - maxDepth(root.right);
+                return (diff <= 1 && diff >= -1) && isBalanced(root.left) && isBalanced(root.right);
+            }
+  
+            private int maxDepth(TreeNode root) {
+                if (root == null) return 0;
+                // if (root.left == null && root.right == null) return 1;
+                int lmaxDepth = maxDepth(root.left);
+                int rmaxDepth = maxDepth(root.right);
+                return lmaxDepth > rmaxDepth ? lmaxDepth + 1 : rmaxDepth + 1;
+            }
+  
+        }
+      #+end_src
+    - 优化递归(后序遍历避免重复遍历)
+      #+begin_src java :classname 
+        class Solution {
+            public boolean isBalanced(TreeNode root) {
+                return isBalancedHelper(root, new int[1]);
+            }
+
+            private boolean isBalancedHelper(TreeNode root, int[] maxDepth) {
+                if (root == null) {
+                    maxDepth[0] = 0;
+                    return true;
+                }
+                int[] left = new int[1], right = new int[1];
+                if (isBalancedHelper(root.left, left) && isBalancedHelper(root.right, right)) {
+                    int diff =  left[0] - right[0];
+                    if (diff >= -1 && diff <= 1) {
+                        maxDepth[0] = left[0] > right[0] ? left[0] + 1 : right[0] + 1;
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+      #+end_src
+*** Question:                                                     :QUESTIONS:
+    - [ ] 对比前序遍历和后序遍历的 *递归过程*
+      - [ ] 后序便利递归如何把 *最大深度* 和 *子树平衡* 两个递归过程 *结合* 起来的?
+      - [ ] 联系之前 *递归遍历过程* 对比思考: 前序递归(子上而下 重复) 后序递归(自下而上 不重复) 回溯
+* 56 数组中数字出现的次数                                     :ARRAY:TOBEORG:
+** 1 数组中只出现一次的两个数字
+   #+begin_src java :classname 
+     class Solution {
+         public int[] singleNumbers(int[] nums) {
+             if (nums.length == 2) return nums;
+             int[] single = new int[2];
+             int xorResult = 0, len = nums.length;
+             for (int i = 0; i < len; i++) {
+                 xorResult ^= nums[i];
+             }
+             int first = 0;
+             while ((xorResult & 1) == 0) {
+                 xorResult = xorResult >> 1;
+                 first += 1;
+             }
+             for (int i = 0; i < len; i++) {
+                 if (((nums[i]>>first) & 1) == 0) single[0] ^= nums[i];
+                 else single[1] ^= nums[i];
+             }
+             return single;
+         }
+     }
+   #+end_src 
+** 2 数组中唯一只出现一次的数字
+*** 二进制表示法
+    #+begin_src java :classname 
+      class Solution {
+          public int singleNumber(int[] nums) {
+              if (nums.length == 1) return nums[0];
+              int[] bitSum = new int[32];
+              int len = nums.length;
+              for (int i = 0; i < len; i++) {
+                  int bitNum = 1;
+                  for (int j = 0; j < 32; j++) {
+                      if ((nums[i] & bitNum) != 0) bitSum[j] += 1;
+                      bitNum = bitNum << 1;
+                  }
+              }
+
+              int result = 0;
+              for (int i = 31; i >= 0; i--) {
+                  result = result << 1;
+                  result += bitSum[i] % 3;
+              }
+              return result;
+          }
+      }
+    #+end_src 
+*** 状态机                                                       :UNRESOLVED:
+    #+begin_src java :classname 
+      class Solution {
+          public int singleNumber(int[] nums) {
+              int a=0,b=0;
+              for (int c : nums) {
+                  b = b ^ c & ~ a;
+                  a = a ^ c & ~ b;
+              }
+              return b;
+          }
+      }
+    #+end_src 
+* 57 和为s的数字                                             :STRING:TOBEORG:
+** 1 和为s的两个数字
+*** 双指针
+    #+begin_src java :classname 
+      class Solution {
+          public int[] twoSum(int[] nums, int target) {
+              if (nums == null || nums.length <= 1) return null;
+              int len = nums.length, p1 = 0, p2 = len - 1;
+              while (nums[p1] + nums[p2] != target) {
+                  if (nums[p1]+nums[p2] > target) p2 -= 1;
+                  else p1 += 1;
+                  if (p1 > p2) return null;
+              }
+              return new int[] {nums[p1], nums[p2]};
+          }
+      }
+    #+end_src 
+*** ~HashMap~
+    #+begin_src java :classname 
+      class Solution {
+          public int[] twoSum(int[] nums, int target) {
+              if (nums == null || nums.length <= 1) return null;
+              HashMap<Integer, Integer> map = new HashMap<>();
+              int len = nums.length;
+              map.put(nums[0], 0);
+              for (int i = 1; i < len; i++) {
+                  int diff = target - nums[i];
+                  if (map.containsKey(diff)) return new int[] {nums[map.get(diff)], nums[i]};
+                  map.put(nums[i], i);
+              }
+              return null;
+          }
+      }
+    #+end_src 
+** 2 和为s的连续整数序列
+*** 公式推导遍历(利用 ~TreeMap~ )
+    #+begin_src java :classname 
+      class Solution {
+          public int[][] findContinuousSequence(int target) {
+              if (target < 3) return null;
+              Map<Integer, Integer> map = new TreeMap<>();
+              // Map<Integer, Integer> map = new HashMap<>();
+              for (int n = 2; n <= target; n += 1) {
+                  int x = target - n*(n-1)/2;
+                  if (x <= 0) break;
+                  if (x % n != 0) continue;
+                  map.put(x/n, n);
+              }
+              int[][] results = new int[map.size()][];
+              int index = 0;
+              for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                  int[] result = new int[entry.getValue()];
+                  for (int i = 0; i < result.length; i++) {
+                      result[i] = entry.getKey() + i;
+                  }
+                  results[index] = result;
+                  index += 1;
+              }
+              return results;
+          }
+      }
+    #+end_src 
+*** 滑动窗口(双指针)
+    #+begin_src java :classname 
+      class Solution {
+          public int[][] findContinuousSequence(int target) {
+              if (target < 3) return null;
+              int left = 1, right = 2, sum = left + right;
+              List<int[]> results = new ArrayList<>();
+              while (left < (target+1) / 2) {
+              // while (left <= target / 2) {
+                  if (sum < target) {
+                      right++;
+                      sum += right;
+                  } else if (sum > target) {
+                      sum -= left;
+                      left++;
+                  } else {
+                      int[] result = new int[right-left+1];
+                      for (int i = 0; i < result.length; i++) {
+                          result[i] = i + left;
+                      }
+                      results.add(result);
+                      sum -= left;
+                      left++;
+                  }
+              }
+              return results.toArray(new int[results.size()][]);
+          }
+      }
+    #+end_src 
+**** Question:                                                    :QUESTIONS:
+     - [ ] 联系对比之前的双指针 三指针 滑动窗口在数组问题中的应用
+* 58 翻转字符串                                              :STRING:TOBEORG:
+** 1 翻转单词顺序
+*** 使用 ~StringBuilder~ 
+    #+begin_src java :classname 
+      class Solution {
+          public String reverseWords(String s) {
+              String[] words = s.trim().split(" ");
+              // String[] words = s.trim().split(" +");
+              StringBuilder reverse = new StringBuilder();
+              for (int i = words.length-1; i >= 0; i--) {
+                  if (words[i].equals("")) continue;
+                  reverse.append(words[i].trim());
+                  if (i != 0) reverse.append(" ");
+              }
+              return reverse.toString();
+          }
+      }
+    #+end_src 
+*** 两轮翻转                                                     :UNRESOLVED:
+*** Question:                                                     :QUESTIONS:
+    - [ ] 为何用正则表达式 ~split(" +")~ 会慢?
+    - [ ] java的两轮翻转效率实现?
+** 2 左旋转字符串
+*** 使用 ~StringBuilder~ 
+    #+begin_src java :classname 
+      class Solution {
+          public String reverseLeftWords(String s, int n) {
+              if (s == null || s.length() < n) return null;
+              StringBuilder str = new StringBuilder();
+              str.append(s.substring(n));
+              str.append(s.substring(0, n));
+              return str.toString();
+          }
+      }
+    #+end_src 
+*** 3次翻转
+    #+begin_src java :classname 
+      class Solution {
+          public String reverseLeftWords(String s, int n) {
+              if (s == null || s.length() < n) return null;
+              char[] ch = s.toCharArray();
+              reverse(ch, 0, n-1);
+              reverse(ch, n, ch.length-1);
+              reverse(ch, 0, ch.length-1);
+              return new String(ch);
+          }
+
+          private void reverse(char[] ch, int i, int j) {
+              while (i < j) {
+                  char temp = ch[i];
+                  ch[i] = ch[j];
+                  ch[j] = temp;
+                  i += 1;
+                  j -= 1;
+              }
+          }
+      }
+    #+end_src 
+* 59 队列的最大值                                             :QUEUE:TOBEORG:
+** 1 滑动窗口的最大值
+*** 蛮力优化
+    #+begin_src java :classname 
+      class Solution {
+          public int[] maxSlidingWindow(int[] nums, int k) {
+              if (nums == null || nums.length <= 0 || k <= 0) return new int[0];
+              int len = nums.length;
+              int[] maxVals = new int[len-k+1];
+              maxVals[0] = maxVal(nums, 0, k);
+              for (int i = 1; i < maxVals.length; i++) {
+                  if (nums[i-1+k] >= maxVals[i-1]) {
+                      maxVals[i] = nums[i-1+k];
+                      continue;
+                  }
+                  maxVals[i] = maxVals[i-1] == nums[i-1] ? maxVal(nums, i, i+k) : maxVals[i-1];
+              }
+              return maxVals;
+          }
+
+          private int maxVal(int[] nums, int start, int end) {
+              int max = nums[start];
+              for (int i = start+1; i < end; i++) {
+                  if (nums[i] > max) max = nums[i];
+              }
+              return max;
+          }
+      }
+    #+end_src 
+*** 滑动窗口最大值 -> 能记录最大值的队列
+**** 利用 ~Deque~ 在队顶维持最大值
+     #+begin_src java :classname 
+       class Solution {
+           public int[] maxSlidingWindow(int[] nums, int k) {
+               if (nums == null || nums.length <= 0 || k <= 0) return new int[0];
+               int len = nums.length;
+               int[] maxVals = new int[len-k+1];
+               Deque<Integer> dq = new LinkedList<>();
+               for (int i = 0; i < k; i++) {
+                   while (!dq.isEmpty() && nums[dq.getLast()] <= nums[i]) {
+                       dq.removeLast();
+                   }
+                   dq.addLast(i);
+               }
+
+               maxVals[0] = nums[dq.getFirst()];
+               for (int i = k; i < len; i++) {
+                   while (!dq.isEmpty() && nums[i] >= nums[dq.getLast()]) {
+                       dq.removeLast();
+                   }
+                   dq.addLast(i);
+                   if (!dq.isEmpty() && i-dq.getFirst() >= k) dq.removeFirst();
+                   maxVals[i-k+1] = nums[dq.getFirst()];
+               }
+
+               // for (int i = k; i < len; i++) {
+               //     maxVals[i-k] = nums[dq.getFirst()];
+               //     while (!dq.isEmpty() && nums[i] >= nums[dq.getLast()]) {
+               //         dq.removeLast();
+               //     }
+               //     dq.addLast(i);
+               //     if (!dq.isEmpty() && i-dq.getFirst() >= k) dq.removeFirst();
+               // }
+               // maxVals[len-k] = nums[dq.getFirst()];
+               return maxVals;
+           }
+       }
+     #+end_src 
+**** 利用 [[ilink25][offer8]] 和 [[ilink26][offer30]]                                      :UNRESOLVED:
+** 2 队列的最大值
+*** 借助记录 ~currIndex~, ~maxDQ~ 能够只维持 *最新的不重复的* 最大值( ~>=~ 时更新)
+    #+begin_src java :classname 
+      class MaxQueue {
+          class Pair {
+              int data;
+              int index;
+              Pair(int d, int i) {
+                  data = d;
+                  index = i;
+              }
+          }
+
+          private Queue<Pair> dataQue;
+          private Deque<Pair> maxDQ;
+          private int currIndex;
+
+          public MaxQueue() {
+              dataQue = new LinkedList<>();
+              maxDQ = new LinkedList<>();
+              currIndex = 0;
+          }
+
+          public int max_value() {
+              if (dataQue.isEmpty() || maxDQ.isEmpty()) return -1;
+              return maxDQ.getFirst().data;
+          }
+
+          public void push_back(int value) {
+              while (!maxDQ.isEmpty() && value >= maxDQ.getLast().data) {
+                  maxDQ.removeLast();
+              }
+              Pair p = new Pair(value, currIndex);
+              dataQue.offer(p);
+              maxDQ.addLast(p);
+              currIndex += 1;
+          }
+
+          public int pop_front() {
+              if (dataQue.isEmpty() || maxDQ.isEmpty()) return -1;
+              Pair p = dataQue.poll();
+              if (p.index == maxDQ.getFirst().index) maxDQ.removeFirst();
+              return p.data;
+          }
+      }
+    #+end_src 
+*** ~maxDQ~ 维持 *重复的* 最大值( ~>~ 时才更新)
+    #+begin_src java :classname 
+      class MaxQueue {
+
+          private Queue<Integer> dataQue;
+          private Deque<Integer> maxDQ;
+
+          public MaxQueue() {
+              dataQue = new LinkedList<>();
+              maxDQ = new LinkedList<>();
+          }
+
+          public int max_value() {
+              if (dataQue.isEmpty() || maxDQ.isEmpty()) return -1;
+              return maxDQ.getFirst();
+          }
+
+          public void push_back(int value) {
+              while (!maxDQ.isEmpty() && value > maxDQ.getLast()) {
+                  maxDQ.removeLast();
+              }
+              dataQue.offer(value);
+              maxDQ.addLast(value);
+          }
+
+          public int pop_front() {
+              if (dataQue.isEmpty() || maxDQ.isEmpty()) return -1;
+              int val = dataQue.poll();
+              if (val == maxDQ.getFirst()) maxDQ.removeFirst();
+              return val;
+          }
+      }
+    #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 以上两种实际中那种比较合适? 一个节省空间一个节省时间?
+* 60 n个骰子的点数                                                  :TOBEORG:
+** 递归                                                          :UNRESOLVED:
+   #+begin_src java :classname 
+     class Solution {
+         private static final int maxValue = 6;
+         public double[] twoSum(int n) {
+             if (n <= 0) return null;
+             int[] events = new int[n*maxValue-n+1];
+             Events(events, n);
+             double totalEvents = Math.pow((double) maxValue, (double) n);
+             double[] probs = new double[events.length];
+             for (int i = 0; i < events.length; i++) {
+                 probs[i] = events[i] / totalEvents;
+             }
+             return probs;
+         }
+
+         private void Events(int[] events, int n) {
+             for (int i = 1; i <= maxValue; i++) {
+                 Events(n, n, i, events);
+             }
+         }
+
+         private void Events(int total, int remain, int sum, int[] events) {
+             if (remain == 1) events[sum-total]++;
+             else {
+                 for (int i = 1; i <= maxValue; i++) {
+                     Events(total, remain-1, sum+i, events);
+                 }
+             }
+         }
+     }
+   #+end_src 
+** 迭代(DP)
+*** 用二维数组
+    #+begin_src java :classname 
+      class Solution {
+          private static final int maxValue = 6;
+          public double[] twoSum(int n) {
+              if (n <= 0) return null;
+              int[][] events = new int[n+1][n*maxValue+1];
+              for (int i = 1; i <=6; i++) {
+                  events[1][i] = 1;
+              }
+              for (int i = 2; i <= n; i++) {
+                  for (int j = i; j <= i*maxValue; j++){
+                      for (int k = 1; k < j && k <= 6; k++) {
+                          events[i][j] += events[i-1][j-k];
+                      }
+                  }
+              }
+              double totalEvents = Math.pow((double)maxValue, (double)n);
+              double[] probs = new double[n*maxValue-n+1];
+              for (int i = 0; i < probs.length; i++) {
+                  probs[i] = events[n][i+n] / totalEvents;
+              }
+              return probs;
+          }
+      }
+    #+end_src
+*** 用一维数组(空间优化)                                         :UNRESOLVED:
+    #+begin_src java :classname 
+      class Solution {
+          public double[] twoSum(int n) {
+              double[] pd = new double[n * 6 + 1];
+              pd[0] = 1;
+              for (int i = 1; i <= n; i++) {
+                  for (int j = i * 6; j >= i; j--) {
+                      pd[j] = 0;
+                      for (int k = i - 1; k < j && k <= (i - 1) * 6; k++) {
+                          if (j - k <= 6) {
+                              pd[j] += pd[k] * 1.0 / 6;
+                          }
+                      }
+                  }
+              }
+              double[] ans = new double[n * 6 - n + 1];
+              for (int i = 0; i < ans.length; i++) ans[i] = pd[i + n];
+              return ans;
+          }
+      }
+    #+end_src 
+** Question:                                                      :QUESTIONS:
+   - [ ] 递归法的进一步理解?
+   - [ ] 空间优化?
+* 61 扑克牌中的顺子                                           :ARRAY:TOBEORG:
+** 先排序
+   #+begin_src java :classname 
+     class Solution {
+         public boolean isStraight(int[] nums) {
+             int zeros = 0, gap = 0, len = nums.length;
+             Arrays.sort(nums);
+             for (int i = 0; i < len-1; i++) {
+                 if (nums[i] == 0) zeros += 1;
+                 else {
+                     int x = nums[i+1] - nums[i];
+                     if (x == 0) return false;
+                     // if (x > 1) gap += x-1;
+                     gap += x-1;
+                 }
+             }
+             return zeros >= gap;
+         }
+     }
+   #+end_src 
+** 不排序                                                        :UNRESOLVED:
+   #+begin_src C 
+     class Solution {
+      public:
+       bool isStraight(vector<int>& nums) {
+         bool m[15];
+         memset(m, 0, sizeof(m));
+         int minValue = 14, maxValue = 0;
+         for (int item : nums) {
+           if (item == 0) {
+             continue;
+           }
+           if (m[item]) {
+             return false;
+           }
+           m[item] = true;
+           minValue = min(minValue, item);
+           maxValue = max(maxValue, item);            
+         }
+         return maxValue - minValue + 1 <= 5;
+       }
+     };
+   #+end_src
+* 62 圆圈中最后剩下的数字                                           :TOBEORG:
+** 数学递推公式
+   #+begin_src java :classname 
+     class Solution {
+         public int lastRemaining(int n, int m) {
+             if (n < 1 || m < 1) return -1;
+             if (n == 1) return 0;
+             // return (lastRemaining(n-1, m) + m) % n;
+             int last = 0;
+             for (int i = 2; i <= n; i++) {
+                 last = (last+m) % i;
+             }
+             return last;
+         }
+     }
+   #+end_src 
+*** Question:                                                     :QUESTIONS:
+    - [ ] 约瑟夫环递推式推导?
+** 用链表模拟                                                    :UNRESOLVED:
+   #+begin_src java :classname 
+     class Solution {
+         public int lastRemaining(int n, int m) {
+             if(n==0||m==0)
+                 return -1;
+             List<Integer> list=new ArrayList<>();
+             for(int i=0;i<n;i++)
+                 list.add(i);
+             int c=(m-1)%n;
+             while(list.size()!=1) {
+                 list.remove(c);
+                 c=(c+m-1)%list.size();  
+             }
+             return list.get(0);
+         }
+     }
+   #+end_src 
+* 63 股票的最大利润                                           :ARRAY:TOBEORG:
+  #+begin_src java :classname 
+    class Solution {
+        public int maxProfit(int[] prices) {
+            if (prices == null || prices.length <= 1) return 0;
+            int len = prices.length, min = prices[0], maxprofit = 0;
+            for (int i = 1; i < len; i++) {
+                if (maxprofit < prices[i]-min) maxprofit = prices[i] - min;
+                if (prices[i] < min) min = prices[i];
+            }
+            return maxprofit;
+        }
+    }
+  #+end_src 
+* 64 求1+2+...+n                                                    :TOBEORG:
+** 作弊
+   #+begin_src java :classname 
+     class Solution {
+         public int sumNums(int n) {
+             return ((int) Math.pow(n, 2.0) + n) >> 1;
+         }
+     }
+   #+end_src 
+** ~&&~ 短路特性+递归
+   #+begin_src java :classname 
+     class Solution {
+         public int sumNums(int n) {
+             boolean x = (n > 0) && ((n += sumNums(n-1)) > 0);
+             return n;
+         }
+     }
+   #+end_src 
+* 65 不用加减乘除做加法
+  #+begin_src java :classname 
+    class Solution {
+        public int add(int a, int b) {
+            int sum, carry;
+            sum = a ^ b;
+            carry = (a & b) << 1;
+            a = sum;
+            b = carry;
+            while (b != 0) {
+                sum = a ^ b;
+                carry = (a & b) << 1;
+                a = sum;
+                b = carry;
+            }
+            return a;
+        }
+    }
+  #+end_src 
+* 66 构建乘积数组                                             :ARRAY:TOBEORG:
+** 对称遍历
+   #+begin_src java :classname 
+     class Solution {
+         public int[] constructArr(int[] a) {
+             // if (a == null || a.length <= 1) return new int[0];
+             if (a == null || a.length <= 1) return new int[] {};
+             int len = a.length;
+             int[] result = new int[len];
+             result[0] = 1;
+             for (int i = 1; i < len; i++) {
+                 result[i] = a[i-1] * result[i-1];
+             }
+             int temp = 1;
+             for (int i = len-2; i >= 0; i--) {
+                 temp *= a[i+1];
+                 result[i] *= temp;
+             }
+             return result;
+         }
+     }
+   #+end_src 
+** 左右数组(矩阵)
+   #+begin_src java :classname 
+     class Solution {
+         public int[] constructArr(int[] a) {
+             // if (a == null || a.length <= 1) return new int[0];
+             if (a == null || a.length <= 1) return new int[] {};
+             int len = a.length;
+             int[] left = new int[len], right = new int[len], result = new int[len];
+             left[0] = 1; right[len-1] = 1;
+             for (int i = 1; i < len; i++) {
+                 left[i] = left[i-1] * a[i-1];
+                 right[len-1-i] = right[len-i] * a[len-i];
+             }
+             for (int i = 0; i < len; i++) {
+                 result[i] = left[i] * right[i];
+             }
+             return result;
+         }
+     }
+   #+end_src
+* 67 把字符串转换成整数                                      :STRING:TOBEORG:
+** 正确做法
+   #+begin_src java :classname 
+     class Solution {
+         public int strToInt(String str) {
+             int val = 0, i = 0;
+             long longVal = 0;
+             if (str != null && !str.isEmpty() && !str.trim().isEmpty()) {
+                 str = str.trim();
+                 boolean neg = str.charAt(0) == '-';
+                 if (neg || str.charAt(0) == '+') i = 1;
+                 for (; i < str.length(); i++) {
+                     int x = str.charAt(i) - '0';
+                     if (x >= 0 && x <= 9) {
+                         longVal = longVal * 10 + x;
+                         if (neg && -1*longVal <= Integer.MIN_VALUE) return Integer.MIN_VALUE;
+                         if (!neg && longVal >= Integer.MAX_VALUE) return Integer.MAX_VALUE;
+                         val = (int) longVal;
+                         continue;
+                     }
+                     break;
+                 }
+                 val = neg ? -1*val : val;
+             }
+             return val;
+         }
+     }
+   #+end_src 
+** 借用 ~Long.parseLong~ (存在 ~Long~ 越界测试)
+   #+begin_src java :classname 
+     class Solution {
+         public int strToInt(String str) {
+             int val = 0;
+             if (str != null && !str.isEmpty() && !str.trim().isEmpty()) {
+                 str = str.trim();
+                 int start = (str.charAt(0) == '-' || str.charAt(0) == '+') ? 1 : 0;
+                 int end = start;
+                 for (; end < str.length(); end++) {
+                     char ch = str.charAt(end);
+                     int x = ch - '0';
+                     if (x >= 0 && x <= 9) continue;
+                     break;
+                 }
+                 String nums = str.substring(start, end);
+                 Long longVal = nums.isEmpty() ? 0 : Long.parseLong(nums);
+                 if (str.charAt(0) == '-') longVal *= -1;
+                 if (longVal < Integer.MIN_VALUE) val = Integer.MIN_VALUE;
+                 else if (longVal > Integer.MAX_VALUE) val =  Integer.MAX_VALUE;
+                 else val =  longVal.intValue();
+             }
+             return val;
+         }
+     }
+   #+end_src 
+** Question:                                                      :QUESTIONS:
+   - [ ] 联系对比 [[ilink28][offer20]] [[ilink29][offer46]] 
+* 68 树中两个节点的最低公共祖先                                :TREE:TOBEORG:
+** 1 二叉搜索树的最近公共祖先
+*** 二叉树性质
+**** 迭代
+     #+begin_src java :classname 
+       class Solution {
+           public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+               if (p.val == root.val || q.val == root.val) return root;
+               TreeNode n = root;
+               while ((p.val < n.val && q.val < n.val) || (p.val > n.val && q.val > n.val)) {
+                   if (p.val < n.val && q.val < n.val) n = n.left;
+                   else n = n.right;
+               }
+               return n;
+           }
+       }
+     #+end_src 
+**** 递归
+     #+begin_src java :classname 
+       class Solution {
+           public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+               if (p.val == root.val || q.val == root.val) return root;
+               if ((p.val < root.val && q.val > root.val) || (p.val > root.val && q.val < root.val)) return root;
+               if (p.val < root.val && q.val < root.val) return lowestCommonAncestor(root.left, p, q);
+               else return lowestCommonAncestor(root.right, p, q);
+           }
+       }
+     #+end_src 
+*** 利用 ~HashMap~ 模拟过程
+    #+begin_src java :classname 
+      class Solution {
+          public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+              if (p.val == root.val || q.val == root.val) return root;
+              HashMap<Integer, TreeNode> map = new HashMap<>();
+              TreeNode n = root, lowCA = root;
+              while (n.val != p.val) {
+                  map.put(n.val, n);
+                  if (p.val < n.val) n = n.left;
+                  else n = n.right;
+              }
+              map.put(p.val, p);
+              n = root;
+              while (n.val != q.val) {
+                  if (map.containsKey(n.val)) lowCA = map.get(n.val);
+                  if (q.val < n.val) n = n.left;
+                  else n = n.right;
+              }
+              if (map.containsKey(q.val)) lowCA = map.get(q.val);
+              return lowCA;
+          }
+      }
+    #+end_src 
+** 2 二叉树的最近公共祖先
+*** 递归
+**** dfs *打印路径* 转化为 *链表分叉口* (逆过来即相遇点)问题
+     #+begin_src java :classname 
+       class Solution {
+           public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+               List<TreeNode> pathp = new ArrayList<>();
+               List<TreeNode> pathq = new ArrayList<>();
+               dfs(root, p, pathp);
+               dfs(root, q, pathq);
+               TreeNode lowCA = root;
+               for (int i = 0; ;i++) {
+                   if (pathp.size()-1 < i || pathq.size()-1 < i) break;
+                   TreeNode n1 = pathp.get(i);
+                   TreeNode n2 = pathq.get(i);
+                   if (n1.val == n2.val) lowCA = n1;
+                   else break;
+               }
+               return lowCA;
+           }
+
+           private boolean dfs(TreeNode root, TreeNode n, List<TreeNode> path) {
+               if (root == null) return false;
+               path.add(root);
+               if (root.val == n.val) return true;
+               boolean left = dfs(root.left, n, path);
+               boolean right = dfs(root.right, n ,path);
+               if (!left && !right) path.remove(path.size()-1);
+               return left || right;
+           }
+       }
+     #+end_src 
+**** 后序遍历
+     #+begin_src java :classname 
+       class Solution {
+           public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+               if (root==null || root==p || root==q) return root;
+
+               TreeNode leftNode = lowestCommonAncestor(root.left, p, q);
+               TreeNode rightNode = lowestCommonAncestor(root.right, p, q);
+
+               if (leftNode == null) return rightNode;
+               if (rightNode == null) return leftNode;
+
+               return root;
+           }
+       }
+     #+end_src 
+*** 迭代(打印路径)                                               :UNRESOLVED:
+    #+begin_src C 
+      class Solution {
+      public:
+          void getPath(TreeNode *root, TreeNode *end, vector<TreeNode*>& path) {
+              stack<TreeNode*> stk;
+              TreeNode *p = root, *prev = nullptr;
+              while (p || !stk.empty()) {
+                  while (p) {
+                      stk.push(p);
+                      path.push_back(p);
+                      if (p == end) return;
+                      p = p->left;
+                  }
+                  p = stk.top();
+                  if (!p->right || p->right == prev) {
+                      path.pop_back();
+                      stk.pop();
+                      prev = p;
+                      p = nullptr;
+                  } else {
+                      p = p->right;
+                  }
+              }
+          }
+    
+          TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+              vector<TreeNode*> path1, path2;
+              getPath(root, p, path1);
+              getPath(root, q, path2);
+              int n = min(path1.size(), path2.size());
+              TreeNode *last = nullptr;
+              for (int i = 0; i < n; i++) {
+                  if (path1[i] != path2[i]) return last;
+                  last = path1[i];
+              }
+              return last;
+          }
+      };
+    #+end_src
+*** Question:                                                     :QUESTIONS:
+    - [ ] 打印路径法怎么提速?迭代实现?
+    - [ ] 后序遍历法的理解?
+    - [ ] 联系对比 [[ilink22][offer12]] [[ilink33][offer13]] [[ilink30][offer27]] [[ilink31][offer33]] [[ilink32][offer34]] [[ilink33][offer38]] [[ilink34][offer46]] 思考关于 dfs 回溯 递归 后序遍历
