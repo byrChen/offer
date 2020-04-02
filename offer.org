@@ -5830,29 +5830,37 @@
            }
        }
      #+end_src 
-* 43 1~n整数中1出现的次数                                        :UNRESOLVED:
+* 43 1~n整数中1出现的次数                          :2:递归:数值规律:数值计算:
 ** 递归
-   #+begin_src java :classname 
-     class Solution {
-         public int countDigitOne(int n) {
-             return f(n);
-         }
-         private int f(int n ) {
-             if (n <= 0)
-                 return 0;
-             String s = String.valueOf(n);
-             int high = s.charAt(0) - '0';
-             int pow = (int) Math.pow(10, s.length()-1);
-             int last = n - high*pow;
-             if (high == 1) {
-                 return f(pow-1) + last + 1 + f(last);
-             } else {
-                 return pow + high*f(pow-1) + f(last);
-             }
-         }
-     }
-   #+end_src 
-** 数值规律
+   - 1
+     #+begin_src java :classname 
+       class Solution {
+           public int countDigitOne(int n) {
+               if (n <= 0) return 0;
+               String s = String.valueOf(n);
+               int high = s.charAt(0) - '0';
+               int pow = (int) Math.pow(10, s.length()-1);
+               int last = n - high*pow;
+               if (high == 1) return countDigitOne(pow-1) + last + 1 + countDigitOne(last);
+               else return high*countDigitOne(pow-1) + pow + countDigitOne(last);
+           }
+       }
+     #+end_src
+   - 2
+     #+begin_src java :classname 
+       class Solution {
+           public int countDigitOne(int n) {
+               if (n <= 0) return 0;
+               String s = String.valueOf(n);
+               int high = s.charAt(0) - '0';
+               int pow = (int) Math.pow(10, s.length()-1);
+               int last = n - high * pow;
+               if (high == 1) return countDigitOne(pow-1) + last + 1 + countDigitOne(last);
+               return high*countDigitOne(pow-1) + pow + countDigitOne(last);
+           }
+       }
+     #+end_src 
+** 数值规律                                                      :UNRESOLVED:
    #+begin_src java :classname 
      class Solution {
          public int countDigitOne(int n) {
