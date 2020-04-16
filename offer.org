@@ -1,5 +1,5 @@
 #+TAGS: TOBEORG(t) QUESTIONS(q) UNRESOLVED(u) EXTRA(e)
-* 3 数组中重复的数字                                   :2:二分查找:排序:数组:
+* 3 数组中重复的数字                              :2:二分查找:查找:排序:数组:
 ** 1 找出数组中重复的数字
 *** 一边排序一边查重 <<ilink2>>
     - 1
@@ -105,7 +105,7 @@
       - $O(n)$
       - $O(n)$
 ** 2 不修改数组找出重复的数字
-*** 辅助数组 
+*** 辅助数组重排顺便查重
     - 1
       #+begin_src java :classname 
         public class Solution {
@@ -205,7 +205,7 @@
      - [ ] [[ilink2][一边排序一边查重]]输出哪个重复数字与数组中数字位置进一步的关系？
      - [ ] 长度为 n+1 值域为 [1,n] 和长度为 n 值域为 [0,n-1] 区别？二分查找为何适用于第2题而不适用于第1题？
      - [ ] 以上 [[ilink1][二分查找]] 转换成 recursive ？
-* 4 二维数组的查找                                :2:查找:排序:二维数组:数组:
+* 4 二维数组的查找                                     :2:查找:二维数组:数组:
 ** 迭代
 *** 查右上角 
     - 1
@@ -495,7 +495,6 @@
             }
         }
       #+end_src 
-
 *** 递归
     #+begin_src java :classname 
       import java.util.ArrayList;
@@ -517,7 +516,7 @@
 ** 改变原链表                                                    :UNRESOLVED:
 ** Question:                                                      :QUESTIONS:
    - [ ] 怎么在原链表上将链表翻转？默认有 ~prev~ 和 ~next~ 吗？只有 ~next~ 呢?
-* 7 重建二叉树                           :2:中序遍历:前序遍历:递归:二叉树:树:
+* 7 重建二叉树 <<elink14>>               :2:中序遍历:前序遍历:递归:二叉树:树:
   #+begin_src java :classname 
     public class Solution {
 
@@ -916,7 +915,7 @@
 ** 相关题目                                                :UNRESOLVED:EXTRA:
 ** Question:                                                      :QUESTIONS:
    - [ ] 递归的时间复杂度怎么算的 $O(2^n)$ ？
-* 11 旋转数组的最小数字                        :2:二分查找:排序:数组:TOBEORG:
+* 11 旋转数组的最小数字                        :2:二分查找:查找:数组:TOBEORG:
 ** 二分查找 <<ilink15>> ~end = mid~ 
    - 1 (有问题)
      #+begin_src java :classname 
@@ -1003,7 +1002,7 @@
 ** Question:                                                      :QUESTIONS:
    - [ ] [[ilink9][部分排序数组上快排的复杂度]] ？
    - [ ] 上面优先队列的时间复杂度？ ~add~ 的时间复杂度怎么考虑？
-* 12 矩阵中的路径                                      :2:递归:DFS:回溯:数组:
+* 12 矩阵中的路径 <<elink20>>                          :2:DFS:回溯:递归:数组:
 ** 回溯（递归 DFS）<<ilink22>>
    - 1
      #+begin_src java :classname 
@@ -1164,7 +1163,7 @@
    - [ ] 回溯和递归？哪类问题适合用回溯？复杂度分析？
    - [ ] 非递归方法？复杂度？
    - [ ] 联系DFS和BFS实现？
-* 13 机器人的运动范围                                          :2:递归:数组:
+* 13 机器人的运动范围                                      :2:回溯:递归:数组:
 ** 回溯 <<ilink23>>
    - 1
      #+begin_src java :classname 
@@ -1824,7 +1823,7 @@
     - [ ] 单循环头结点删除里 [[ilink12][移动2位甚至比n位移动n位]] 有办法用代码实现吗？如果不能该怎么想明白不能呢？
     - [ ] 能否借用二分查找 [[ilink1][1]] [[ilink15][2]] 的办法加速 [[ilink13][头结点的删除]] ？
     - [ ] 关于 [[ilink14][循环条件]] 的思考？如何优化非递归的代码？主要是对 ~while()~ 条件的分析：该写怎样的判断？判断该写在循环条件还是循环内的 ~if~ 语句？
-* 19 正则表达式匹配                               :2:状态机:递归:数组:字符串:
+* 19 正则表达式匹配 <<elink9>>                    :2:状态机:递归:数组:字符串:
 ** 迭代                                                :ITERATIVE:UNRESOLVED:
    #+begin_src java :classname 
      public class Solution {
@@ -2066,7 +2065,7 @@
      #+end_src
 ** Question:                                                      :QUESTIONS:
    - [ ] ~Pattern~ 是怎么匹配的？
-* 21 调整数组顺序使奇数位于偶数前面 :2:快慢指针:双指针:插入排序:排序:数组:TOBEORG:
+* 21 调整数组顺序使奇数位于偶数前面 :2:排序:快慢指针:双指针:插入排序:数组:TOBEORG:
 ** 使用别的结构存储
    - ArrayList
      #+begin_src java :classname 
@@ -2316,7 +2315,7 @@
        }
      #+end_src 
 ** 相关题目                                                :UNRESOLVED:EXTRA:
-* 23 链表中环的入口节点                     :2:滑动窗口:快慢指针:双指针:链表:
+* 23 链表中环的入口节点 <<elink15>>                  :2:快慢指针:双指针:链表:
 ** 快慢指针
    - 1
      #+begin_src java :classname 
@@ -2425,7 +2424,7 @@
              }
          }
        #+end_src 
-* 24 反转链表                                                   :2:递归:链表:
+* 24 反转链表 <<elink19>>                                       :2:递归:链表:
 ** 迭代                                                           :ITERATIVE:
 *** 用ArrayList暂存辅助反转
     #+begin_src java :classname 
@@ -2600,7 +2599,7 @@
      #+end_src 
 *** Question:                                                     :QUESTIONS:
     - [ ] 递归空间复杂度分析？
-* 25 合并两个排序的链表                                    :2:递归:排序:链表:
+* 25 合并两个排序的链表                                         :2:递归:链表:
 ** 新建一条列表 Non-destructive
 *** 迭代                                                          :ITERATIVE:
     #+begin_src java :classname 
@@ -3030,7 +3029,7 @@
     #+end_src            
 ** Question:                                                      :QUESTIONS:
    - [ ] 递归和迭代的空间复杂度分析
-* 28 对称的二叉树       :2:BFS:DFS:对称遍历:层序遍历:前序遍历:递归:二叉树:树:
+* 28 对称的二叉树 <<elink11>> :2:BFS:DFS:对称遍历:层序遍历:前序遍历:递归:二叉树:树:
 ** 递归                                                           :RECURSIVE:
 *** 借助二叉树的镜像以及子结构
     #+begin_src java :classname 
@@ -4514,7 +4513,7 @@
         }
       };
     #+end_src
-* 34 二叉树中和为某一值的路径               :2:前序遍历:回溯:递归:树:TOBEORG:
+* 34 二叉树中和为某一值的路径  :2:DFS:排列组合:前序遍历:回溯:递归:树:TOBEORG:
 ** 递归(回溯 前序遍历) <<ilink32>>
 *** 不考虑数组长度(无辅助有返回递归函数)
     #+begin_src java :classname 
@@ -5250,7 +5249,7 @@
      #+end_src
 ** Question:                                                      :QUESTIONS:
    - [ ] 前后中层遍历的迭代和递归写法？用后序和中序实现？
-* 38 字符串的排列                                     :2:字符串:递归:TOBEORG:
+* 38 字符串的排列                       :2:排列组合:回溯:递归:字符串:TOBEORG:
 ** 递归 <<ilink33>>
    - 1
      #+begin_src java :classname 
@@ -5321,9 +5320,6 @@
        }
      #+end_src
    - *迭代+递归*: 父问题答案 = *横向迭代* + *纵向递归* (子问题答案) -> *多个树* or *森林* 过程
-   - 应该不算是回溯
-*** Question:                                                     :QUESTIONS:
-    - [ ] 递归和回溯?
 ** 迭代(字典生成算法)                                            :UNRESOLVED:
    #+begin_src java :classname 
      import java.util.*;
@@ -5380,7 +5376,7 @@
 ** 本体扩展                                                :UNRESOLVED:EXTRA:
    可以回忆联系下61a里类似的内容
 ** 相关题目                                                :UNRESOLVED:EXTRA:
-* 39 数组中出现次数超过一半的数字                  :2:快排:排序:数组:TOBEORG:
+* 39 数组中出现次数超过一半的数字 <<elink21>>      :2:快排:排序:数组:TOBEORG:
 ** 利用快排的 ~Partition~ (改变数组元素)
    - 1
      #+begin_src java :classname 
@@ -6120,7 +6116,7 @@
                    String substr = str.substring(i-1, i+1);
                    int subint = Integer.parseInt(substr);
                    if (substr.charAt(0) == '0' || subint > 25) dp[i] = dp[i-1];
-                   else dp[i] = i-2>= 0 ? dp[i-1]+dp[i-2] : dp[i-1]+1;
+                   else dp[i] = i-2 >= 0 ? dp[i-1]+dp[i-2] : dp[i-1]+1;
                }
                return dp[len-1];
            }
@@ -6177,7 +6173,7 @@
            }
        }
      #+end_src 
-* 48 最长不含重复字符的子字符串         :2:DP:滑动窗口:双指针:字符串:TOBEORG:
+* 48 最长不含重复字符的子字符串 <<elink8>>       :2:DP:双指针:字符串:TOBEORG:
 ** 借助HashMap
 *** 原思路
     #+begin_src java :classname 
@@ -6359,9 +6355,9 @@
                int p2 = 0, p3 = 0, p5 = 0;
                for (int i = 1; i < n; i++) {
                    uglyNums[i] = min(uglyNums[p2]*2, uglyNums[p3]*3, uglyNums[p5]*5);
-                   if (uglyNums[i] == uglyNums[p2]*2) p2+= 1;
-                   if (uglyNums[i] == uglyNums[p3]*3) p3+= 1;
-                   if (uglyNums[i] == uglyNums[p5]*5) p5+= 1;
+                   if (uglyNums[i] == uglyNums[p2]*2) p2 += 1;
+                   if (uglyNums[i] == uglyNums[p3]*3) p3 += 1;
+                   if (uglyNums[i] == uglyNums[p5]*5) p5 += 1;
                }
                return uglyNums[n-1];
            }
@@ -6374,7 +6370,7 @@
            }
        }
      #+end_src 
-* 50 第一个只出现一次的字符             :2:数组:哈希映射:字符:字符串:TOBEORG:
+* 50 第一个只出现一次的字符                 :2:映射:数组:字符:字符串:TOBEORG:
 ** 用 ~HashMap~ 
    #+begin_src java :classname 
      class Solution {
@@ -6710,7 +6706,7 @@
                  res += ft.query(rank - 1)
              return res
    #+end_src 
-* 52 两个链表的第一个公共节点                         :2:辅助栈:链表:TOBEORG:
+* 52 两个链表的第一个公共节点 <<elink17>>             :2:辅助栈:链表:TOBEORG:
 ** 辅助栈
    #+begin_src java :classname 
      public class Solution {
@@ -6821,7 +6817,7 @@
          }
      }
    #+end_src 
-* 53 在排序数组中查找数字                      :2:排序:二分查找:数组:TOBEORG:
+* 53 在排序数组中查找数字 <<elink10>>          :2:二分查找:查找:数组:TOBEORG:
 ** 1 数字在排序数组中出现的次数
 *** 递归 ~end = mid - 1~ 
     - 1
@@ -7120,7 +7116,7 @@
      #+end_src
 *** Question:                                                     :QUESTIONS:
     - [ ] 关于树的 *前中后层序* 遍历的 *递归和迭代* (*DFS和BFS*) 对比整理？
-* 55 二叉树的深度                :2:后序遍历:前序遍历:递归:二叉树:树:TOBEORG:
+* 55 二叉树的深度 <<elink13>>    :2:后序遍历:前序遍历:递归:二叉树:树:TOBEORG:
 ** 1 二叉树的深度
    - 1
      #+begin_src java :classname 
@@ -7348,7 +7344,7 @@
           }
       }
     #+end_src 
-* 57 和为s的数字                               :2:滑动窗口:指针:数组:TOBEORG:
+* 57 和为s的数字                                      :2:双指针:数组:TOBEORG:
 ** 1 和为s的两个数字
 *** 双指针
     - 1
@@ -7646,7 +7642,7 @@
             }
         }
       #+end_src 
-* 59 队列的最大值                 :2:双端队列:单调队列:滑动窗口:队列:TOBEORG:
+* 59 队列的最大值                          :2:双端队列:单调队列:队列:TOBEORG:
 ** 1 滑动窗口的最大值
 *** 蛮力优化
     #+begin_src java :classname 
@@ -8375,7 +8371,7 @@
    #+end_src 
 ** Question:                                                      :QUESTIONS:
    - [ ] 联系对比 [[ilink28][offer20]] [[ilink29][offer46]] 
-* 68 树中两个节点的最低公共祖先                  :2:DFS:回溯:递归:树:TOBEORG:
+* 68 树中两个节点的最低公共祖先         :2:DFS:排列组合:回溯:递归:树:TOBEORG:
 ** 1 二叉搜索树的最近公共祖先
 *** 二叉树性质
 **** 迭代
@@ -8495,11 +8491,12 @@
              }
 
              private boolean dfs(TreeNode root, TreeNode n, List<TreeNode> path) {
+                 boolean left = false, right = false;
                  if (root == null) return false;
                  path.add(root);
                  if (root.val == n.val) return true;
-                 boolean left = dfs(root.left, n, path);
-                 boolean right = dfs(root.right, n, path);
+                 left = dfs(root.left, n, path);
+                 if (!left) right = dfs(root.right, n, path);
                  if (!left && !right) path.remove(path.size()-1);
                  return left || right;
              }
