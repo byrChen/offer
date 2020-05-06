@@ -2887,7 +2887,7 @@
 ** Question:                                                      :QUESTIONS:
    - [ ] 递归的复杂度分析？
    - [ ] 迭代如何实现？
-* 27 二叉树的镜像       :2:BFS:DFS:对称遍历:前序遍历:层序遍历:递归:二叉树:树:
+* 27 二叉树的镜像 <<elink22>> :2:BFS:DFS:对称遍历:前序遍历:层序遍历:递归:二叉树:树:
 ** 递归                                                           :RECURSIVE:
    - 1
      #+begin_src java :classname 
