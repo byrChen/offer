@@ -205,7 +205,7 @@
      - [ ] [[ilink2][一边排序一边查重]]输出哪个重复数字与数组中数字位置进一步的关系？
      - [ ] 长度为 n+1 值域为 [1,n] 和长度为 n 值域为 [0,n-1] 区别？二分查找为何适用于第2题而不适用于第1题？
      - [ ] 以上 [[ilink1][二分查找]] 转换成 recursive ？
-* 4 二维数组的查找                                     :2:查找:二维数组:数组:
+* 4 二维数组的查找 <<elink25>>                         :2:查找:二维数组:数组:
 ** 迭代
 *** 查右上角 
     - 1
@@ -1516,7 +1516,7 @@
 ** 相关题目                                                :UNRESOLVED:EXTRA:
 ** Question:                                                      :QUESTIONS:
    - [ ] 以上怎么分析复杂度？
-* 16 数值的整数次方                             :2:数值规律:数值计算:TOBEORG:
+* 16 数值的整数次方                   :2:溢出:递归:数值规律:数值计算:TOBEORG:
 ** 迭代
 *** 常规
     #+begin_src java :classname 
@@ -1541,7 +1541,7 @@
       - ~if (Double.compare(base, 0.0) == 0)~
       - ~if (exponent == 0)~ 
     - ~while (exponent > 1)~ 
-*** 优化
+*** 优化(快速幂)
     #+begin_src java :classname 
       class Solution {
           public double myPow(double x, int n) {
@@ -2601,7 +2601,7 @@
     - [ ] 递归空间复杂度分析？
 * 25 合并两个排序的链表                                         :2:递归:链表:
 ** 新建一条列表 Non-destructive
-*** 迭代                                                          :ITERATIVE:
+*** 迭代
     #+begin_src java :classname 
       /*
         public class ListNode {
@@ -2645,7 +2645,7 @@
     - 复杂度
       - $O(n)$
       - $O(1)$ 
-*** 递归                                                          :RECURSIVE:
+*** 递归
     #+begin_src java :classname 
       /*
         public class ListNode {
@@ -2690,83 +2690,30 @@
         - $O(n)$
         - $O(n)$ 
 ** 插入到某一条列表 Destructive
-*** 迭代                                                          :ITERATIVE:
+*** 迭代
     #+begin_src java :classname 
-      /*
-        public class ListNode {
-        int val;
-        ListNode next = null;
-
-        ListNode(int val) {
-        this.val = val;
-        }
-        }*/
-      public class Solution {
-          public ListNode Merge(ListNode list1,ListNode list2) {
-              if (list1 == null) return list2;
-              if (list2 == null) return list1;
-              ListNode preNode, insertNode, cutNode;
-              preNode = null;
-              insertNode = list1.val <= list2.val ? list1 : list2;
-              cutNode = insertNode == list1 ? list2 : list1;
-              while (cutNode != null) {
-                  if (insertNode == null) {
-                      preNode.next = cutNode;
-                      break;
-                  }
-                  if (insertNode.val <= cutNode.val) {
-                      preNode = insertNode;
-                      insertNode = insertNode.next;
+      class Solution {
+          public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+              if (l1 == null) return l2;
+              if (l2 == null) return l1;
+              ListNode head = new ListNode(0), p = head;
+              while(l1 != null && l2 != null) {
+                  if (l1.val > l2.val) {
+                      p.next = l2;
+                      l2 = l2.next;
                   } else {
-                      ListNode nextcutNode = cutNode.next;
-                      cutNode.next = insertNode;
-                      preNode.next = cutNode;
-                      preNode = cutNode;
-                      cutNode = nextcutNode;
+                      p.next = l1;
+                      l1 = l1.next;
                   }
+                  p = p.next;
               }
-              return list1.val <= list2.val ? list1 : list2;
+              if (l1 == null) p.next = l2;
+              else p.next = l1;
+              return head.next;
           }
       }
     #+end_src 
-    - 以第1个节点较小的 ~list~ 为 *并入列表* ，较大的为 *拆分列表* ，依次从拆分列表 *拆除节点* 插入并入列表 *合适的位置*
-      - *并入列表* 维持 *插入位置前后2个节点* ~preNode --> insertNode~ ， *拆分列表* 维持 *1个被拆节点* ~cutNode~ --> 将 ~cutNode~ 插入到合适的 ~preNode~ 和 ~insertNode~ 之间　--> ~preNode --> cutNode --> insertNode~
-        - 位置不合适 -> 维持 ~cutNode~ ，更新 ~preNode --> insertNode~ 找合适的位置
-        - 位置合适 -> 插入 ~preNode --> cutNode --> insertNode~ ，维持 ~insertNode~ ，更新 ~preNode~ 和 ~cutNode~ 
-      - 直到 *拆分列表为空* 或到 *并入列表* 尾都没有 *合适的位置
-    - 初始化
-      #+begin_src java :classname 
-        preNode = null;
-        insertNode = list1.val <= list2.val ? list1 : list2;
-        cutNode = insertNode == list1 ? list2 : list1;
-      #+end_src 
-    - 插入位置不合适
-      #+begin_src java :classname 
-        preNode = insertNode;
-        insertNode = insertNode.next;
-      #+end_src 
-    - 插入位置合适
-      #+begin_src java :classname 
-        ListNode nextcutNode = cutNode.next;
-        cutNode.next = insertNode;
-        preNode.next = cutNode;
-        preNode = cutNode;
-        cutNode = nextcutNode;
-      #+end_src
-    - 结束
-      #+begin_src java :classname 
-        while (cutNode != null) {
-            if (insertNode == null) {
-                preNode.next = cutNode;
-                break;
-            }
-            ...
-        }
-      #+end_src
-    - 复杂度
-      - $O(n)$
-      - $O(1)$ 
-*** 递归                                                          :RECURSIVE:
+*** 递归
     - 1
       #+begin_src java :classname 
         /*
@@ -2808,9 +2755,31 @@
             }
         }
       #+end_src 
+      #+begin_src java :classname 
+        class Solution {
+            public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+                if (l1 == null) return l2;
+                if (l2 == null) return l1;
+                ListNode head = new ListNode(0), p = head;
+                while(l1 != null && l2 != null) {
+                    if (l1.val > l2.val) {
+                        p.next = l2;
+                        l2 = l2.next;
+                    } else {
+                        p.next = l1;
+                        l1 = l1.next;
+                    }
+                    p = p.next;
+                }
+                if (l1 == null) p.next = l2;
+                else p.next = l1;
+                return head.next;
+            }
+        }
+      #+end_src 
 ** Question:                                                      :QUESTIONS:
    - [ ] 关于递归的空间复杂度分析？
-* 26 树的子结构                               :2:递归调用递归:递归:二叉树:树:
+* 26 树的子结构 <<elink28>>                   :2:递归调用递归:递归:二叉树:树:
 ** 递归                                                           :RECURSIVE:
    - 1
      #+begin_src java :classname 
@@ -3214,7 +3183,7 @@
      - 保证 ~Stack~ 里存的都是 *不为空的对称节点*, 对于以 ~!nodes.isEmpty()~ 为 *遍历终止条件* 更好理解一点
 ** Question:                                                      :QUESTIONS:
    - [ ] 递归和迭代的空间复杂度分析？
-* 29 顺时针打印矩阵                                             :2:矩阵:数组:
+* 29 顺时针打印矩阵 <<elink29>>                             :2:二维数组:数组:
 ** 迭代
 *** 以圈为单位
     - 不计算好圈数
@@ -3896,7 +3865,7 @@
            }
        }
      #+end_src
-* 32 从上往下打印二叉树                       :2:容器:BFS:层序遍历:二叉树:树:
+* 32 从上往下打印二叉树 <<elink31>>                :2:BFS:层序遍历:二叉树:树:
 ** 不分层
    - 1
      #+begin_src java :classname 
@@ -5095,7 +5064,7 @@
    #+end_src
 *** Question:                                                     :QUESTIONS:
     - [ ] 非递归中序遍历?
-* 37 序列化二叉树         :2:字符串:层序遍历:前序遍历:递归:二叉树:树:TOBEORG:
+* 37 序列化二叉树 <<elink26>> :2:字符串:层序遍历:前序遍历:递归:二叉树:树:TOBEORG:
 ** 递归(前序遍历)
    - 1
      #+begin_src java :classname 
@@ -5679,7 +5648,7 @@
            }
        }
      #+end_src 
-* 41 数据流中的中位数                        :2:堆排序:小跟堆:大根堆:TOBEORG:
+* 41 数据流中的中位数                        :2:小跟堆:大根堆:堆排序:TOBEORG:
   - 1
     #+begin_src java :classname 
       import java.util.*;
@@ -6044,7 +6013,7 @@
 ** Question:                                                      :QUESTIONS:
    - [ ] 为什么用 ~list~ 会慢？
    - [ ] 数学证明有效性？
-* 46 把数字翻译成字符串 <<ilink29>>           :2:DP:递归:字符串:数组:TOBEORG:
+* 46 把数字翻译成字符串 <<ilink29>> <<elink30>>    :2:DP:递归:字符串:TOBEORG:
 ** 递归 <<ilink34>>
    - 1
      #+begin_src java :classname 
@@ -7642,7 +7611,7 @@
             }
         }
       #+end_src 
-* 59 队列的最大值                          :2:双端队列:单调队列:队列:TOBEORG:
+* 59 队列的最大值 <<elink24>> :2:双端队列:单调队列:队列:滑动窗口:数组:TOBEORG:
 ** 1 滑动窗口的最大值
 *** 蛮力优化
     #+begin_src java :classname 
@@ -8096,7 +8065,7 @@
      #+end_src 
 *** Question:                                                     :QUESTIONS:
     - [ ] 约瑟夫环递推式推导?
-** 用链表模拟                                                    :UNRESOLVED:
+** 用链表模拟
    - 1
      #+begin_src java :classname 
        class Solution {
@@ -8134,7 +8103,7 @@
        }
      #+end_src
      - ~ArrayList~ 可以， ~LinkedList~ 不行
-* 63 股票的最大利润                                          :2:数组:TOBEORG:
+* 63 股票的最大利润 <<elink27>>                              :2:数组:TOBEORG:
   - 1
     #+begin_src java :classname 
       class Solution {
@@ -8227,7 +8196,7 @@
           }
       }
     #+end_src
-* 66 构建乘积数组                                   :2:对称遍历:数组:TOBEORG:
+* 66 构建乘积数组 <<elink23>>                       :2:对称遍历:数组:TOBEORG:
 ** 对称遍历
    - 1
      #+begin_src java :classname 
@@ -8371,7 +8340,7 @@
    #+end_src 
 ** Question:                                                      :QUESTIONS:
    - [ ] 联系对比 [[ilink28][offer20]] [[ilink29][offer46]] 
-* 68 树中两个节点的最低公共祖先         :2:DFS:排列组合:回溯:递归:树:TOBEORG:
+* 68 树中两个节点的最低公共祖先           :2:DFS:回溯:递归:二叉树:树:TOBEORG:
 ** 1 二叉搜索树的最近公共祖先
 *** 二叉树性质
 **** 迭代
